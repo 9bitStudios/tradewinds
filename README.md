@@ -1,4 +1,4 @@
-tradewinds
+Trade Winds
 ==========
 
 A CMS Concept
