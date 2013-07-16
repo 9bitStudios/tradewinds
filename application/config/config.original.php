@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/development/tradewinds/';
+$config['base_url']	= '';
 
 /*
 |--------------------------------------------------------------------------
@@ -224,7 +224,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = 'K30G1fpoKzpP1vsPk0ldKT7kpIu009HT';
+$config['encryption_key'] = '';
 
 /*
 |--------------------------------------------------------------------------
