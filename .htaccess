@@ -1,5 +1,0 @@
-RewriteEngine On
-RewriteBase /ci/
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /development/tradewinds/index.php/$1 [L]
