@@ -1,28 +1,30 @@
-var APPLICATION_ROOT = __dirname;
-var PORT = 1337;
 
-var express = require('express'); 
+var express = require('express');
+var routes = require('./routes');
+var http = require('http');
+var path = require('path');
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
+var app = express();
 
-// Server
-var server = express();
-
-//Static content 
-server.use('/app', express.static(APPLICATION_ROOT + '/app'));
+app.set('port', process.env.PORT || 1337);
+app.use(express.logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(express.methodOverride());
+app.use(app.router);
+app.use(express.static(path.join(__dirname, 'public')));
 
 //Show all errors in development
-server.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-
-// Database
-var database = require('./database')(express, server, mongoose);
+app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
 // Routes
-require('./api')(express, server, mongoose, database);
+app.get('/', routes.index);
+app.get('/other', routes.other);
+app.use(function(request, response){
+    response.send(404, 'Route Not Found');
+}); 
 
-// Start server 
-
-server.listen(PORT, '0.0.0.0', function() {
-    console.log( 'Express server listening on port %d in %s mode', PORT, server.settings.env );
+http.createServer(app).listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
 });
- 
