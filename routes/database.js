@@ -1,4 +1,6 @@
-module.exports = function(express, server, mongoose) {
+var mongoose = require('mongoose');
+
+module.exports = function() {
 
     // Database
     mongoose.connect('mongodb://localhost/tradewinds');
