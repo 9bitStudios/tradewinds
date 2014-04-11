@@ -3,11 +3,13 @@ var express = require('express');
 var routes = require('./routes');
 var http = require('http');
 var path = require('path');
-var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
+var handlebars  = require('express3-handlebars');
 var app = express();
 
 app.set('port', process.env.PORT || 1337);
+app.set('views', path.join(__dirname, 'views'));
+app.engine('handlebars', handlebars({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());

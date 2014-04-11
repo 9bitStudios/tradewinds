@@ -1,12 +1,10 @@
 var db = require('./database');
 
 exports.index = function(request, response){
-  response.writeHead(200, {'Content-Type': 'text/plain'});
-  response.end('Hello World\n');
+    response.render('index', { title: 'Hello World' });
 };
 
 exports.other = function(request, response){
-  response.writeHead(200, {'Content-Type': 'text/plain'});
-  response.end('Other\n');
+    response.render('other', { title: 'Other' });
 };
 
