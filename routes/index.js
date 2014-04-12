@@ -1,9 +1,22 @@
 var db = require('../database');
 
-exports.index = function(request, response){
-    response.render('index', { title: 'Hello World' });
-};
+exports.main = {
+    
+    index: function(request, response){
+	response.render('index', { title: 'Hello World' });
+    },
 
-exports.other = function(request, response){
-    response.render('other', { title: 'Other' });
-};
+    other: function(request, response){
+	response.render('other', { title: 'Other' });
+    }
+    
+}
+
+exports.admin = {
+    
+    index: function(request, response){
+	response.render('index', { title: 'Admin' });
+    }
+
+}
+

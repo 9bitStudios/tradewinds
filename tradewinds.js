@@ -21,8 +21,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
 // Routes
-app.get('/', routes.index);
-app.get('/other', routes.other);
+app.get('/', routes.main.index);
+app.get('/other', routes.main.other);
+app.get('/admin', routes.admin.index);
 app.use(function(request, response){
     response.send(404, 'Route Not Found');
 }); 
