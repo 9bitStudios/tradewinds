@@ -1,4 +1,4 @@
-var db = require('./database');
+var db = require('../database');
 
 exports.index = function(request, response){
     response.render('index', { title: 'Hello World' });
@@ -7,4 +7,3 @@ exports.index = function(request, response){
 exports.other = function(request, response){
     response.render('other', { title: 'Other' });
 };
-

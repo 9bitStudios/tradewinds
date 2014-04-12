@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 
-module.exports = function() {
+exports.user = function() {
 
     // Database
     mongoose.connect('mongodb://localhost/tradewinds');
@@ -16,8 +16,6 @@ module.exports = function() {
     //Models
     var UserModel = mongoose.model('User', User );
     
-    return {
-	UserModel: UserModel
-    };
+    return UserModel;
     
 };
