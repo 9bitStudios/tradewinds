@@ -1,4 +1,4 @@
-var UserModel = require('../models/users');
+var UserModel = require('../models/UserModel');
 
 exports.index = function(request, response){
 

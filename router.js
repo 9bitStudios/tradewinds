@@ -1,13 +1,13 @@
-var MainController = require('./controllers/main');
-var AdminController = require('./controllers/admin');
+var HomeController = require('./controllers/HomeController');
+var AdminController = require('./controllers/AdminController');
 
 // Routes
 module.exports = function(app){
     
     // Main Routes
     
-    app.get('/', MainController.index);
-    app.get('/other', MainController.other);
+    app.get('/', HomeController.index);
+    app.get('/other', HomeController.other);
     
     // Admin Routes
     
