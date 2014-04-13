@@ -1,7 +1,7 @@
 exports.index = function(request, response){
-    response.render('index', { title: 'Hello World' });
+    response.render('home/index', { title: 'Hello World' });
 }
 
 exports.other = function(request, response){
-    response.render('other', { title: 'Other' });
+    response.render('home/other', { title: 'Other' });
 }

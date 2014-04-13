@@ -2,8 +2,21 @@ var UserModel = require('../models/users');
 
 exports.index = function(request, response){
 
-	UserModel.find(function(err, result){
-		console.log(result);
-	});
-    response.render('index', { title: 'Admin' });
+    response.render('admin/index', { title: 'Administration Panel' });
+}
+
+exports.debug = function(request, response){
+
+    var users;
+
+    UserModel.find(function(err, result){
+	users = result;
+
+	response.render('admin/debug', { 
+	    title: 'Debug',
+	    users: users		
+	});		
+
+    });
+
 }
