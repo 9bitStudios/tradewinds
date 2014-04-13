@@ -1,21 +1,20 @@
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
 
-exports.user = function() {
+// Database
+mongoose.connect('mongodb://localhost/tradewinds');
 
-    // Database
-    mongoose.connect('mongodb://localhost/tradewinds');
+//Schema
+var User = new mongoose.Schema({
+    name: String,
+    email: String,
+    avatar: String,
+});
 
-    //Schemas
-    var User = new mongoose.Schema({
-	name: String,
-	email: String,
-	avatar: String,
-    });
+//Model
+module.exports = mongoose.model('User', User );
 
-    //Models
-    var UserModel = mongoose.model('User', User );
+
+
+
     
-    return UserModel;
     
-};
