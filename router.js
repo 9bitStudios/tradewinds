@@ -12,7 +12,7 @@ module.exports = function(app){
     // Admin Routes
     
     app.get('/admin', AdminController.index);
-	app.get('/admin/debug', AdminController.debug);
+    app.get('/admin/debug', AdminController.debug);
     
     // 404
     
