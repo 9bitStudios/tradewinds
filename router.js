@@ -12,12 +12,19 @@ module.exports = function(app){
     // Admin Routes
     
     app.get('/admin', AdminController.index);
-    app.get('/admin/debug', AdminController.debug);
+    app.get('/admin/debug', AdminController.debug);  
+    
+    // Errors   
     
     // 404
     
     app.use(function(request, response){
-        response.send(404, 'Route Not Found');
-    }); 
+	response.status(404);
+        response.render('errors/404', { 
+	    title: '404', 
+	    message: 'The requested resource was not found...', 
+	    layout: 'error'
+	});
+    });     
     
 }
