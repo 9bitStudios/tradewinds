@@ -1,5 +1,6 @@
 var HomeController = require('./controllers/HomeController');
 var AdminController = require('./controllers/AdminController');
+var InstallController = require('./controllers/InstallController');
 
 // Routes
 module.exports = function(app){
@@ -13,6 +14,11 @@ module.exports = function(app){
     
     app.get('/admin', AdminController.index);
     app.get('/admin/debug', AdminController.debug);  
+    
+    // Installation Routes
+    
+    app.get('/install', InstallController.index);
+    app.post('/install', InstallController.install);      
     
     // Errors   
     
