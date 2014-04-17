@@ -4,6 +4,6 @@ exports.index = function(request, response){
 
 exports.install = function(request, response){
     console.log('Data was posted...');
-    response.redirect('/install');
+    response.redirect('/install?success=true');
 }
 
