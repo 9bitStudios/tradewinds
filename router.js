@@ -7,18 +7,20 @@ module.exports = function(app){
     
     // Main Routes
     
-    app.get('/', HomeController.index);
-    app.get('/other', HomeController.other);
+    app.get('/', HomeController.Index);
+    app.get('/other', HomeController.Other);
     
     // Admin Routes
     
-    app.get('/admin', AdminController.index);
-    app.get('/admin/debug', AdminController.debug);  
+    app.get('/admin', AdminController.Index);
+    app.get('/admin/user/add', AdminController.AddUser);  
+    app.post('/admin/user/add', AdminController.CreateUser);
+    app.get('/admin/debug', AdminController.Debug);  
     
     // Installation Routes
     
-    app.get('/install', InstallController.index);
-    app.post('/install', InstallController.install);      
+    app.get('/install', InstallController.Index);
+    app.post('/install', InstallController.Install);      
     
     // Errors   
     

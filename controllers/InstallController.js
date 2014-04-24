@@ -1,9 +1,8 @@
-exports.index = function(request, response){
-    response.render('admin/install', { title: 'Install', layout:'admin' });
+exports.Index = function(request, response){
+    response.render('admin/Install', { title: 'Install', layout:'admin' });
 }
 
-exports.install = function(request, response){
-    console.log(request.body.sample);
+exports.Install = function(request, response){
     response.redirect('/install?success=true');
 }
 
