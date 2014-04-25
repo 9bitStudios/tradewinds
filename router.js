@@ -13,9 +13,9 @@ module.exports = function(app){
     // Admin Routes
     
     app.get('/admin', AdminController.Index);
+    app.get('/admin/users', AdminController.ViewAllUsers);     
     app.get('/admin/user/add', AdminController.AddUser);  
-    app.post('/admin/user/add', AdminController.CreateUser);
-    app.get('/admin/debug', AdminController.Debug);  
+    app.post('/admin/user/add', AdminController.CreateUser); 
     
     // Installation Routes
     

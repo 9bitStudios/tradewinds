@@ -9,6 +9,23 @@ exports.Index = function(request, response){
     });
 }
 
+exports.ViewAllUsers = function(request, response){
+
+    var users;
+
+    UserModel.find(function(error, result){
+	users = result;
+	    	
+	response.render('admin/ViewAllUsers', { 
+	    title: 'View All Users',
+	    layout: defaultLayout,  
+	    users: users		
+	});
+	
+    });
+
+}
+
 exports.AddUser = function(request, response){
 
     response.render('admin/AddUser', { 
@@ -32,21 +49,4 @@ exports.CreateUser = function(request, response){
 	else
 	    response.redirect('/admin?success=true');
     });   
-}
-
-exports.Debug = function(request, response){
-
-    var users;
-
-    UserModel.find(function(error, result){
-	users = result;
-	    	
-	response.render('admin/Debug', { 
-	    title: 'Debug',
-	    layout: defaultLayout,  
-	    users: users		
-	});
-	
-    });
-
 }

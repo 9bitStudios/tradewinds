@@ -2,12 +2,12 @@
     <h1>{{ title }}</h1>
     <p>This is a debug panel that will give some information on stuff...</p>
 	
-    <h3>Users</h3>
+    <h3>{{ Title }}</h3>
 
     <ul>
     {{#users}}
 	<li>
-	    <strong>Name:</strong> {{name}} <strong>Email:</strong> {{email}}
+	    <strong>Name:</strong> {{name}} <strong>Email:</strong> {{email}} <strong>id:</strong> {{ _id }}
 	</li>
     {{/users}}
     </ul>
