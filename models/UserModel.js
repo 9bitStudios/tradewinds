@@ -15,6 +15,7 @@ mongoose.connect('mongodb://localhost/tradewinds');
 //Schema
 var User = new mongoose.Schema({
     name: String,
+    password: String,
     email: String,
     avatar: String,
 });

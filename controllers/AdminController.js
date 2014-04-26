@@ -1,4 +1,5 @@
 var UserModel = require('../models/UserModel');
+var bcrypt = require('bcrypt-nodejs');
 var defaultLayout = 'admin';
 
 exports.Index = function(request, response){
@@ -36,8 +37,12 @@ exports.AddUser = function(request, response){
 
 exports.CreateUser = function(request, response){
     
+    var salt = bcrypt.genSaltSync(10);
+    var passwordHash = bcrypt.hashSync(request.body.password, salt);
+    
     var u = new UserModel({ 
 	name: request.body.name,
+	password: passwordHash,
 	email: request.body.email,
 	avatar: request.body.avatar
     });
