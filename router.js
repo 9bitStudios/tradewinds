@@ -1,4 +1,5 @@
 var HomeController = require('./controllers/HomeController');
+var LoginController = require('./controllers/LoginController');
 var AdminController = require('./controllers/AdminController');
 var InstallController = require('./controllers/InstallController');
 
@@ -9,6 +10,12 @@ module.exports = function(app){
     
     app.get('/', HomeController.Index);
     app.get('/other', HomeController.Other);
+    
+    // Login Routes
+    
+    app.get('/login', LoginController.Index);
+    app.post('/login', LoginController.Authenticate);    
+    
     
     // Admin Routes
     
