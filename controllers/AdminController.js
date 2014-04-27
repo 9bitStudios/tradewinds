@@ -3,17 +3,28 @@ var UserModel = require('../models/UserModel');
 var bcrypt = require('bcrypt-nodejs');
 var defaultLayout = 'admin';
 
+function Authenticate(request, response) {
+    if(!request.session.username) {
+	response.redirect('/login');
+    }
+}
+
 exports.Index = function(request, response){
+
+    Authenticate(request, response);
 
     response.render('admin/Index', { 
 	title: 'Administration Panel Home', 
-	layout: defaultLayout  
+	layout: defaultLayout,
+	userInfo: {
+	    name: request.session.username
+	}
     });
 }
 
 exports.ViewAllUsers = function(request, response){
 
-    Helpers.Authenticate(request, response);
+    Authenticate(request, response);
 
     var users;
 
@@ -23,6 +34,9 @@ exports.ViewAllUsers = function(request, response){
 	response.render('admin/ViewAllUsers', { 
 	    title: 'View All Users',
 	    layout: defaultLayout,  
+	    userInfo: {
+		name: request.session.username
+	    },
 	    users: users		
 	});
 	
@@ -32,13 +46,20 @@ exports.ViewAllUsers = function(request, response){
 
 exports.AddUser = function(request, response){
 
+    Authenticate(request, response);
+
     response.render('admin/AddUser', { 
 	title: 'Add User', 
-	layout: defaultLayout  
+	layout: defaultLayout,
+	userInfo: {
+	    name: request.session.username
+	}
     });
 }
 
 exports.CreateUser = function(request, response){
+    
+    Authenticate(request, response);
     
     var salt = bcrypt.genSaltSync(10);
     var passwordHash = bcrypt.hashSync(request.body.password, salt);

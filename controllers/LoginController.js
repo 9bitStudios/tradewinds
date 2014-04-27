@@ -27,7 +27,7 @@ exports.Authenticate = function(request, response){
 	if(user) {
 	    // compare passwords
 	    if(bcrypt.compareSync(request.body.password, user.password)) {
-		request.session.user = user.name;
+		request.session.username = user.name;
 		response.redirect('/admin');
 	    }
 	    else

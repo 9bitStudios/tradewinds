@@ -10,12 +10,3 @@ exports.RandomString = function(strLength) {
 
     return text;		
 }
-
-exports.Authenticate = function(request, response) {
-    
-    if(!request.session.user) {
-	response.redirect('/login');
-    }
-    
-    
-}
