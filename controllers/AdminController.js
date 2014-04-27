@@ -1,3 +1,4 @@
+var Helpers = require('../helpers/Helpers');
 var UserModel = require('../models/UserModel');
 var bcrypt = require('bcrypt-nodejs');
 var defaultLayout = 'admin';
@@ -11,6 +12,8 @@ exports.Index = function(request, response){
 }
 
 exports.ViewAllUsers = function(request, response){
+
+    Helpers.Authenticate(request, response);
 
     var users;
 

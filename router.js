@@ -15,7 +15,7 @@ module.exports = function(app){
     
     app.get('/login', LoginController.Index);
     app.post('/login', LoginController.Authenticate);    
-    
+    app.get('/logout', LoginController.Logout);
     
     // Admin Routes
     

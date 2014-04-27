@@ -1,5 +1,6 @@
 
 var express = require('express');
+var MongoStore = require('connect-mongo')(express);
 var http = require('http');
 var path = require('path');
 var handlebars  = require('express3-handlebars');
@@ -12,7 +13,12 @@ app.set('view engine', 'handlebars');
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.bodyParser());
-app.use(express.cookieParser());
+app.use(express.cookieParser('S3CRE7'));
+app.use(express.session({
+  store: new MongoStore({
+    url: 'mongodb://localhost/tradewinds'
+  })
+}));
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);

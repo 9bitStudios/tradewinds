@@ -6,6 +6,7 @@
         "express": "3.x",
         "express3-handlebars": "*",			
         "mongoose": "3.x",
+	"connect-mongo": "*",
         "bcrypt-nodejs": "*"
     }
 }

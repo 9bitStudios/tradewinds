@@ -1,4 +1,4 @@
-exports.randomString = function(strLength) {
+exports.RandomString = function(strLength) {
     if(typeof strLength === 'undefined') 
 	    strLength = 8;
 
@@ -9,4 +9,13 @@ exports.randomString = function(strLength) {
 	    text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;		
+}
+
+exports.Authenticate = function(request, response) {
+    
+    if(!request.session.user) {
+	response.redirect('/login');
+    }
+    
+    
 }
