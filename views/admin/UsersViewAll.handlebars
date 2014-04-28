@@ -1,0 +1,19 @@
+<div class="container">
+    <h1>{{ title }}</h1>
+    <p>This is a debug panel that will give some information on stuff...</p>
+	
+    <h3>{{ Title }}</h3>
+
+    <ul>
+    {{#users}}
+	<li>
+	    <strong>Name:</strong> {{name}} <strong>Email:</strong> {{email}} <a href="/admin/user/edit/{{ _id }}">Edit</a> <a href="/admin/user/delete/{{ _id }}" onclick="return confirm('Are you sure?')">Delete</a>
+	</li>
+    {{/users}}
+    </ul>
+
+    <a href="/admin/user/add">Add User</a>
+
+</div>
+
+

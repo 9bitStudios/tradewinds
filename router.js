@@ -20,9 +20,12 @@ module.exports = function(app){
     // Admin Routes
     
     app.get('/admin', AdminController.Index);
-    app.get('/admin/users', AdminController.ViewAllUsers);     
-    app.get('/admin/user/add', AdminController.AddUser);  
-    app.post('/admin/user/add', AdminController.CreateUser); 
+    app.get('/admin/users', AdminController.UsersViewAll);     
+    app.get('/admin/user/add', AdminController.UserAdd);  
+    app.post('/admin/user/add', AdminController.UserCreate); 
+    app.get('/admin/user/edit/:id', AdminController.UserEdit); 
+    app.post('/admin/user/edit', AdminController.UserUpdate);
+    app.get('/admin/user/delete/:id', AdminController.UserDelete); 
     
     // Installation Routes
     

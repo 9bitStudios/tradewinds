@@ -1,0 +1,14 @@
+<div class="container">
+    <h1>{{ title }}</h1>
+
+    <form method="post" action="/admin/user/edit">
+	<label>Name</label> <input name="name" type="text" value="{{ user.name }}" />
+	<label>E-Mail</label> <input name="email" type="text" value="{{ user.email }}" />
+	<label>Avatar</label> <input name="avatar" type="text" value="{{ user.avatar }}" />
+	<input name="id" type="hidden" value="{{ user.id }}" />
+	<input type="submit" value="Submit" />
+    </form>
+
+</div>
+
+

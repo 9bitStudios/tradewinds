@@ -9,6 +9,8 @@ function Authenticate(request, response) {
     }
 }
 
+// Admin - Home
+
 exports.Index = function(request, response){
 
     Authenticate(request, response);
@@ -22,7 +24,9 @@ exports.Index = function(request, response){
     });
 }
 
-exports.ViewAllUsers = function(request, response){
+// Admin - View All Users
+
+exports.UsersViewAll = function(request, response){
 
     Authenticate(request, response);
 
@@ -31,7 +35,7 @@ exports.ViewAllUsers = function(request, response){
     UserModel.find(function(error, result){
 	users = result;
 	    	
-	response.render('admin/ViewAllUsers', { 
+	response.render('admin/UsersViewAll', { 
 	    title: 'View All Users',
 	    layout: defaultLayout,  
 	    userInfo: {
@@ -44,11 +48,13 @@ exports.ViewAllUsers = function(request, response){
 
 }
 
-exports.AddUser = function(request, response){
+// Admin - Add User
+
+exports.UserAdd = function(request, response){
 
     Authenticate(request, response);
 
-    response.render('admin/AddUser', { 
+    response.render('admin/UserAdd', { 
 	title: 'Add User', 
 	layout: defaultLayout,
 	userInfo: {
@@ -57,7 +63,9 @@ exports.AddUser = function(request, response){
     });
 }
 
-exports.CreateUser = function(request, response){
+// Admin - Create User
+
+exports.UserCreate = function(request, response){
     
     Authenticate(request, response);
     
@@ -79,3 +87,64 @@ exports.CreateUser = function(request, response){
 	    response.redirect('/admin?success=true');
     });   
 }
+
+// Admin - Edit User
+
+exports.UserEdit = function(request, response){
+
+    Authenticate(request, response);
+    var id = request.params.id;
+    
+    UserModel.findOne({ _id: id }, function(error, result){
+	    	
+	response.render('admin/UserEdit', { 
+	    title: 'Edit User',
+	    layout: defaultLayout,  
+	    userInfo: {
+		name: request.session.username
+	    },
+	    user: {
+		id: result._id,
+		name: result.name,
+		email: result.email,
+		avatar: result.avatar
+	    }		
+	});
+	
+    });
+    
+}
+
+// Admin - Update User
+
+exports.UserUpdate = function(request, response){
+
+    Authenticate(request, response);
+
+    UserModel.update(
+	{ _id: request.body.id }, 
+	{
+	    name: request.body.name,
+	    email: request.body.email,
+	    avatar: request.body.avatar
+	},
+	{ multi: true }, 
+	function(error, result){
+	    response.redirect('/admin/users');
+	}
+    );
+}
+
+// Admin - Delete User
+
+exports.UserDelete = function(request, response){
+
+    Authenticate(request, response);
+
+    UserModel.remove({ _id: request.params.id }, function(error, result) {
+	if (!error) {
+	    response.redirect('/admin/users');
+	}
+    });
+}
+
