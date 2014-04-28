@@ -12,7 +12,7 @@ db.once('open', function() {
 // Database
 mongoose.connect('mongodb://localhost/tradewinds');
 
-//Schema
+//Schemas
 var User = new mongoose.Schema({
     name: String,
     password: String,
@@ -20,9 +20,18 @@ var User = new mongoose.Schema({
     avatar: String,
 });
 
-//Model
-module.exports = mongoose.model('User', User );
+var Post = new mongoose.Schema({
+    title: String,
+});
 
+//Models
+var UserModel = mongoose.model('User', User );
+var PostModel = mongoose.model('Post', Post );
+
+module.exports = {
+    UserModel: UserModel,
+    PostModel: PostModel
+}
 
 
 

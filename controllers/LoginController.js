@@ -1,4 +1,4 @@
-var UserModel = require('../models/UserModel');
+var Model = require('../models/Models');
 var bcrypt = require('bcrypt-nodejs');
 
 exports.Index = function(request, response){
@@ -18,7 +18,7 @@ exports.Logout = function(request, response){
 
 exports.Authenticate = function(request, response){
 
-    UserModel.findOne({ 'name': request.body.username }, 'name password', function(error, user){
+    Model.UserModel.findOne({ 'name': request.body.username }, 'name password', function(error, user){
 	if (error){
 	    response.redirect('/login?error=true');
 	}

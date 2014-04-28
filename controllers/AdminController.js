@@ -1,5 +1,5 @@
 var Helpers = require('../helpers/Helpers');
-var UserModel = require('../models/UserModel');
+var Model = require('../models/Models');
 var bcrypt = require('bcrypt-nodejs');
 var defaultLayout = 'admin';
 
@@ -32,7 +32,7 @@ exports.UsersViewAll = function(request, response){
 
     var users;
 
-    UserModel.find(function(error, result){
+    Model.UserModel.find(function(error, result){
 	users = result;
 	    	
 	response.render('admin/UsersViewAll', { 
@@ -72,7 +72,7 @@ exports.UserCreate = function(request, response){
     var salt = bcrypt.genSaltSync(10);
     var passwordHash = bcrypt.hashSync(request.body.password, salt);
     
-    var u = new UserModel({ 
+    var u = new Model.UserModel({ 
 	name: request.body.name,
 	password: passwordHash,
 	email: request.body.email,
@@ -82,9 +82,9 @@ exports.UserCreate = function(request, response){
     u.save(function(error){
 	
 	if(error)
-	    response.redirect('/admin?error=true');
+	    response.redirect('/admin/users?error=true');
 	else
-	    response.redirect('/admin?success=true');
+	    response.redirect('/admin/users?success=true');
     });   
 }
 
@@ -95,7 +95,7 @@ exports.UserEdit = function(request, response){
     Authenticate(request, response);
     var id = request.params.id;
     
-    UserModel.findOne({ _id: id }, function(error, result){
+    Model.UserModel.findOne({ _id: id }, function(error, result){
 	    	
 	response.render('admin/UserEdit', { 
 	    title: 'Edit User',
@@ -121,7 +121,7 @@ exports.UserUpdate = function(request, response){
 
     Authenticate(request, response);
 
-    UserModel.update(
+    Model.UserModel.update(
 	{ _id: request.body.id }, 
 	{
 	    name: request.body.name,
@@ -141,7 +141,7 @@ exports.UserDelete = function(request, response){
 
     Authenticate(request, response);
 
-    UserModel.remove({ _id: request.params.id }, function(error, result) {
+    Model.UserModel.remove({ _id: request.params.id }, function(error, result) {
 	if (!error) {
 	    response.redirect('/admin/users');
 	}
