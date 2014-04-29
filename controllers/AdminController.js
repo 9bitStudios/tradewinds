@@ -69,24 +69,43 @@ exports.UserCreate = function(request, response){
     
     Authenticate(request, response);
     
-    var salt = bcrypt.genSaltSync(10);
-    var passwordHash = bcrypt.hashSync(request.body.password, salt);
+    var errors = false;
     
-    var u = new Model.UserModel({ 
-	name: request.body.name,
-	password: passwordHash,
-	email: request.body.email,
-	avatar: request.body.avatar,
-	isDefault: false
-    });
+    var name = request.body.name;
+    var email = request.body.email;
+    var password = request.body.password;
+    var avatar = request.body.avatar;
     
-    u.save(function(error){
-	
-	if(error)
-	    response.redirect('/admin/users?error=true');
-	else
-	    response.redirect('/admin/users?success=true');
-    });   
+    if(!name || !email || !password || !avatar)
+	errors = true;
+    if(name.trim() == '' || email.trim() == '' || password.trim() == '' || avatar.trim() == '')
+	errors = true;
+    if(!Helpers.ValidateEmail(email))
+	errors = true;
+
+    
+    if(errors)
+	response.redirect('/admin/users?error=true');    
+    else {
+	var salt = bcrypt.genSaltSync(10);
+	var passwordHash = bcrypt.hashSync(password, salt);
+
+	var u = new Model.UserModel({ 
+	    name: name,
+	    password: passwordHash,
+	    email: email,
+	    avatar: avatar,
+	    isDefault: false
+	});
+
+	u.save(function(error){
+
+	    if(error)
+		response.redirect('/admin/users?error=true');
+	    else
+		response.redirect('/admin/users?success=true');
+	});
+    }
 }
 
 // Admin - Edit User
