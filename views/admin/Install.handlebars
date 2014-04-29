@@ -2,16 +2,20 @@
     <h1>{{ title }}</h1>
     <p>Welcome to {{ title }} the installation setup...</p>
 
-    <form method="post" action="/install">
-	<label>Default User Name</label>
-	<input name="name" type="text" />
-	<label>Default User Password</label>
-	<input name="password" type="text" />
-	<label>Default User Email</label>
-	<input name="email" type="text" />
-	<input type="submit" value="Submit" />
-    </form>
+    {{#if installed}}
+	<p>You have installed Tradewinds.</p>
+    {{else}}
+	<form method="post" action="/install">
+	    <label>Default User Name</label>
+	    <input name="name" type="text" />
+	    <label>Default User Password</label>
+	    <input name="password" type="text" />
+	    <label>Default User Email</label>
+	    <input name="email" type="text" />
+	    <input type="submit" value="Submit" />
+	</form>
 
+    {{/if}}
 </div>
 
 

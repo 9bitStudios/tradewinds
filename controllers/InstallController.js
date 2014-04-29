@@ -2,8 +2,23 @@ var Model = require('../models/Models');
 var bcrypt = require('bcrypt-nodejs');
 
 exports.Index = function(request, response){
+    
+    Model.UserModel.findOne({ isDefault: true }, function(error, result){
+	    	
+	if(!result || error) {
+	    response.render('admin/Install', { title: 'Install', installed: false });
+	}
+	else
+	    response.redirect('/install/success');
+    });    
+    
     response.render('admin/Install', { title: 'Install' });
 }
+
+exports.InstallSuccess = function(request, response){
+    response.render('admin/Install', { title: 'Install', installed: true });
+}
+
 
 exports.Install = function(request, response){
     

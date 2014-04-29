@@ -31,6 +31,7 @@ module.exports = function(app){
     
     app.get('/install', InstallController.Index);
     app.post('/install', InstallController.Install);      
+    app.get('/install/success', InstallController.InstallSuccess);
     
     // Errors   
     
