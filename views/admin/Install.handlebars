@@ -3,8 +3,13 @@
     <p>Welcome to {{ title }} the installation setup...</p>
 
     <form method="post" action="/install">
-	<input name="sample" type="text" />
-	<input type="submit" value="Install" />
+	<label>Default User Name</label>
+	<input name="name" type="text" />
+	<label>Default User Password</label>
+	<input name="password" type="text" />
+	<label>Default User Email</label>
+	<input name="email" type="text" />
+	<input type="submit" value="Submit" />
     </form>
 
 </div>

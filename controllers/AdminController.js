@@ -76,7 +76,8 @@ exports.UserCreate = function(request, response){
 	name: request.body.name,
 	password: passwordHash,
 	email: request.body.email,
-	avatar: request.body.avatar
+	avatar: request.body.avatar,
+	isDefault: false
     });
     
     u.save(function(error){
@@ -141,7 +142,7 @@ exports.UserDelete = function(request, response){
 
     Authenticate(request, response);
 
-    Model.UserModel.remove({ _id: request.params.id }, function(error, result) {
+    Model.UserModel.remove({ _id: request.params.id, isDefault: false }, function(error, result) {
 	if (!error) {
 	    response.redirect('/admin/users');
 	}

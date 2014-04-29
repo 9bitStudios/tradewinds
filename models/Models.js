@@ -21,6 +21,7 @@ var User = new mongoose.Schema({
     password: String,
     email: String,
     avatar: String,
+    isDefault: Boolean
 });
 
 var Post = new mongoose.Schema({
