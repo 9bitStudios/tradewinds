@@ -1,4 +1,7 @@
+var config = require('../config');
 var mongoose = require('mongoose');
+var configEnvironment = config.environment;
+var connectionString = 'mongodb://' + config[configEnvironment].database.credentials + config[configEnvironment].database.host + ':' + config[configEnvironment].database.port  + '/'+ config[configEnvironment].database.name;
 var db = mongoose.connection;
 
 db.on('error', function(){
@@ -10,7 +13,7 @@ db.once('open', function() {
 });
 
 // Database
-mongoose.connect('mongodb://localhost/tradewinds');
+mongoose.connect(connectionString);
 
 //Schemas
 var User = new mongoose.Schema({
