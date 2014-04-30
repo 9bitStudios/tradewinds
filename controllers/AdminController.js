@@ -1,4 +1,5 @@
 var Helpers = require('../helpers/Helpers');
+var Validation = require('../helpers/Validation');
 var Model = require('../models/Models');
 var bcrypt = require('bcrypt-nodejs');
 var defaultLayout = 'admin';
@@ -76,11 +77,9 @@ exports.UserCreate = function(request, response){
     var password = request.body.password;
     var avatar = request.body.avatar;
     
-    if(!name || !email || !password || !avatar)
+    if(Validation.IsNullOrEmpty([name, email, password, avatar]))
 	errors = true;
-    if(name.trim() == '' || email.trim() == '' || password.trim() == '' || avatar.trim() == '')
-	errors = true;
-    if(!Helpers.ValidateEmail(email))
+    if(!Validation.ValidateEmail(email))
 	errors = true;
 
     
