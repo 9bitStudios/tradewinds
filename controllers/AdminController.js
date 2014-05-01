@@ -75,13 +75,15 @@ exports.UserCreate = function(request, response){
     var name = request.body.name;
     var email = request.body.email;
     var password = request.body.password;
+    var password2 = request.body.password2;
     var avatar = request.body.avatar;
     
-    if(Validation.IsNullOrEmpty([name, email, password, avatar]))
+    if(Validation.IsNullOrEmpty([name, email, password, password2, avatar]))
 	errors = true;
+    if(!Validation.Equals(password, password2))
+	errors = true;    
     if(!Validation.ValidateEmail(email))
 	errors = true;
-
     
     if(errors)
 	response.redirect('/admin/users?error=true');    
