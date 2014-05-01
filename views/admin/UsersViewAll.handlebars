@@ -7,7 +7,13 @@
     <ul>
     {{#users}}
 	<li>
-	    <strong>Name:</strong> {{name}} <strong>Email:</strong> {{email}} <a href="/admin/user/edit/{{ _id }}">Edit</a> <a href="/admin/user/delete/{{ _id }}" onclick="return confirm('Are you sure?')">Delete</a>
+	    <strong>Name:</strong> {{name}} <strong>Email:</strong> {{email}} 
+
+	    <a href="/admin/user/edit/{{ _id }}">Edit</a>
+
+	    {{#unless isDefault}}
+		<a href="/admin/user/delete/{{ _id }}" onclick="return confirm('Are you sure?')">Delete</a>
+	    {{/unless}}
 	</li>
     {{/users}}
     </ul>
