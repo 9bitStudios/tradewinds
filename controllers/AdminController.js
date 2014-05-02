@@ -88,24 +88,38 @@ exports.UserCreate = function(request, response){
     if(errors)
 	response.redirect('/admin/users?error=true');    
     else {
-	var salt = bcrypt.genSaltSync(10);
-	var passwordHash = bcrypt.hashSync(password, salt);
+	
+	Model.UserModel.findOne({ email: email }, function(error, result){
 
-	var u = new Model.UserModel({ 
-	    name: name,
-	    password: passwordHash,
-	    email: email,
-	    avatar: avatar,
-	    isDefault: false
-	});
+	    // user email already exists
+	    if(result){
+		response.redirect('/admin/users?error=true&message=exists');
+	    }
+	    else {
+		
+		var salt = bcrypt.genSaltSync(10);
+		var passwordHash = bcrypt.hashSync(password, salt);
 
-	u.save(function(error){
+		var u = new Model.UserModel({ 
+		    name: name,
+		    password: passwordHash,
+		    email: email,
+		    avatar: avatar,
+		    isDefault: false
+		});
 
-	    if(error)
-		response.redirect('/admin/users?error=true');
-	    else
-		response.redirect('/admin/users?success=true');
-	});
+		u.save(function(error){
+
+		    if(error)
+			response.redirect('/admin/users?error=true');
+		    else
+			response.redirect('/admin/users?success=true');
+		});		
+		
+	    }
+
+	});	
+
     }
 }
 
@@ -141,19 +155,35 @@ exports.UserEdit = function(request, response){
 exports.UserUpdate = function(request, response){
 
     Authenticate(request, response);
+    
+    var errors = false;
+    
+    var name = request.body.name;
+    var email = request.body.email;
+    var avatar = request.body.avatar;
+    
+    if(Validation.IsNullOrEmpty([name, email, avatar]))
+	errors = true;
+    if(!Validation.ValidateEmail(email))
+	errors = true;
 
-    Model.UserModel.update(
-	{ _id: request.body.id }, 
-	{
-	    name: request.body.name,
-	    email: request.body.email,
-	    avatar: request.body.avatar
-	},
-	{ multi: true }, 
-	function(error, result){
-	    response.redirect('/admin/users');
-	}
-    );
+    if(errors)
+	response.redirect('/admin/users?error=true');    
+    else {
+	
+	Model.UserModel.update(
+	    { _id: request.body.id }, 
+	    {
+		name: name,
+		email: email,
+		avatar: avatar
+	    },
+	    { multi: true }, 
+	    function(error, result){
+		response.redirect('/admin/users');
+	    }
+	);	
+    }
 }
 
 // Admin - Delete User
