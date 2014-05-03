@@ -1,6 +1,7 @@
 var HomeController = require('./controllers/HomeController');
 var LoginController = require('./controllers/LoginController');
 var AdminController = require('./controllers/AdminController');
+var PostController = require('./controllers/PostController');
 var InstallController = require('./controllers/InstallController');
 
 // Routes
@@ -39,6 +40,8 @@ module.exports = function(app){
     app.get('/install', InstallController.Index);
     app.post('/install', InstallController.Install);      
     app.get('/install/success', InstallController.InstallSuccess);
+       
+    app.get('/*', PostController.Process);
        
     // Errors   
     
