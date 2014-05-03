@@ -1,0 +1,19 @@
+<div class="container">
+    <h1>{{ title }}</h1>
+
+    <ul>
+    {{#posts}}
+	<li>
+	    <strong>{{title}}</strong> 
+
+	    <a href="/admin/post/edit/{{ _id }}">Edit</a>
+	    <a href="/admin/post/delete/{{ _id }}" onclick="return confirm('Are you sure?')">Delete</a>
+	</li>
+    {{/posts}}
+    </ul>
+
+    <a href="/admin/post/add">Add Post</a>
+
+</div>
+
+

@@ -23,7 +23,7 @@ exports.Index = function(request, response){
 	    name: request.session.username
 	}
     });
-}
+};
 
 // Admin - View All Users
 
@@ -47,7 +47,7 @@ exports.UsersViewAll = function(request, response){
 	
     });
 
-}
+};
 
 // Admin - Add User
 
@@ -62,7 +62,7 @@ exports.UserAdd = function(request, response){
 	    name: request.session.username
 	}
     });
-}
+};
 
 // Admin - Create User
 
@@ -121,7 +121,7 @@ exports.UserCreate = function(request, response){
 	});	
 
     }
-}
+};
 
 // Admin - Edit User
 
@@ -148,7 +148,7 @@ exports.UserEdit = function(request, response){
 	
     });
     
-}
+};
 
 // Admin - Update User
 
@@ -184,7 +184,7 @@ exports.UserUpdate = function(request, response){
 	    }
 	);	
     }
-}
+};
 
 // Admin - Delete User
 
@@ -197,5 +197,79 @@ exports.UserDelete = function(request, response){
 	    response.redirect('/admin/users');
 	}
     });
-}
+};
+
+// Admin - View All Posts
+
+exports.PostsViewAll = function(request, response){
+
+    Authenticate(request, response);
+
+    var posts;
+
+    Model.PostModel.find(function(error, result){
+	posts = result;
+	    	
+	response.render('admin/PostsViewAll', { 
+	    title: 'Posts',
+	    layout: defaultLayout,  
+	    userInfo: {
+		name: request.session.username
+	    },
+	    posts: posts		
+	});
+	
+    });
+
+};
+
+// Admin - Add Post
+
+exports.PostAdd = function(request, response){
+
+    Authenticate(request, response);
+
+    response.render('admin/PostAdd', { 
+	title: 'Add New Post', 
+	layout: defaultLayout,
+	userInfo: {
+	    name: request.session.username
+	}
+    });
+};
+
+// Admin - Create Post
+
+exports.PostCreate = function(request, response){
+    
+    Authenticate(request, response);
+    
+    var errors = false;
+    
+    var title = request.body.title;
+    var slug = request.body.slug;
+    var content = request.body.content;
+    
+    if(Validation.IsNullOrEmpty([title, slug, content]))
+	errors = true;
+    
+    if(errors)
+	response.redirect('/admin/posts?error=true');    
+    else {
+	
+	var p = new Model.PostModel({ 
+	    title: title,
+	    slug: slug,
+	    content: content
+	});
+
+	p.save(function(error){
+
+	    if(error)
+		response.redirect('/admin/posts?error=true');
+	    else
+		response.redirect('/admin/posts?success=true');
+	});	
+    }
+};
 

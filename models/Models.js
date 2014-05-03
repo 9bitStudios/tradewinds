@@ -26,6 +26,8 @@ var User = new mongoose.Schema({
 
 var Post = new mongoose.Schema({
     title: String,
+    slug: String,
+    content: String
 });
 
 //Models

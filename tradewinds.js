@@ -21,8 +21,8 @@ app.use(express.session({
 }));
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(app.router);
 
 //Show all errors in development
 app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));

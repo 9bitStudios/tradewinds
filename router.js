@@ -27,12 +27,16 @@ module.exports = function(app){
     app.post('/admin/user/edit', AdminController.UserUpdate);
     app.get('/admin/user/delete/:id', AdminController.UserDelete); 
     
+    app.get('/admin/posts', AdminController.PostsViewAll);     
+    app.get('/admin/post/add', AdminController.PostAdd);  
+    app.post('/admin/post/add', AdminController.PostCreate);     
+    
     // Installation Routes
     
     app.get('/install', InstallController.Index);
     app.post('/install', InstallController.Install);      
     app.get('/install/success', InstallController.InstallSuccess);
-    
+       
     // Errors   
     
     // 404
