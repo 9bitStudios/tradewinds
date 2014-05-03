@@ -1,0 +1,22 @@
+<div class="container">
+    <h1>{{ title }}</h1>
+
+    <form method="post" action="/admin/post/edit">
+	<label>Title</label> <input name="title" type="text" value="{{ post.title }}" />
+	<label>Slug</label> <input name="slug" type="text" value="{{ post.slug }}" />
+
+	<div class="clear"></div>
+
+	<label>Content</label> 
+
+	<div class="clear"></div>
+
+	<textarea name="content">{{ post.content }}</textarea>
+
+	<input name="id" type="hidden" value="{{ post.id }}" />
+	<input type="submit" value="Submit" />
+    </form>
+
+</div>
+
+

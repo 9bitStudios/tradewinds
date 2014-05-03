@@ -30,6 +30,9 @@ module.exports = function(app){
     app.get('/admin/posts', AdminController.PostsViewAll);     
     app.get('/admin/post/add', AdminController.PostAdd);  
     app.post('/admin/post/add', AdminController.PostCreate);     
+    app.get('/admin/post/edit/:id', AdminController.PostEdit); 
+    app.post('/admin/post/edit', AdminController.PostUpdate);
+    app.get('/admin/post/delete/:id', AdminController.PostDelete);
     
     // Installation Routes
     

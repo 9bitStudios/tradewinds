@@ -9,3 +9,19 @@ display:block;
 width:100%;
 }
 
+.clear {
+    clear: both;
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
+.clearout {
+    clear: both;
+    display: block;
+    overflow: hidden;
+    width: 0;
+    height: 20px;
+}
+

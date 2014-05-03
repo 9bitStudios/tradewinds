@@ -273,3 +273,77 @@ exports.PostCreate = function(request, response){
     }
 };
 
+// Admin - Edit Post
+
+exports.PostEdit = function(request, response){
+
+    Authenticate(request, response);
+    var id = request.params.id;
+    
+    Model.PostModel.findOne({ _id: id }, function(error, result){
+	    	
+	response.render('admin/PostEdit', { 
+	    title: 'Edit Post',
+	    layout: defaultLayout,  
+	    userInfo: {
+		name: request.session.username
+	    },
+	    post: {
+		id: result._id,
+		title: result.title,
+		slug: result.slug,
+		content: result.content
+	    }		
+	});
+	
+    });
+    
+};
+
+
+// Admin - Update Post
+
+exports.PostUpdate = function(request, response){
+
+    Authenticate(request, response);
+    
+    var errors = false;
+    
+    var title = request.body.title;
+    var slug = request.body.slug;
+    var content = request.body.content;
+    
+    if(Validation.IsNullOrEmpty([title, slug, content]))
+	errors = true;
+
+    if(errors)
+	response.redirect('/admin/posts?error=true');    
+    else {
+	
+	Model.PostModel.update(
+	    { _id: request.body.id }, 
+	    {
+		title: title,
+		slug: slug,
+		content: content
+	    },
+	    { multi: true }, 
+	    function(error, result){
+		response.redirect('/admin/posts');
+	    }
+	);	
+    }
+};
+
+// Admin - Delete Post
+
+exports.PostDelete = function(request, response){
+
+    Authenticate(request, response);
+
+    Model.PostModel.remove({ _id: request.params.id }, function(error, result) {
+	if (!error) {
+	    response.redirect('/admin/posts');
+	}
+    });
+};
