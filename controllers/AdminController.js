@@ -347,3 +347,27 @@ exports.PostDelete = function(request, response){
 	}
     });
 };
+
+// Admin - View All SigUps
+
+exports.SignUpsViewAll = function(request, response){
+
+    Authenticate(request, response);
+
+    var signups;
+
+    Model.SignUpModel.find(function(error, result){
+	signups = result;
+	    	
+	response.render('admin/SignUpsViewAll', { 
+	    title: 'View All Sign Ups',
+	    layout: defaultLayout,  
+	    userInfo: {
+		name: request.session.username
+	    },
+	    signups: signups		
+	});
+	
+    });
+
+};

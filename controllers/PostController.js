@@ -3,7 +3,7 @@ var Validation = require('../helpers/Validation');
 var Model = require('../models/Models');
 var bcrypt = require('bcrypt-nodejs');
 
-// Admin - Home
+// Posts - Process
 
 exports.Process = function(request, response, next){
 

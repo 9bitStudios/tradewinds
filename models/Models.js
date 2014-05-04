@@ -1,7 +1,6 @@
 var config = require('../config');
 var mongoose = require('mongoose');
-var configEnvironment = config.environment;
-var connectionString = 'mongodb://' + config[configEnvironment].database.credentials + config[configEnvironment].database.host + ':' + config[configEnvironment].database.port  + '/'+ config[configEnvironment].database.name;
+var connectionString = 'mongodb://' + config[config.environment].database.credentials + config[config.environment].database.host + ':' + config[config.environment].database.port  + '/'+ config[config.environment].database.name;
 var db = mongoose.connection;
 
 db.on('error', function(){
@@ -30,13 +29,22 @@ var Post = new mongoose.Schema({
     content: String
 });
 
+var SignUp = new mongoose.Schema({
+    name: String,
+    password: String,
+    email: String,
+    date: Date
+});
+
 //Models
 var UserModel = mongoose.model('User', User );
 var PostModel = mongoose.model('Post', Post );
+var SignUpModel = mongoose.model('SignUp', SignUp );
 
 module.exports = {
     UserModel: UserModel,
-    PostModel: PostModel
+    PostModel: PostModel,
+    SignUpModel: SignUpModel 
 }
 
 

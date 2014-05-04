@@ -3,6 +3,7 @@ var LoginController = require('./controllers/LoginController');
 var AdminController = require('./controllers/AdminController');
 var PostController = require('./controllers/PostController');
 var InstallController = require('./controllers/InstallController');
+var ProfileController = require('./controllers/ProfileController');
 
 // Routes
 module.exports = function(app){
@@ -35,12 +36,23 @@ module.exports = function(app){
     app.post('/admin/post/edit', AdminController.PostUpdate);
     app.get('/admin/post/delete/:id', AdminController.PostDelete);
     
+    app.get('/admin/signups', AdminController.SignUpsViewAll); 
+    
     // Installation Routes
     
     app.get('/install', InstallController.Index);
     app.post('/install', InstallController.Install);      
     app.get('/install/success', InstallController.InstallSuccess);
-       
+
+    // Profile Routes
+
+    app.get('/signup', ProfileController.SignUp);    
+    app.post('/signup', ProfileController.SignUpAdd);
+    app.get('/signup/checkemail', ProfileController.CheckEmail);
+    app.get('/signup/confirm/:id', ProfileController.SignUpConfirm); 
+    app.get('/signup/thanks', ProfileController.SignUpThanks);
+    app.get('/signup/invalid', ProfileController.SignUpInvalid); 
+    
     app.get('/*', PostController.Process);
        
     // Errors   

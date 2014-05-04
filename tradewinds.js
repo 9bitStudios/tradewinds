@@ -5,20 +5,19 @@ var http = require('http');
 var path = require('path');
 var handlebars  = require('express3-handlebars');
 var config = require('./config');
-var configEnvironment = config.environment;
 var app = express();
 
-app.set('port', config[configEnvironment].application.port);
+app.set('port', config[config.environment].application.port);
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', handlebars({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.bodyParser());
-app.use(express.cookieParser(config[configEnvironment].application.cookieKey));
+app.use(express.cookieParser(config[config.environment].application.cookieKey));
 app.use(express.session({
   store: new MongoStore({
-    url: 'mongodb://'+ config[configEnvironment].database.host+'/'+ config[configEnvironment].database.name
+    url: 'mongodb://'+ config[config.environment].database.host+'/'+ config[config.environment].database.name
   })
 }));
 app.use(express.urlencoded());
