@@ -84,25 +84,30 @@ exports.SignUpConfirm = function(request, response){
 	}
 	else {
 	    
-	    // remove sign up
-	    result.remove();
-	    
-	    var u = new Model.UserModel({ 
-		name: result.name,
-		password: result.password,
-		email: result.email,
-		avatar: 'placeholder.png',
-		isDefault: false
-	    });
+	    if(result) {
+		// remove sign up
+		result.remove();
 
-	    u.save(function(error){
-		if(error) {
-		    response.redirect('/signup/invalid');
-		}
-		else {
-		    response.redirect('/signup/thanks');
-		}
-	    });		    
+		var u = new Model.UserModel({ 
+		    name: result.name,
+		    password: result.password,
+		    email: result.email,
+		    avatar: 'placeholder.png',
+		    isDefault: false
+		});
+
+		u.save(function(error){
+		    if(error) {
+			response.redirect('/signup/invalid');
+		    }
+		    else {
+			response.redirect('/signup/thanks');
+		    }
+		});	
+	    }
+	    else {
+		response.redirect('/signup/invalid');
+	    }
 		
 	}
 	
