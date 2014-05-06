@@ -6,7 +6,7 @@ var defaultLayout = 'admin';
 
 function Authenticate(request, response) {
     if(!request.session.username) {
-	response.redirect('/login');
+	response.redirect('/admin/login');
     }
 }
 
@@ -24,6 +24,46 @@ exports.Index = function(request, response){
 	}
     });
 };
+
+exports.Login = function(request, response){
+
+    if(request.session.user)
+	response.redirect('/admin');
+    
+    response.render('admin/Login', { 
+	title: 'Login',
+    });
+}
+
+exports.Logout = function(request, response){
+    request.session.destroy();
+    response.redirect('/admin/login')
+}
+
+exports.AuthenticateAdmin = function(request, response){
+
+    Model.UserModel.findOne({ 'name': request.body.username, isDefault: true }, 'name password', function(error, user){
+	if (error){
+	    response.redirect('/admin/login?error=true');
+	}
+	
+	// user found
+	if(user) {
+	    // compare passwords
+	    if(bcrypt.compareSync(request.body.password, user.password)) {
+		request.session.username = user.name;
+		response.redirect('/admin');
+	    }
+	    else
+		response.redirect('/admin/login?error=true');
+	}
+	else {
+	    response.redirect('/admin/login?error=true');
+	}
+	
+    });
+    
+}
 
 // Admin - View All Users
 
