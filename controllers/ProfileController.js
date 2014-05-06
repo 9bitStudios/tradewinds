@@ -3,7 +3,64 @@ var Validation = require('../helpers/Validation');
 var Model = require('../models/Models');
 var bcrypt = require('bcrypt-nodejs');
 
+function Authenticate(request, response) {
+    if(!request.session.username) {
+	response.redirect('/profile/login');
+    }
+}
+
 // Profile
+
+exports.Login = function(request, response){
+
+    response.render('profile/Login', { 
+	title: 'Login'
+    });
+
+};
+
+exports.Logout = function(request, response){
+    request.session.destroy();
+    response.redirect('/profile/login');
+}
+
+exports.AuthenticateProfile = function(request, response){
+
+    Model.UserModel.findOne({ 'name': request.body.username, isDefault: false }, 'name password', function(error, user){
+	if (error){
+	    response.redirect('/profile/login?error=true');
+	}
+	
+	// user found
+	if(user) {
+	    // compare passwords
+	    if(bcrypt.compareSync(request.body.password, user.password)) {
+		request.session.username = user.name;
+		response.redirect('/profile/dashboard');
+	    }
+	    else
+		response.redirect('/profile/login?error=true');
+	}
+	else {
+	    response.redirect('/profile/login?error=true');
+	}
+	
+    });
+    
+}
+
+exports.Dashboard = function(request, response){
+
+    Authenticate(request, response);
+
+    response.render('profile/Dashboard', { 
+	title: 'Dashboard',
+	userInfo: {
+	    name: request.session.username
+	}
+    });
+
+};
 
 exports.SignUp = function(request, response){
 
