@@ -1,3 +1,5 @@
+var config = require('../config');
+var emailServer = require('emailjs');
 var Helpers = require('../helpers/Helpers');
 var Validation = require('../helpers/Validation');
 var Model = require('../models/Models');
@@ -111,12 +113,31 @@ exports.SignUpAdd = function(request, response){
 		    date: Date.now()
 		});
 
-		s.save(function(error){
+		s.save(function(error, result){
 
 		    if(error)
 			response.redirect('/signup?error=true');
-		    else
-			response.redirect('/signup/checkemail');
+		    else {
+			
+			emailServer.server.connect({
+			    user: config[config.environment].smtp.username,
+			    password: config[config.environment].smtp.password,
+			    host: config[config.environment].smtp.host,
+			    port: config[config.environment].smtp.port,
+			    ssl: config[config.environment].smtp.ssl
+			}).send({
+			    text:    'Please confirm your sign up by going to this link: http:localhost:1337/signup/confirm/'+result._id, 
+			    from:    'Tradewinds <no-reply@tradewinds.com>', 
+			    to:       name + ' <'+ email +'>',
+			    subject: 'Please confirm your sign up'
+			}, function(error, message) { 
+			    if(error) 
+				response.redirect('/signup?error=true');
+			    else
+				response.redirect('/signup/checkemail');
+			});			
+			
+		    }
 		});		
 	    }
 
