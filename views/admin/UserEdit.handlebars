@@ -5,6 +5,9 @@
 	<label>Name</label> <input name="name" type="text" value="{{ user.name }}" />
 	<label>E-Mail</label> <input name="email" type="text" value="{{ user.email }}" />
 	<label>Avatar</label> <input name="avatar" type="text" value="{{ user.avatar }}" />
+	{{#unless user.isDefault }}
+	    <label>Admin?</label> <input name="admin" type="checkbox" value="admin"  {{#if user.isAdmin}}checked{{/if}} />
+	{{/unless}}
 	<input name="id" type="hidden" value="{{ user.id }}" />
 	<input type="submit" value="Submit" />
     </form>

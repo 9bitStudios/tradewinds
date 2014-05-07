@@ -13,6 +13,9 @@ function Authenticate(request, response) {
 
 exports.Login = function(request, response){
 
+    if(request.session.username)
+	response.redirect('/profile/dashboard');
+    
     response.render('profile/Login', { 
 	title: 'Login'
     });
@@ -150,6 +153,7 @@ exports.SignUpConfirm = function(request, response){
 		    password: result.password,
 		    email: result.email,
 		    avatar: 'placeholder.png',
+		    isAdmin: false,
 		    isDefault: false
 		});
 

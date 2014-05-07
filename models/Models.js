@@ -20,6 +20,7 @@ var User = new mongoose.Schema({
     password: String,
     email: String,
     avatar: String,
+    isAdmin: Boolean, 
     isDefault: Boolean
 });
 

@@ -27,7 +27,7 @@ exports.Index = function(request, response){
 
 exports.Login = function(request, response){
 
-    if(request.session.user)
+    if(request.session.user && request.session.admin)
 	response.redirect('/admin');
     
     response.render('admin/Login', { 
@@ -42,7 +42,7 @@ exports.Logout = function(request, response){
 
 exports.AuthenticateAdmin = function(request, response){
 
-    Model.UserModel.findOne({ 'name': request.body.username, isDefault: true }, 'name password', function(error, user){
+    Model.UserModel.findOne({ 'name': request.body.username, isAdmin: true }, 'name password', function(error, user){
 	if (error){
 	    response.redirect('/admin/login?error=true');
 	}
@@ -146,6 +146,7 @@ exports.UserCreate = function(request, response){
 		    password: passwordHash,
 		    email: email,
 		    avatar: avatar,
+		    isAdmin: false,
 		    isDefault: false
 		});
 
@@ -183,7 +184,9 @@ exports.UserEdit = function(request, response){
 		id: result._id,
 		name: result.name,
 		email: result.email,
-		avatar: result.avatar
+		avatar: result.avatar,
+		isAdmin: result.isAdmin,		
+		isDefault: result.isDefault
 	    }		
 	});
 	
@@ -198,16 +201,21 @@ exports.UserUpdate = function(request, response){
     Authenticate(request, response);
     
     var errors = false;
+    var isAdmin = false;
     
     var name = request.body.name;
     var email = request.body.email;
     var avatar = request.body.avatar;
+    var admin = request.body.admin;
     
     if(Validation.IsNullOrEmpty([name, email, avatar]))
 	errors = true;
     if(!Validation.ValidateEmail(email))
 	errors = true;
-
+    
+    if(admin === 'admin')
+	isAdmin = true;
+    
     if(errors)
 	response.redirect('/admin/users?error=true');    
     else {
@@ -217,7 +225,8 @@ exports.UserUpdate = function(request, response){
 	    {
 		name: name,
 		email: email,
-		avatar: avatar
+		avatar: avatar,
+		isAdmin: isAdmin
 	    },
 	    { multi: true }, 
 	    function(error, result){

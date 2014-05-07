@@ -51,6 +51,7 @@ exports.Install = function(request, response){
 	    password: passwordHash,
 	    email: request.body.email,
 	    avatar: 'placeholder.png',
+	    isAdmin: true,
 	    isDefault: true
 	});
 
