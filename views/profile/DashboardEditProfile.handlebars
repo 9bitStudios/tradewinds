@@ -1,0 +1,12 @@
+<div class="container">
+    <h1>{{ title }}</h1>
+
+    <form method="post" action="/profile/dashboard/edit" enctype="multipart/form-data">
+	<label>Avatar</label> <input name="avatar" type="text" value="{{ user.avatar }}" />
+	<input name="profileImage" type="file" />
+	<input name="id" type="hidden" value="{{ user.id }}" />
+	<input type="submit" value="Submit" />
+    </form>
+</div>
+
+

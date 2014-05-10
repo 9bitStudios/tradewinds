@@ -45,6 +45,9 @@ module.exports = function(app){
     app.post('/profile/login', ProfileController.AuthenticateProfile);
     app.get('/profile/logout', ProfileController.Logout);
     app.get('/profile/dashboard', ProfileController.Dashboard);
+    app.get('/profile/dashboard/edit', ProfileController.ProfileEdit);
+    app.post('/profile/dashboard/edit', ProfileController.ProfileUpdate);
+    
     app.get('/signup', ProfileController.SignUp);    
     app.post('/signup', ProfileController.SignUpAdd);
     app.get('/signup/checkemail', ProfileController.CheckEmail);

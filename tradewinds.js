@@ -13,7 +13,7 @@ app.engine('handlebars', handlebars({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 app.use(express.logger('dev'));
 app.use(express.json());
-app.use(express.bodyParser());
+app.use(express.bodyParser({ keepExtensions: true, uploadDir: './uploads' }));
 app.use(express.cookieParser(config[config.environment].application.cookieKey));
 app.use(express.session({
   store: new MongoStore({

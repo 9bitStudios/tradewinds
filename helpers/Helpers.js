@@ -10,3 +10,8 @@ exports.RandomString = function(strLength) {
 
     return text;		
 }
+
+exports.GetFileExtension = function(filename) {
+    var i = filename.lastIndexOf('.');
+    return (i < 0) ? '' : filename.substr(i);
+}

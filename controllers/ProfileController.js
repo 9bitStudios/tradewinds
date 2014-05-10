@@ -4,6 +4,7 @@ var Helpers = require('../helpers/Helpers');
 var Validation = require('../helpers/Validation');
 var Model = require('../models/Models');
 var bcrypt = require('bcrypt-nodejs');
+var fs = require('fs');
 
 function Authenticate(request, response) {
     if(!request.session.username) {
@@ -27,7 +28,7 @@ exports.Login = function(request, response){
 exports.Logout = function(request, response){
     request.session.destroy();
     response.redirect('/profile/login');
-}
+};
 
 exports.AuthenticateProfile = function(request, response){
 
@@ -52,7 +53,7 @@ exports.AuthenticateProfile = function(request, response){
 	
     });
     
-}
+};
 
 exports.Dashboard = function(request, response){
 
@@ -65,6 +66,83 @@ exports.Dashboard = function(request, response){
 	}
     });
 
+};
+
+exports.ProfileEdit = function(request, response){
+
+    Authenticate(request, response);
+
+    var name = request.session.username;
+
+    // get guer info based on current session
+    Model.UserModel.findOne({ name: name }, function(error, result){
+	if(error) {
+	    response.redirect('/profile/dashboard?error=true');
+	}
+	else {
+	    
+	    response.render('profile/DashboardEditProfile', { 
+		title: 'Edit Your Profile',
+		user: {
+		    id: result._id,
+		    avatar: result.avatar
+		}		
+	    });	    
+	    
+	}
+    });
+
+};
+
+exports.ProfileUpdate = function(request, response, next){
+
+    Authenticate(request, response);
+    
+    var errors = false;
+    var profileID = request.body.id;
+    var avatar = request.body.avatar;
+    
+    if(Validation.IsNullOrEmpty(avatar))
+	errors = true;
+    
+    if(errors)
+	response.redirect('/profile/dashboard?error=true');    
+    else {
+	
+	var profileImage = request.files.profileImage;
+	var tempPath = profileImage.path;
+	var newImage = profileID + Helpers.GetFileExtension(profileImage.name);
+	profileImage.name = newImage;
+	var targetPath = './public/images/' + profileImage.name;
+	
+	fs.rename(tempPath, targetPath, function(error) {
+	
+	    if (error) { 
+		response.redirect('/profile/dashboard?error=true');  
+	    }
+
+	    // Delete the temporary file
+	    fs.unlink(tempPath, function() {
+
+		if (error) { 
+		    response.redirect('/profile/dashboard?error=true');    
+		}
+		else {
+		    
+		    Model.UserModel.update(
+			{ _id: request.body.id }, 
+			{
+			    avatar: avatar,
+			},
+			{ multi: true }, 
+			function(error, result){
+			    response.redirect('/profile/dashboard');
+			}
+		    );
+		}
+	    });
+	});	
+    }
 };
 
 exports.SignUp = function(request, response){
@@ -126,9 +204,9 @@ exports.SignUpAdd = function(request, response){
 			    port: config[config.environment].smtp.port,
 			    ssl: config[config.environment].smtp.ssl
 			}).send({
-			    text:    'Please confirm your sign up by going to this link: http:localhost:1337/signup/confirm/'+result._id, 
-			    from:    'Tradewinds <no-reply@tradewinds.com>', 
-			    to:       name + ' <'+ email +'>',
+			    text: 'Please confirm your sign up by going to this link: http:localhost:1337/signup/confirm/'+result._id, 
+			    from: 'Tradewinds <no-reply@tradewinds.com>', 
+			    to: name + ' <'+ email +'>',
 			    subject: 'Please confirm your sign up'
 			}, function(error, message) { 
 			    if(error) 
