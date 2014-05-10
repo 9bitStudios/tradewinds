@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt-nodejs');
 var defaultLayout = 'admin';
 
 function Authenticate(request, response) {
-    if(!request.session.username || !request.session.admin) {
+    if(!request.session.userid || !request.session.username || !request.session.admin) {
 	response.redirect('/admin/login');
     }
 }
@@ -51,6 +51,7 @@ exports.AuthenticateAdmin = function(request, response){
 	if(user) {
 	    // compare passwords
 	    if(bcrypt.compareSync(request.body.password, user.password)) {
+		request.session.userid = user._id;
 		request.session.username = user.name;
 		request.session.admin = 1;
 		response.redirect('/admin');

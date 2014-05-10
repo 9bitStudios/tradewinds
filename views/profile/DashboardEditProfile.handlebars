@@ -2,7 +2,10 @@
     <h1>{{ title }}</h1>
 
     <form method="post" action="/profile/dashboard/edit" enctype="multipart/form-data">
-	<label>Avatar</label> <input name="avatar" type="text" value="{{ user.avatar }}" />
+	<img src="/images/{{ user.avatar }}" alt="" style="width:70px; height:70px;" />
+
+	<label>Change Image</label> 
+
 	<input name="profileImage" type="file" />
 	<input name="id" type="hidden" value="{{ user.id }}" />
 	<input type="submit" value="Submit" />

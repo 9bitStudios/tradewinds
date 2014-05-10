@@ -7,7 +7,7 @@ var bcrypt = require('bcrypt-nodejs');
 var fs = require('fs');
 
 function Authenticate(request, response) {
-    if(!request.session.username) {
+    if(!request.session.userid || !request.session.username) {
 	response.redirect('/profile/login');
     }
 }
@@ -41,6 +41,7 @@ exports.AuthenticateProfile = function(request, response){
 	if(user) {
 	    // compare passwords
 	    if(bcrypt.compareSync(request.body.password, user.password)) {
+		request.session.userid = user._id;
 		request.session.username = user.name;
 		response.redirect('/profile/dashboard');
 	    }
@@ -71,35 +72,40 @@ exports.Dashboard = function(request, response){
 exports.ProfileEdit = function(request, response){
 
     Authenticate(request, response);
-
+    
+    var profileID = request.session.userid;
     var name = request.session.username;
 
     // get guer info based on current session
-    Model.UserModel.findOne({ name: name }, function(error, result){
+    Model.UserModel.findOne({ _id: profileID, name: name }, function(error, result){
 	if(error) {
 	    response.redirect('/profile/dashboard?error=true');
 	}
 	else {
 	    
-	    response.render('profile/DashboardEditProfile', { 
-		title: 'Edit Your Profile',
-		user: {
-		    id: result._id,
-		    avatar: result.avatar
-		}		
-	    });	    
-	    
+	    if(result) {
+		response.render('profile/DashboardEditProfile', { 
+		    title: 'Edit Your Profile',
+		    user: {
+			id: profileID,
+			avatar: result.avatar
+		    }		
+		});	
+	    }
+	    else {
+		response.redirect('/profile/dashboard?error=true');
+	    }
 	}
     });
 
 };
 
-exports.ProfileUpdate = function(request, response, next){
+exports.ProfileUpdate = function(request, response){
 
     Authenticate(request, response);
     
     var errors = false;
-    var profileID = request.body.id;
+    var profileID = request.session.id;
     var avatar = request.body.avatar;
     
     if(Validation.IsNullOrEmpty(avatar))
@@ -109,39 +115,45 @@ exports.ProfileUpdate = function(request, response, next){
 	response.redirect('/profile/dashboard?error=true');    
     else {
 	
-	var profileImage = request.files.profileImage;
-	var tempPath = profileImage.path;
-	var newImage = profileID + Helpers.GetFileExtension(profileImage.name);
-	profileImage.name = newImage;
-	var targetPath = './public/images/' + profileImage.name;
-	
-	fs.rename(tempPath, targetPath, function(error) {
-	
-	    if (error) { 
-		response.redirect('/profile/dashboard?error=true');  
-	    }
+	if(request.files.profileImage.name === '') {
+	    response.redirect('/profile/dashboard?updated=false');
+	}
+	else {
+	    var profileImage = request.files.profileImage;
+	    var tempPath = profileImage.path;
+	    var newImage = profileID + Helpers.GetFileExtension(profileImage.name);
+	    profileImage.name = newImage;
+	    var targetPath = './public/images/' + profileImage.name;
 
-	    // Delete the temporary file
-	    fs.unlink(tempPath, function() {
+	    fs.rename(tempPath, targetPath, function(error) {
 
 		if (error) { 
-		    response.redirect('/profile/dashboard?error=true');    
+		    response.redirect('/profile/dashboard?error=true');  
 		}
-		else {
-		    
-		    Model.UserModel.update(
-			{ _id: request.body.id }, 
-			{
-			    avatar: avatar,
-			},
-			{ multi: true }, 
-			function(error, result){
-			    response.redirect('/profile/dashboard');
-			}
-		    );
-		}
+
+		// Delete the temporary file
+		fs.unlink(tempPath, function() {
+
+		    if (error) { 
+			response.redirect('/profile/dashboard?error=true');    
+		    }
+		    else {
+
+			Model.UserModel.update(
+			    { _id: request.body.id }, 
+			    {
+				avatar: newImage,
+			    },
+			    { multi: true }, 
+			    function(error, result){
+				response.redirect('/profile/dashboard');
+			    }
+			);
+		    }
+		});
 	    });
-	});	
+	}
+	    
     }
 };
 
