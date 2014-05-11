@@ -1,3 +1,19 @@
+exports.SuccessRedirect = function(response, route, message) {
+    
+    if(typeof message !== 'undefined')
+	response.redirect(route + '?success=true&message=' + message)
+    else
+	response.redirect(route + '?success=true')
+}
+
+exports.ErrorRedirect = function(response, route, message) {
+    
+    if(typeof message !== 'undefined')
+	response.redirect(route + '?error=true&message=' + message)
+    else
+	response.redirect(route + '?error=true')
+}
+
 exports.IsNullOrEmpty = function(check){
     
     var errors = false;

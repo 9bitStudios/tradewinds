@@ -44,7 +44,7 @@ exports.AuthenticateAdmin = function(request, response){
 
     Model.UserModel.findOne({ 'name': request.body.username, isAdmin: true }, 'name password', function(error, user){
 	if (error){
-	    response.redirect('/admin/login?error=true');
+	    Validation.ErrorRedirect(response, '/admin/login', 'loginFailed');
 	}
 	
 	// user found
@@ -56,11 +56,12 @@ exports.AuthenticateAdmin = function(request, response){
 		request.session.admin = 1;
 		response.redirect('/admin');
 	    }
-	    else
-		response.redirect('/admin/login?error=true');
+	    else {
+		Validation.ErrorRedirect(response, '/admin/login', 'loginFailed');
+	    }
 	}
 	else {
-	    response.redirect('/admin/login?error=true');
+	    Validation.ErrorRedirect(response, '/admin/login', 'loginFailed');
 	}
 	
     });
@@ -128,14 +129,14 @@ exports.UserCreate = function(request, response){
 	errors = true;
     
     if(errors)
-	response.redirect('/admin/users?error=true');    
+	Validation.ErrorRedirect(response, '/admin/users', 'userAddError');  
     else {
 	
 	Model.UserModel.findOne({ email: email }, function(error, result){
 
 	    // user email already exists
 	    if(result){
-		response.redirect('/admin/users?error=true&message=exists');
+		Validation.ErrorRedirect(response, '/admin/users', 'userExists');  
 	    }
 	    else {
 		
@@ -154,9 +155,9 @@ exports.UserCreate = function(request, response){
 		u.save(function(error){
 
 		    if(error)
-			response.redirect('/admin/users?error=true');
+			Validation.ErrorRedirect(response, '/admin/users', 'userAddError');
 		    else
-			response.redirect('/admin/users?success=true');
+			Validation.SuccessRedirect(response, '/admin/users', 'userAdded');  
 		});		
 		
 	    }
@@ -218,7 +219,7 @@ exports.UserUpdate = function(request, response){
 	isAdmin = true;
     
     if(errors)
-	response.redirect('/admin/users?error=true');    
+	Validation.ErrorRedirect(response, '/admin/users', 'userUpdateError');      
     else {
 	
 	Model.UserModel.update(
@@ -231,7 +232,11 @@ exports.UserUpdate = function(request, response){
 	    },
 	    { multi: true }, 
 	    function(error, result){
-		response.redirect('/admin/users');
+		if(error)
+		    Validation.ErrorRedirect(response, '/admin/users', 'userUpdateError');
+		else {
+		    Validation.SuccessRedirect(response, '/admin/users', 'userUpdated');
+		}
 	    }
 	);	
     }
@@ -244,9 +249,13 @@ exports.UserDelete = function(request, response){
     Authenticate(request, response);
 
     Model.UserModel.remove({ _id: request.params.id, isDefault: false }, function(error, result) {
-	if (!error) {
-	    response.redirect('/admin/users');
+	if (error) {
+	    Validation.ErrorRedirect(response, '/admin/users', 'userDeleteError');
 	}
+	else {
+	    Validation.SuccessRedirect(response, '/admin/users', 'userDeleted');
+	}
+	    
     });
 };
 
@@ -305,7 +314,7 @@ exports.PostCreate = function(request, response){
 	errors = true;
     
     if(errors)
-	response.redirect('/admin/posts?error=true');    
+	Validation.ErrorRedirect(response, '/admin/posts', 'postCreateError');   
     else {
 	
 	var p = new Model.PostModel({ 
@@ -317,9 +326,9 @@ exports.PostCreate = function(request, response){
 	p.save(function(error){
 
 	    if(error)
-		response.redirect('/admin/posts?error=true');
+		Validation.ErrorRedirect(response, '/admin/posts', 'postCreateError');
 	    else
-		response.redirect('/admin/posts?success=true');
+		Validation.SuccessRedirect(response, '/admin/posts', 'postCreated');
 	});	
     }
 };
@@ -332,20 +341,24 @@ exports.PostEdit = function(request, response){
     var id = request.params.id;
     
     Model.PostModel.findOne({ _id: id }, function(error, result){
-	    	
-	response.render('admin/PostEdit', { 
-	    title: 'Edit Post',
-	    layout: defaultLayout,  
-	    userInfo: {
-		name: request.session.username
-	    },
-	    post: {
-		id: result._id,
-		title: result.title,
-		slug: result.slug,
-		content: result.content
-	    }		
-	});
+	if(error) {
+	    Validation.ErrorRedirect(response, '/admin/posts', 'postNotFound'); 
+	}
+	else {
+	    response.render('admin/PostEdit', { 
+		title: 'Edit Post',
+		layout: defaultLayout,  
+		userInfo: {
+		    name: request.session.username
+		},
+		post: {
+		    id: result._id,
+		    title: result.title,
+		    slug: result.slug,
+		    content: result.content
+		}		
+	    });
+	}
 	
     });
     
@@ -368,7 +381,7 @@ exports.PostUpdate = function(request, response){
 	errors = true;
 
     if(errors)
-	response.redirect('/admin/posts?error=true');    
+	Validation.ErrorRedirect(response, '/admin/posts', 'postUpdateError');   
     else {
 	
 	Model.PostModel.update(
@@ -380,7 +393,13 @@ exports.PostUpdate = function(request, response){
 	    },
 	    { multi: true }, 
 	    function(error, result){
-		response.redirect('/admin/posts');
+		if(error) {
+		    Validation.ErrorRedirect(response, '/admin/posts', 'postUpdateError')
+		}
+		else{
+		    Validation.SuccessRedirect(response, '/admin/posts', 'postUpdated')
+		}
+		    
 	    }
 	);	
     }
@@ -393,8 +412,11 @@ exports.PostDelete = function(request, response){
     Authenticate(request, response);
 
     Model.PostModel.remove({ _id: request.params.id }, function(error, result) {
-	if (!error) {
-	    response.redirect('/admin/posts');
+	if(error) {
+	    Validation.ErrorRedirect(response, '/admin/posts', 'postDeleteError')
+	}
+	else{
+	    Validation.SuccessRedirect(response, '/admin/posts', 'postDeleted')
 	}
     });
 };

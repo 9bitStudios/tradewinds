@@ -34,7 +34,7 @@ exports.AuthenticateProfile = function(request, response){
 
     Model.UserModel.findOne({ 'name': request.body.username, isDefault: false }, 'name password', function(error, user){
 	if (error){
-	    response.redirect('/profile/login?error=true');
+	    Validation.ErrorRedirect(response, '/profile/login', 'loginFailed');
 	}
 	
 	// user found
@@ -46,10 +46,10 @@ exports.AuthenticateProfile = function(request, response){
 		response.redirect('/profile/dashboard');
 	    }
 	    else
-		response.redirect('/profile/login?error=true');
+		Validation.ErrorRedirect(response, '/profile/login', 'loginFailed');
 	}
 	else {
-	    response.redirect('/profile/login?error=true');
+	    Validation.ErrorRedirect(response, '/profile/login', 'loginFailed');
 	}
 	
     });
@@ -76,10 +76,10 @@ exports.ProfileEdit = function(request, response){
     var profileID = request.session.userid;
     var name = request.session.username;
 
-    // get guer info based on current session
+    // get user info based on current session
     Model.UserModel.findOne({ _id: profileID, name: name }, function(error, result){
 	if(error) {
-	    response.redirect('/profile/dashboard?error=true');
+	    Validation.ErrorRedirect(response, '/profile/dashboard', 'profileError');
 	}
 	else {
 	    
@@ -93,7 +93,7 @@ exports.ProfileEdit = function(request, response){
 		});	
 	    }
 	    else {
-		response.redirect('/profile/dashboard?error=true');
+		Validation.ErrorRedirect(response, '/profile/dashboard', 'profileError');
 	    }
 	}
     });
@@ -112,11 +112,11 @@ exports.ProfileUpdate = function(request, response){
 	errors = true;
     
     if(errors)
-	response.redirect('/profile/dashboard?error=true');    
+	Validation.ErrorRedirect(response, '/profile/dashboard', 'profileUpdateError');  
     else {
 	
 	if(request.files.profileImage.name === '') {
-	    response.redirect('/profile/dashboard?updated=false');
+	    response.redirect('/profile/dashboard');
 	}
 	else {
 	    var profileImage = request.files.profileImage;
@@ -128,14 +128,14 @@ exports.ProfileUpdate = function(request, response){
 	    fs.rename(tempPath, targetPath, function(error) {
 
 		if (error) { 
-		    response.redirect('/profile/dashboard?error=true');  
+		    Validation.ErrorRedirect(response, '/profile/dashboard', 'profileUpdateError');  
 		}
 
 		// Delete the temporary file
 		fs.unlink(tempPath, function() {
 
 		    if (error) { 
-			response.redirect('/profile/dashboard?error=true');    
+			Validation.ErrorRedirect(response, '/profile/dashboard', 'profileUpdateError');   
 		    }
 		    else {
 
@@ -182,14 +182,14 @@ exports.SignUpAdd = function(request, response){
 	errors = true;
     
     if(errors)
-	response.redirect('/signup?error=true');    
+	Validation.ErrorRedirect(response, '/signup', 'profileAddError');   
     else {
 	
 	Model.UserModel.findOne({ email: email }, function(error, result){
 
 	    // user email already exists
 	    if(result){
-		response.redirect('/signup?error=true&message=exists');
+		Validation.ErrorRedirect(response, '/signup', 'profileExists'); 
 	    }
 	    else {
 		
@@ -206,7 +206,7 @@ exports.SignUpAdd = function(request, response){
 		s.save(function(error, result){
 
 		    if(error)
-			response.redirect('/signup?error=true');
+			Validation.ErrorRedirect(response, '/signup', 'profileAddError');
 		    else {
 			
 			emailServer.server.connect({
@@ -222,7 +222,7 @@ exports.SignUpAdd = function(request, response){
 			    subject: 'Please confirm your sign up'
 			}, function(error, message) { 
 			    if(error) 
-				response.redirect('/signup?error=true');
+				Validation.ErrorRedirect(response, '/signup', 'signupEmailSendError');
 			    else
 				response.redirect('/signup/checkemail');
 			});			

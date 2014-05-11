@@ -11,14 +11,19 @@ exports.Process = function(request, response, next){
     
     Model.PostModel.findOne({ slug: slug }, function(error, result){
 	
-	if(result) {
-	    response.render('home/Post', { 
-		title: result.title,
-		content: result.content 		
-	    });
+	if(error) {
+	    next();
 	}
 	else {
-	    next();
+	    if(result) {
+		response.render('home/Post', { 
+		    title: result.title,
+		    content: result.content 		
+		});
+	    }
+	    else {
+		next();
+	    }
 	}
     });
     

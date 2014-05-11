@@ -40,7 +40,7 @@ exports.Install = function(request, response){
 	errors = true;
     
     if(errors) {
-	response.redirect('/install?error=true');
+	Validation.ErrorRedirect(response, '/install', 'installError'); 
     }
     else {
 	var salt = bcrypt.genSaltSync(10);
@@ -58,9 +58,9 @@ exports.Install = function(request, response){
 	u.save(function(error){
 
 	    if(error)
-		response.redirect('/install?error=true');
+		Validation.ErrorRedirect(response, '/install', 'installError'); 
 	    else
-		response.redirect('/install?success=true');
+		Validation.ErrorRedirect(response, '/install', 'installSuccess'); 
 	});   
     }
 }
