@@ -119,9 +119,8 @@ exports.UserCreate = function(request, response){
     var email = request.body.email;
     var password = request.body.password;
     var password2 = request.body.password2;
-    var avatar = request.body.avatar;
     
-    if(Validation.IsNullOrEmpty([name, email, password, password2, avatar]))
+    if(Validation.IsNullOrEmpty([name, email, password, password2]))
 	errors = true;
     if(!Validation.Equals(password, password2))
 	errors = true;    
@@ -147,7 +146,7 @@ exports.UserCreate = function(request, response){
 		    name: name,
 		    password: passwordHash,
 		    email: email,
-		    avatar: avatar,
+		    avatar: 'placeholder.png',
 		    isAdmin: false,
 		    isDefault: false
 		});
