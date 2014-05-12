@@ -1,5 +1,5 @@
-var Helpers = require('../helpers/Helpers');
-var Validation = require('../helpers/Validation');
+var Helpers = require('../utilities/Helpers');
+var Validation = require('../utilities/Validation');
 var Model = require('../models/Models');
 var bcrypt = require('bcrypt-nodejs');
 

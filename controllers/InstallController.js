@@ -1,4 +1,4 @@
-var Validation = require('../helpers/Validation');
+var Validation = require('../utilities/Validation');
 var Model = require('../models/Models');
 var bcrypt = require('bcrypt-nodejs');
 
