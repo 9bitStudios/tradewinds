@@ -16,10 +16,9 @@ exports.Process = function(request, response, next){
 	}
 	else {
 	    if(result) {
-		response.render('home/Post', { 
-		    title: result.title,
-		    content: result.content 		
-		});
+		response.pageInfo.title = result.title;
+		response.pageInfo.content = result.content;
+		response.render('home/Post', response.pageInfo);
 	    }
 	    else {
 		next();

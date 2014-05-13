@@ -19,9 +19,8 @@ exports.Login = function(request, response){
     if(request.session.username)
 	response.redirect('/profile/dashboard');
     
-    response.render('profile/Login', { 
-	title: 'Login'
-    });
+    response.pageInfo.title = 'Login';
+    response.render('profile/Login', response.pageInfo);
 
 };
 
@@ -59,14 +58,10 @@ exports.AuthenticateProfile = function(request, response){
 exports.Dashboard = function(request, response){
 
     Authenticate(request, response);
-
-    response.render('profile/Dashboard', { 
-	title: 'Dashboard',
-	userInfo: {
-	    name: request.session.username
-	}
-    });
-
+    response.pageInfo.title = 'Dashboard';
+    response.pageInfo.userInfo.name = request.session.username;
+    response.render('profile/Dashboard', response.pageInfo);
+    
 };
 
 exports.ProfileEdit = function(request, response){
@@ -83,14 +78,13 @@ exports.ProfileEdit = function(request, response){
 	}
 	else {
 	    
-	    if(result) {
-		response.render('profile/DashboardEditProfile', { 
-		    title: 'Edit Your Profile',
-		    user: {
-			id: profileID,
-			avatar: result.avatar
-		    }		
-		});	
+	    if(result) {		
+		response.pageInfo.title = 'Edit Your Profile';
+		response.pageInfo.user = {
+		    id: profileID,
+		    avatar: result.avatar
+		};		
+		response.render('profile/DashboardEditProfile', response.pageInfo);	
 	    }
 	    else {
 		Validation.ErrorRedirect(response, '/profile/dashboard', 'profileError');
@@ -142,11 +136,16 @@ exports.ProfileUpdate = function(request, response){
 			Model.UserModel.update(
 			    { _id: request.body.id }, 
 			    {
-				avatar: newImage,
+				avatar: newImage
 			    },
 			    { multi: true }, 
 			    function(error, result){
-				response.redirect('/profile/dashboard');
+				if(error) {
+				    Validation.ErrorRedirect(response, '/profile/dashboard', 'profileUpdateError'); 
+				}
+				else {
+				    Validation.SuccessRedirect(response, '/profile/dashboard', 'profileUpdated');
+				}
 			    }
 			);
 		    }
@@ -159,10 +158,9 @@ exports.ProfileUpdate = function(request, response){
 
 exports.SignUp = function(request, response){
 
-    response.render('profile/SignUp', { 
-	title: 'Sign Up'
-    });
-
+    response.pageInfo.title = 'Sign Up';
+    response.render('profile/SignUp', response.pageInfo);
+    
 };
 
 exports.SignUpAdd = function(request, response){
@@ -174,12 +172,15 @@ exports.SignUpAdd = function(request, response){
     var password = request.body.password;
     var password2 = request.body.password2;
     
-    if(Validation.IsNullOrEmpty([name, email, password, password2]))
+    if(Validation.IsNullOrEmpty([name, email, password, password2])) {
 	errors = true;
-    if(!Validation.Equals(password, password2))
+    }
+    if(!Validation.Equals(password, password2)) {
 	errors = true;    
-    if(!Validation.ValidateEmail(email))
+    }
+    if(!Validation.ValidateEmail(email)) {
 	errors = true;
+    }
     
     if(errors)
 	Validation.ErrorRedirect(response, '/signup', 'profileAddError');   
@@ -238,9 +239,8 @@ exports.SignUpAdd = function(request, response){
 
 exports.CheckEmail = function(request, response){
 
-    response.render('profile/SignUpCheckEmail', { 
-	title: 'Thank You'
-    });
+    response.pageInfo.title = 'Thank You';
+    response.render('profile/SignUpCheckEmail', response.pageInfo);
 
 };
 
@@ -289,17 +289,15 @@ exports.SignUpConfirm = function(request, response){
 
 exports.SignUpThanks = function(request, response){
 
-    response.render('profile/SignUpThanks', { 
-	title: 'Thank You'
-    });
+    response.pageInfo.title = 'Thank You';
+    response.render('profile/SignUpThanks', response.pageInfo);
 
 };
 
 exports.SignUpInvalid = function(request, response){
 
-    response.render('profile/SignUpInvalid', { 
-	title: 'Invalid Token'
-    });
+    response.pageInfo.title = 'Invalid Token';
+    response.render('profile/SignUpInvalid', response.pageInfo);
 
 };
 

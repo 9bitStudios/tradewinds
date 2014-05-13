@@ -5,6 +5,7 @@ var http = require('http');
 var path = require('path');
 var handlebars  = require('express3-handlebars');
 var config = require('./config');
+var Middleware = require('./utilities/Middleware');
 var app = express();
 
 app.set('port', config[config.environment].application.port);
@@ -23,6 +24,8 @@ app.use(express.session({
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(Middleware.AppendPageInfo);
+app.use(Middleware.AppendNotifications);
 app.use(app.router);
 
 //Show all errors in development

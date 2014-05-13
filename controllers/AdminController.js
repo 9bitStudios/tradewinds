@@ -15,14 +15,11 @@ function Authenticate(request, response) {
 exports.Index = function(request, response){
 
     Authenticate(request, response);
-
-    response.render('admin/Index', { 
-	title: 'Administration Panel Home', 
-	layout: defaultLayout,
-	userInfo: {
-	    name: request.session.username
-	}
-    });
+    response.pageInfo.title = 'Administration Panel Home';
+    response.pageInfo.layout = defaultLayout;
+    response.pageInfo.userInfo.name = request.session.username;
+    response.render('admin/Index', response.pageInfo);
+    
 };
 
 exports.Login = function(request, response){
@@ -30,9 +27,8 @@ exports.Login = function(request, response){
     if(request.session.user && request.session.admin)
 	response.redirect('/admin');
     
-    response.render('admin/Login', { 
-	title: 'Login',
-    });
+    response.pageInfo.title = 'Login';
+    response.render('admin/Login', response.pageInfo);
 }
 
 exports.Logout = function(request, response){
@@ -73,20 +69,17 @@ exports.AuthenticateAdmin = function(request, response){
 exports.UsersViewAll = function(request, response){
 
     Authenticate(request, response);
-
-    var users;
-
     Model.UserModel.find(function(error, result){
-	users = result;
-	    	
-	response.render('admin/UsersViewAll', { 
-	    title: 'View All Users',
-	    layout: defaultLayout,  
-	    userInfo: {
-		name: request.session.username
-	    },
-	    users: users		
-	});
+	
+	if (error) {
+	    Validation.ErrorRedirect(response, '/admin', 'usersNotFound');
+	}	
+	
+	response.pageInfo.title = 'View All Users';
+	response.pageInfo.layout = defaultLayout;
+	response.pageInfo.userInfo.name = request.session.username;	
+	response.pageInfo.users = result;
+	response.render('admin/UsersViewAll', response.pageInfo);
 	
     });
 
@@ -97,14 +90,11 @@ exports.UsersViewAll = function(request, response){
 exports.UserAdd = function(request, response){
 
     Authenticate(request, response);
-
-    response.render('admin/UserAdd', { 
-	title: 'Add User', 
-	layout: defaultLayout,
-	userInfo: {
-	    name: request.session.username
-	}
-    });
+    response.pageInfo.title = 'Add User';
+    response.pageInfo.layout = defaultLayout;
+    response.pageInfo.userInfo.name = request.session.username;	
+    response.render('admin/UserAdd', response.pageInfo);
+    
 };
 
 // Admin - Create User
@@ -120,12 +110,15 @@ exports.UserCreate = function(request, response){
     var password = request.body.password;
     var password2 = request.body.password2;
     
-    if(Validation.IsNullOrEmpty([name, email, password, password2]))
+    if(Validation.IsNullOrEmpty([name, email, password, password2])) {
 	errors = true;
-    if(!Validation.Equals(password, password2))
+    }
+    if(!Validation.Equals(password, password2)) {
 	errors = true;    
-    if(!Validation.ValidateEmail(email))
+    }
+    if(!Validation.ValidateEmail(email)) {
 	errors = true;
+    }
     
     if(errors)
 	Validation.ErrorRedirect(response, '/admin/users', 'userAddError');  
@@ -174,22 +167,22 @@ exports.UserEdit = function(request, response){
     var id = request.params.id;
     
     Model.UserModel.findOne({ _id: id }, function(error, result){
-	    	
-	response.render('admin/UserEdit', { 
-	    title: 'Edit User',
-	    layout: defaultLayout,  
-	    userInfo: {
-		name: request.session.username
-	    },
-	    user: {
-		id: result._id,
-		name: result.name,
-		email: result.email,
-		avatar: result.avatar,
-		isAdmin: result.isAdmin,		
-		isDefault: result.isDefault
-	    }		
-	});
+
+	if(error) {
+	    Validation.ErrorRedirect(response, '/admin/users', 'userNotFoundError');
+	}
+	response.pageInfo.title = 'Edit User';
+	response.pageInfo.layout = defaultLayout;
+	response.pageInfo.userInfo.name = request.session.username;		
+	response.pageInfo.user = {
+	    id: result._id,
+	    name: result.name,
+	    email: result.email,
+	    avatar: result.avatar,
+	    isAdmin: result.isAdmin,		
+	    isDefault: result.isDefault
+	}
+	response.render('admin/UserEdit', response.pageInfo);
 	
     });
     
@@ -231,8 +224,9 @@ exports.UserUpdate = function(request, response){
 	    },
 	    { multi: true }, 
 	    function(error, result){
-		if(error)
+		if(error) {
 		    Validation.ErrorRedirect(response, '/admin/users', 'userUpdateError');
+		}
 		else {
 		    Validation.SuccessRedirect(response, '/admin/users', 'userUpdated');
 		}
@@ -264,19 +258,17 @@ exports.PostsViewAll = function(request, response){
 
     Authenticate(request, response);
 
-    var posts;
-
     Model.PostModel.find(function(error, result){
-	posts = result;
-	    	
-	response.render('admin/PostsViewAll', { 
-	    title: 'Posts',
-	    layout: defaultLayout,  
-	    userInfo: {
-		name: request.session.username
-	    },
-	    posts: posts		
-	});
+	
+	if (error) {
+	    Validation.ErrorRedirect(response, '/admin', 'postsNotFound');
+	}	
+	
+	response.pageInfo.title = 'Posts';
+	response.pageInfo.layout = defaultLayout;
+	response.pageInfo.userInfo.name = request.session.username;    	
+	response.pageInfo.posts = result;  
+	response.render('admin/PostsViewAll', response.pageInfo);
 	
     });
 
@@ -287,14 +279,11 @@ exports.PostsViewAll = function(request, response){
 exports.PostAdd = function(request, response){
 
     Authenticate(request, response);
-
-    response.render('admin/PostAdd', { 
-	title: 'Add New Post', 
-	layout: defaultLayout,
-	userInfo: {
-	    name: request.session.username
-	}
-    });
+    response.pageInfo.title = 'Add New Post';
+    response.pageInfo.layout = defaultLayout;
+    response.pageInfo.userInfo.name = request.session.username;
+    response.render('admin/PostAdd', response.pageInfo);
+    
 };
 
 // Admin - Create Post
@@ -304,7 +293,6 @@ exports.PostCreate = function(request, response){
     Authenticate(request, response);
     
     var errors = false;
-    
     var title = request.body.title;
     var slug = request.body.slug;
     var content = request.body.content;
@@ -324,10 +312,12 @@ exports.PostCreate = function(request, response){
 
 	p.save(function(error){
 
-	    if(error)
+	    if(error) {
 		Validation.ErrorRedirect(response, '/admin/posts', 'postCreateError');
-	    else
+	    }
+	    else {
 		Validation.SuccessRedirect(response, '/admin/posts', 'postCreated');
+	    }
 	});	
     }
 };
@@ -344,19 +334,17 @@ exports.PostEdit = function(request, response){
 	    Validation.ErrorRedirect(response, '/admin/posts', 'postNotFound'); 
 	}
 	else {
-	    response.render('admin/PostEdit', { 
-		title: 'Edit Post',
-		layout: defaultLayout,  
-		userInfo: {
-		    name: request.session.username
-		},
-		post: {
-		    id: result._id,
-		    title: result.title,
-		    slug: result.slug,
-		    content: result.content
-		}		
-	    });
+	    
+	    response.pageInfo.title = 'Edit Post';
+	    response.pageInfo.layout = defaultLayout;
+	    response.pageInfo.userInfo.name = request.session.username;
+	    response.pageInfo.post = {
+		id: result._id,
+		title: result.title,
+		slug: result.slug,
+		content: result.content
+	    };	
+	    response.render('admin/PostEdit', response.pageInfo);	    
 	}
 	
     });
@@ -426,20 +414,18 @@ exports.SignUpsViewAll = function(request, response){
 
     Authenticate(request, response);
 
-    var signups;
-
     Model.SignUpModel.find(function(error, result){
-	signups = result;
-	    	
-	response.render('admin/SignUpsViewAll', { 
-	    title: 'View All Sign Ups',
-	    layout: defaultLayout,  
-	    userInfo: {
-		name: request.session.username
-	    },
-	    signups: signups		
-	});
 	
+	if(error) {
+	    Validation.ErrorRedirect(response, '/admin', 'signupsNotFound')
+	}	
+	else {
+	    response.pageInfo.title = 'View All Sign Ups';
+	    response.pageInfo.layout = defaultLayout;
+	    response.pageInfo.userInfo.name = request.session.username;
+	    response.pageInfo.signups =  result;
+	    response.render('admin/SignUpsViewAll', response.pageInfo);
+	}
     });
 
 };

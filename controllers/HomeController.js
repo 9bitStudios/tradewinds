@@ -1,7 +1,9 @@
 exports.Index = function(request, response){
-    response.render('home/Index', { title: 'Hello World' });
+    response.pageInfo.title = 'Hello World';
+    response.render('home/Index',  response.pageInfo);
 }
 
 exports.Other = function(request, response){
-    response.render('home/Other', { title: 'Other' });
+    response.pageInfo.title = 'Other';
+    response.render('home/Other', response.pageInfo);
 }

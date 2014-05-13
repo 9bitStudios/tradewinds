@@ -7,18 +7,22 @@ exports.Index = function(request, response){
     Model.UserModel.findOne({ isDefault: true }, function(error, result){
 	    	
 	if(!result || error) {
-	    response.render('admin/Install', { title: 'Install', installed: false });
+	    response.pageInfo.title = 'Install';
+	    response.pageInfo.installed = false;
+	    response.render('admin/Install', response.pageInfo);
 	}
-	else
+	else {
 	    response.redirect('/install/success');
+	}
     });    
-    
-    response.render('admin/Install', { title: 'Install' });
-}
+
+};
 
 exports.InstallSuccess = function(request, response){
-    response.render('admin/Install', { title: 'Install', installed: true });
-}
+    response.pageInfo.title = 'Install';
+    response.pageInfo.installed = true;
+    response.render('admin/Install', response.pageInfo);
+};
 
 
 exports.Install = function(request, response){
@@ -30,14 +34,17 @@ exports.Install = function(request, response){
     var password = request.body.password;
     var password2 = request.body.password2;
     
-    if(Validation.IsNullOrEmpty([name, email, password, password2]))
+    if(Validation.IsNullOrEmpty([name, email, password, password2])) {
 	errors = true;
+    }
     
-    if(!Validation.ValidateEmail(email))
+    if(!Validation.ValidateEmail(email)) {
 	errors = true;    
+    }
     
-    if(!Validation.Equals(password, password2))
+    if(!Validation.Equals(password, password2)) {
 	errors = true;
+    }
     
     if(errors) {
 	Validation.ErrorRedirect(response, '/install', 'installError'); 
@@ -57,11 +64,13 @@ exports.Install = function(request, response){
 
 	u.save(function(error){
 
-	    if(error)
+	    if(error) {
 		Validation.ErrorRedirect(response, '/install', 'installError'); 
-	    else
+	    }
+	    else {
 		Validation.ErrorRedirect(response, '/install', 'installSuccess'); 
+	    }
 	});   
     }
-}
+};
 

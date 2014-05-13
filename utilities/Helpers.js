@@ -9,9 +9,9 @@ exports.RandomString = function(strLength) {
 	text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;		
-}
+};
 
 exports.GetFileExtension = function(filename) {
     var i = filename.lastIndexOf('.');
     return (i < 0) ? '' : filename.substr(i);
-}
+};
