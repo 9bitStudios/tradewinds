@@ -1,3 +1,6 @@
+var Notifications = require('./Notifications');
+
+
 exports.AppendPageInfo = function(request, response, next) {
     
     response.pageInfo = {
@@ -6,8 +9,8 @@ exports.AppendPageInfo = function(request, response, next) {
 	    name: null
 	},
 	notifications: {
-	    success: [],
-	    error: []
+	    success: null,
+	    error: null
 	}
     };
     
@@ -17,12 +20,10 @@ exports.AppendPageInfo = function(request, response, next) {
 exports.AppendNotifications = function(request, response, next) {
     
     if(request.param('success')) {
-	// Get Message and append to response object
-	response.pageInfo.notifications.success.push('Success');
+	response.pageInfo.notifications.success = Notifications.GetNotification('success', request.param('message'));
     }
     else if (request.param('error')){
-	// Get Message and append to response object
-	response.pageInfo.notifications.error.push('Error');
+	response.pageInfo.notifications.error = Notifications.GetNotification('error', request.param('message'));
     }
     
     next();

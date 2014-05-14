@@ -1,6 +1,8 @@
 <div class="user">
-
-    Welcome {{ userInfo.name }} - <a href="/admin">Admin Home</a> <a href="/admin/logout">Logout</a>
+    
+    {{#if userInfo.name}}
+	Welcome {{ userInfo.name }} - <a href="/admin">Admin Home</a> <a href="/admin/logout">Logout</a>
+    {{/if}}
 
 </div>
 
