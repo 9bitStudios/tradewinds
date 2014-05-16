@@ -14,6 +14,10 @@ function Authenticate(request, response) {
 
 // Profile
 
+exports.Index = function(request, response){
+    response.redirect('/profile/dashboard');
+};
+
 exports.Login = function(request, response){
 
     if(request.session.username)

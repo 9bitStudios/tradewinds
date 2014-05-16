@@ -41,6 +41,7 @@ module.exports = function(app){
     app.get('/install/success', InstallController.InstallSuccess);
 
     // Profile Routes
+    app.get('/profile', ProfileController.Index);
     app.get('/profile/login', ProfileController.Login);
     app.post('/profile/login', ProfileController.AuthenticateProfile);
     app.get('/profile/logout', ProfileController.Logout);
