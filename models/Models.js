@@ -26,8 +26,10 @@ var User = new mongoose.Schema({
 
 var Post = new mongoose.Schema({
     title: String,
+    date: Date,
     slug: String,
-    content: String
+    content: String,
+    updated: Date
 });
 
 var SignUp = new mongoose.Schema({

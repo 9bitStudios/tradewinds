@@ -294,20 +294,32 @@ exports.PostCreate = function(request, response){
     
     var errors = false;
     var title = request.body.title;
+    var date = request.body.date;
     var slug = request.body.slug;
     var content = request.body.content;
     
-    if(Validation.IsNullOrEmpty([title, slug, content]))
+    var postTime;
+    
+    if(Validation.IsNullOrEmpty([title, date, slug, content])) {
 	errors = true;
+    }
+    
+    if(!Validation.ValidateDate(date)) {
+	errors = true;
+    }    
     
     if(errors)
 	Validation.ErrorRedirect(response, '/admin/posts', 'postCreateError');   
     else {
 	
+	postTime = new Date(date);
+	
 	var p = new Model.PostModel({ 
 	    title: title,
+	    date: postTime,
 	    slug: slug,
-	    content: content
+	    content: content,
+	    updated: Date.now()
 	});
 
 	p.save(function(error){
@@ -335,12 +347,15 @@ exports.PostEdit = function(request, response){
 	}
 	else {
 	    
+	    var formattedDate = Helpers.GetFormattedDate(result.date);
+
 	    response.pageInfo.title = 'Edit Post';
 	    response.pageInfo.layout = defaultLayout;
 	    response.pageInfo.userInfo.name = request.session.username;
 	    response.pageInfo.post = {
 		id: result._id,
 		title: result.title,
+		date: formattedDate,
 		slug: result.slug,
 		content: result.content
 	    };	
@@ -361,22 +376,34 @@ exports.PostUpdate = function(request, response){
     var errors = false;
     
     var title = request.body.title;
+    var date = request.body.date;
     var slug = request.body.slug;
     var content = request.body.content;
     
-    if(Validation.IsNullOrEmpty([title, slug, content]))
+    var postTime;
+    
+    if(Validation.IsNullOrEmpty([title, date, slug, content])){
 	errors = true;
+    }
 
+    if(!Validation.ValidateDate(date)) {
+	errors = true;
+    }
+    
     if(errors)
 	Validation.ErrorRedirect(response, '/admin/posts', 'postUpdateError');   
     else {
+	
+	postTime = new Date(date);
 	
 	Model.PostModel.update(
 	    { _id: request.body.id }, 
 	    {
 		title: title,
+		date: date,
 		slug: slug,
-		content: content
+		content: content,
+		updated: Date.now()
 	    },
 	    { multi: true }, 
 	    function(error, result){

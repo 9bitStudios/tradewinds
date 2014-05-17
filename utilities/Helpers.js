@@ -15,3 +15,10 @@ exports.GetFileExtension = function(filename) {
     var i = filename.lastIndexOf('.');
     return (i < 0) ? '' : filename.substr(i);
 };
+
+exports.GetFormattedDate = function(date) {
+    
+    var month = date.getMonth() + 1; // getMonth() returns 0 -11
+    return date.getFullYear() + '/' + month + '/' + date.getDate();
+    
+};
