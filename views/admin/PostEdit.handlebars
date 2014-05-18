@@ -1,23 +1,21 @@
-<div class="container">
-    <h1>{{ title }}</h1>
+<h1>{{ title }}</h1>
 
-    <form method="post" action="/admin/post/edit">
-	<label>Title</label> <input name="title" type="text" value="{{ post.title }}" />
-	<label>Date</label> <input name="date" type="text" value="{{ post.date }}" />
-	<label>Slug</label> <input name="slug" type="text" value="{{ post.slug }}" />
+<form method="post" action="/admin/post/edit">
+    <label>Title</label> <input name="title" type="text" value="{{ post.title }}" />
+    <label>Date</label> <input name="date" type="text" value="{{ post.date }}" />
+    <label>Slug</label> <input name="slug" type="text" value="{{ post.slug }}" />
 
-	<div class="clear"></div>
+    <div class="clear"></div>
 
-	<label>Content</label> 
+    <label>Content</label> 
 
-	<div class="clear"></div>
+    <div class="clear"></div>
 
-	<textarea name="content" class="tw-editor">{{ post.content }}</textarea>
+    <textarea name="content" class="tw-editor">{{ post.content }}</textarea>
 
-	<input name="id" type="hidden" value="{{ post.id }}" />
-	<input type="submit" value="Submit" />
-    </form>
-
-</div>
+    <input name="id" type="hidden" value="{{ post.id }}" />
+    <input name="_csrf" type="hidden" value="{{ csrftoken }}" />
+    <input type="submit" value="Submit" />
+</form>
 
 

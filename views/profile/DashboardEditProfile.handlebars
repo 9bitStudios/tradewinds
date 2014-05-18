@@ -1,15 +1,14 @@
-<div class="container">
-    <h1>{{ title }}</h1>
+<h1>{{ title }}</h1>
 
-    <form method="post" action="/profile/dashboard/edit" enctype="multipart/form-data">
-	<img src="/images/{{ user.avatar }}" alt="" style="width:70px; height:70px;" />
+<form method="post" action="/profile/dashboard/edit" enctype="multipart/form-data">
+    <img src="/images/{{ user.avatar }}" alt="" style="width:70px; height:70px;" />
 
-	<label>Change Image</label> 
+    <label>Change Image</label> 
 
-	<input name="profileImage" type="file" />
-	<input name="id" type="hidden" value="{{ user.id }}" />
-	<input type="submit" value="Submit" />
-    </form>
-</div>
+    <input name="profileImage" type="file" />
+    <input name="id" type="hidden" value="{{ user.id }}" />
+    <input name="_csrf" type="hidden" value="{{ csrftoken }}" />
+    <input type="submit" value="Submit" />
+</form>
 
 

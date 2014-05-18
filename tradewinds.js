@@ -23,7 +23,9 @@ app.use(express.session({
 }));
 app.use(express.urlencoded());
 app.use(express.methodOverride());
+app.use(express.csrf());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(Middleware.CSRFToken);
 app.use(Middleware.AppendPageInfo);
 app.use(Middleware.AppendNotifications);
 app.use(app.router);

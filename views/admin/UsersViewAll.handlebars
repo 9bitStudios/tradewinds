@@ -1,25 +1,24 @@
-<div class="container">
-    <h1>{{ title }}</h1>
-    <p>This is a debug panel that will give some information on stuff...</p>
-	
-    <h3>{{ Title }}</h3>
+<h1>{{ title }}</h1>
+<p>This is a debug panel that will give some information on stuff...</p>
 
-    <ul>
-    {{#users}}
-	<li>
-	    <strong>Name:</strong> {{name}} <strong>Email:</strong> {{email}} 
+<h3>{{ Title }}</h3>
 
-	    <a href="/admin/user/edit/{{ _id }}">Edit</a>
+<ul>
+{{#users}}
+    <li>
+	<strong>Name:</strong> {{name}} <strong>Email:</strong> {{email}} 
 
-	    {{#unless isDefault}}
-		<a href="/admin/user/delete/{{ _id }}" onclick="return confirm('Are you sure?')">Delete</a>
-	    {{/unless}}
-	</li>
-    {{/users}}
-    </ul>
+	<a href="/admin/user/edit/{{ _id }}">Edit</a>
 
-    <a href="/admin/user/add">Add User</a>
+	{{#unless isDefault}}
+	    <a href="/admin/user/delete/{{ _id }}" onclick="return confirm('Are you sure?')">Delete</a>
+	{{/unless}}
+    </li>
+{{/users}}
+</ul>
 
-</div>
+<a href="/admin/user/add">Add User</a>
+
+
 
 

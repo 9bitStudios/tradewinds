@@ -1,14 +1,10 @@
-<div class="container">
-    <h1>{{ title }}</h1>
+<h1>{{ title }}</h1>
 
-    <form method="post" action="/admin/user/add">
-	<label>Name</label> <input name="name" type="text" />
-	<label>Password</label> <input name="password" type="password" />
-	<label>Confirm Password</label> <input name="password2" type="password" />
-	<label>E-Mail</label> <input name="email" type="text" />
-	<input type="submit" value="Submit" />
-    </form>
-
-</div>
-
-
+<form method="post" action="/admin/user/add">
+    <label>Name</label> <input name="name" type="text" />
+    <label>Password</label> <input name="password" type="password" />
+    <label>Confirm Password</label> <input name="password2" type="password" />
+    <label>E-Mail</label> <input name="email" type="text" />
+    <input name="_csrf" type="hidden" value="{{ csrftoken }}" />
+    <input type="submit" value="Submit" />
+</form>
