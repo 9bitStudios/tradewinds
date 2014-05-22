@@ -1,69 +1,73 @@
 body {
   font-family: Arial, sans-serif;
-  font-size:13px;
+  font-size: 13px;
   background: #eee;
 }
-
-h1,h2,h3,h4,h5,h6 {
-display:block;
-width:100%;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  display: block;
+  width: 100%;
 }
-
 .clear {
-    clear: both;
-    display: block;
-    overflow: hidden;
-    visibility: hidden;
-    width: 0;
-    height: 0;
+  clear: both;
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  width: 0;
+  height: 0;
 }
 .clearout {
-    clear: both;
-    display: block;
-    overflow: hidden;
-    width: 0;
-    height: 20px;
+  clear: both;
+  display: block;
+  overflow: hidden;
+  width: 0;
+  height: 20px;
 }
-
 /**************************************************
 DATEPICKER
 ***************************************************/
-
 .ui-datepicker {
-display:none;
-background: #fff; /* Old browsers */
-background: #fff -moz-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* FF3.6+ */
-background: #fff -webkit-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* Chrome10+,Safari5.1+ */
-background: #fff -o-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* Opera11.10+ */
-background: #fff -ms-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* IE10+ */
-background: #fff linear-gradient(top, #fcfcfc 0%, #fff 100%); /* W3C */
-font-size:11px;
-padding:10px;
-border:1px solid #ccc;
-}
+  display: none;
+  background: #fff;
+  /* Old browsers */
 
+  background: #ffffff -moz-linear-gradient(top, #fcfcfc 0%, #ffffff 100%);
+  /* FF3.6+ */
+
+  background: #ffffff -webkit-linear-gradient(top, #fcfcfc 0%, #ffffff 100%);
+  /* Chrome10+,Safari5.1+ */
+
+  background: #ffffff -o-linear-gradient(top, #fcfcfc 0%, #ffffff 100%);
+  /* Opera11.10+ */
+
+  background: #ffffff -ms-linear-gradient(top, #fcfcfc 0%, #ffffff 100%);
+  /* IE10+ */
+
+  background: #ffffff linear-gradient(top, #fcfcfc 0%, #ffffff 100%);
+  /* W3C */
+
+  font-size: 11px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
 .ui-datepicker table {
-width:278px;
+  width: 278px;
 }
-
 .ui-datepicker table td {
-text-align:center;
+  text-align: center;
 }
-
 .ui-datepicker a {
-cursor:pointer;
-text-decoration:none;
+  cursor: pointer;
+  text-decoration: none;
 }
-
-.ui-datepicker-prev {
+.ui-datepicker .ui-datepicker-next {
+  float: right;
 }
-
-.ui-datepicker-next {
-float:right;
+.ui-datepicker .ui-datepicker-title {
+  text-align: center;
+  font-weight: bold;
 }
-
-.ui-datepicker-title {
-text-align: center;
-font-weight:bold;
-}
-
