@@ -118,10 +118,11 @@ exports.ProfileUpdate = function(request, response){
 	}
 	else {
 	    var profileImage = request.files.profileImage;
+	    
 	    var tempPath = profileImage.path;
 	    var newImage = profileID + Helpers.GetFileExtension(profileImage.name);
 	    profileImage.name = newImage;
-	    var targetPath = './public/images/' + profileImage.name;
+	    var targetPath = './public/images/profile/' + profileImage.name;
 
 	    fs.rename(tempPath, targetPath, function(error) {
 

@@ -1,9 +1,10 @@
 <form method="post" action="/profile/dashboard/edit" enctype="multipart/form-data">
-    <img src="/images/{{ user.avatar }}" alt="" style="width:70px; height:70px;" />
+    <img src="/images/profile/{{ user.avatar }}" alt="" style="width:70px; height:70px;" />
 
     <label>Change Image</label> 
 
     <input name="profileImage" type="file" />
+    <input name="currentProfileImage" type="hidden" value="{{ user.avatar }}" />
     <input name="id" type="hidden" value="{{ user.id }}" />
     <input name="_csrf" type="hidden" value="{{ csrftoken }}" />
     <input type="submit" value="Submit" />
