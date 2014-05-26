@@ -17,8 +17,15 @@ exports.GetFileExtension = function(filename) {
 };
 
 exports.GetFormattedDate = function(date) {
-    
+
     var month = date.getMonth() + 1; // getMonth() returns 0 -11
-    return date.getFullYear() + '/' + month + '/' + date.getDate();
+    if(month <= 9)
+	month = '0'+month;
+
+    var day= date.getDate();
+    if(day <= 9)
+	day = '0'+day;    
+
+    return date.getFullYear() + '/' + month + '/' + day;
     
 };
