@@ -76,3 +76,9 @@ exports.ValidateDate = function(dateString) {
 
     return day > 0 && day <= monthLength[month - 1];
 };
+
+exports.ValidateSlug = function(slug){
+
+    return /^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$/.test(slug);
+
+};

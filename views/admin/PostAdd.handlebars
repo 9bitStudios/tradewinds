@@ -1,7 +1,8 @@
 <form method="post" action="/admin/post/add">
-    <label>Title</label> <input name="title" type="text" />
-    <label>Date</label> <input name="date" type="text" class="postDatepicker" />
-    <label>Slug</label> <input name="slug" type="text" />
+    <label>Title</label> <input name="title" type="text" class="tw-admin-post-title" />
+    <label>Date</label> <input name="date" type="text" class="tw-admin-post-datepicker" />
+    <label>Slug</label> <input name="slug" type="text" class="tw-admin-post-slug" />
+    <a href="#" class="tw-admin-convert-slug">Convert Title to Slug</a>
 
     <div class="clear"></div>
 
@@ -9,7 +10,7 @@
 
     <div class="clear"></div>
 
-    <textarea name="content" class="tw-editor"></textarea>
+    <textarea name="content" class="tw-admin-editor"></textarea>
     <input name="_csrf" type="hidden" value="{{ csrftoken }}" />
     <input type="submit" value="Submit" />
 </form>
