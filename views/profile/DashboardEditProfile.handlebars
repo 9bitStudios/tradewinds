@@ -4,7 +4,6 @@
     <label>Change Image</label> 
 
     <input name="profileImage" type="file" />
-    <input name="currentProfileImage" type="hidden" value="{{ user.avatar }}" />
     <input name="id" type="hidden" value="{{ user.id }}" />
     <input name="_csrf" type="hidden" value="{{ csrftoken }}" />
     <input type="submit" value="Submit" />

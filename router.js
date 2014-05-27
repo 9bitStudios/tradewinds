@@ -32,6 +32,13 @@ module.exports = function(app){
     app.post('/admin/post/edit', AdminController.PostUpdate);
     app.get('/admin/post/delete/:id', AdminController.PostDelete);
     
+    app.get('/admin/categories', AdminController.CategoriesViewAll);     
+    app.get('/admin/category/add', AdminController.CategoryAdd);  
+    app.post('/admin/category/add', AdminController.CategoryCreate);     
+    app.get('/admin/category/edit/:id', AdminController.CategoryEdit); 
+    app.post('/admin/category/edit', AdminController.CategoryUpdate);
+    app.get('/admin/category/delete/:id', AdminController.CategoryDelete);    
+    
     app.get('/admin/signups', AdminController.SignUpsViewAll); 
     
     // Installation Routes

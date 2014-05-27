@@ -1,0 +1,11 @@
+<form method="post" action="/admin/category/add">
+    <label>Name</label> <input name="name" type="text" />
+    <label>Slug</label> <input name="slug" type="text" />
+
+    <input name="_csrf" type="hidden" value="{{ csrftoken }}" />
+    <input type="submit" value="Submit" />
+</form>
+
+
+
+

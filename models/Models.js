@@ -39,16 +39,23 @@ var SignUp = new mongoose.Schema({
     date: Date
 });
 
+var Category = new mongoose.Schema({
+    name: String,
+    slug: String
+});
+
 //Models
 var UserModel = mongoose.model('User', User );
 var PostModel = mongoose.model('Post', Post );
+var CategoryModel = mongoose.model('Category', Category );
 var SignUpModel = mongoose.model('SignUp', SignUp );
 
 module.exports = {
     UserModel: UserModel,
     PostModel: PostModel,
+    CategoryModel: CategoryModel,    
     SignUpModel: SignUpModel 
-}
+};
 
 
 

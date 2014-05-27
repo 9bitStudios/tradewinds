@@ -1,0 +1,14 @@
+<ul>
+{{#categories}}
+    <li>
+	<strong>{{name}}</strong> - {{ slug }} 
+	<a href="/admin/category/edit/{{ _id }}">Edit</a>
+	<a href="/admin/category/delete/{{ _id }}" onclick="return confirm('Are you sure?')">Delete</a>
+    </li>
+{{/categories}}
+</ul>
+
+<a href="/admin/category/add">Add Category</a>
+
+
+

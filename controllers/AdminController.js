@@ -29,12 +29,12 @@ exports.Login = function(request, response){
     
     response.pageInfo.title = 'Login';
     response.render('admin/Login', response.pageInfo);
-}
+};
 
 exports.Logout = function(request, response){
     request.session.destroy();
-    response.redirect('/admin/login')
-}
+    response.redirect('/admin/login');
+};
 
 exports.AuthenticateAdmin = function(request, response){
 
@@ -62,7 +62,7 @@ exports.AuthenticateAdmin = function(request, response){
 	
     });
     
-}
+};
 
 // Admin - View All Users
 
@@ -181,7 +181,7 @@ exports.UserEdit = function(request, response){
 	    avatar: result.avatar,
 	    isAdmin: result.isAdmin,		
 	    isDefault: result.isDefault
-	}
+	};
 	response.render('admin/UserEdit', response.pageInfo);
 	
     });
@@ -408,10 +408,10 @@ exports.PostUpdate = function(request, response){
 	    { multi: true }, 
 	    function(error, result){
 		if(error) {
-		    Validation.ErrorRedirect(response, '/admin/posts', 'postUpdateError')
+		    Validation.ErrorRedirect(response, '/admin/posts', 'postUpdateError');
 		}
 		else{
-		    Validation.SuccessRedirect(response, '/admin/posts', 'postUpdated')
+		    Validation.SuccessRedirect(response, '/admin/posts', 'postUpdated');
 		}
 		    
 	    }
@@ -427,10 +427,162 @@ exports.PostDelete = function(request, response){
 
     Model.PostModel.remove({ _id: request.params.id }, function(error, result) {
 	if(error) {
-	    Validation.ErrorRedirect(response, '/admin/posts', 'postDeleteError')
+	    Validation.ErrorRedirect(response, '/admin/posts', 'postDeleteError');
 	}
 	else{
-	    Validation.SuccessRedirect(response, '/admin/posts', 'postDeleted')
+	    Validation.SuccessRedirect(response, '/admin/posts', 'postDeleted');
+	}
+    });
+};
+
+// Admin - View All Categories
+
+exports.CategoriesViewAll = function(request, response){
+
+    Authenticate(request, response);
+
+    Model.CategoryModel.find(function(error, result){
+	
+	if (error) {
+	    Validation.ErrorRedirect(response, '/admin', 'categoriesNotFound');
+	}	
+	
+	response.pageInfo.title = 'Categories';
+	response.pageInfo.layout = defaultLayout;
+	response.pageInfo.userInfo.name = request.session.username;    	
+	response.pageInfo.categories = result;  
+	response.render('admin/CategoriesViewAll', response.pageInfo);
+	
+    });
+
+};
+
+// Admin - Add Category
+
+exports.CategoryAdd = function(request, response){
+
+    Authenticate(request, response);
+    response.pageInfo.title = 'Add New Category';
+    response.pageInfo.layout = defaultLayout;
+    response.pageInfo.userInfo.name = request.session.username;
+    response.render('admin/CategoryAdd', response.pageInfo);
+    
+};
+
+// Admin - Create Category
+
+exports.CategoryCreate = function(request, response){
+    
+    Authenticate(request, response);
+    
+    var errors = false;
+    var name = request.body.name;
+    var slug = request.body.slug;
+    
+    if(Validation.IsNullOrEmpty([name, slug])) {
+	errors = true;
+    }  
+    
+    if(errors)
+	Validation.ErrorRedirect(response, '/admin/categories', 'categoryCreateError');   
+    else {
+	
+	var c = new Model.CategoryModel({ 
+	    name: name,
+	    slug: slug
+	});
+
+	c.save(function(error){
+
+	    if(error) {
+		Validation.ErrorRedirect(response, '/admin/categories', 'categoryCreateError');
+	    }
+	    else {
+		Validation.SuccessRedirect(response, '/admin/categories', 'categoryCreated');
+	    }
+	});	
+    }
+};
+
+// Admin - Edit Category
+
+exports.CategoryEdit = function(request, response){
+
+    Authenticate(request, response);
+    var id = request.params.id;
+    
+    Model.CategoryModel.findOne({ _id: id }, function(error, result){
+	if(error) {
+	    Validation.ErrorRedirect(response, '/admin/categories', 'categoryNotFound'); 
+	}
+	else {
+	    
+	    response.pageInfo.title = 'Edit Category';
+	    response.pageInfo.layout = defaultLayout;
+	    response.pageInfo.userInfo.name = request.session.username;
+	    response.pageInfo.category = {
+		id: result._id,
+		name: result.name,
+		slug: result.slug
+	    };	
+	    response.render('admin/CategoryEdit', response.pageInfo);	    
+	}
+	
+    });
+    
+};
+
+// Admin - Update Category
+
+exports.CategoryUpdate = function(request, response){
+
+    Authenticate(request, response);
+    
+    var errors = false;
+    
+    var name = request.body.name;
+    var slug = request.body.slug;
+    
+    if(Validation.IsNullOrEmpty([name, slug])){
+	errors = true;
+    }
+    
+    if(errors)
+	Validation.ErrorRedirect(response, '/admin/categories', 'categoryUpdateError');   
+    else {
+	
+	Model.CategoryModel.update(
+	    { _id: request.body.id }, 
+	    {
+		name: name,
+		slug: slug
+	    },
+	    { multi: true }, 
+	    function(error, result){
+		if(error) {
+		    Validation.ErrorRedirect(response, '/admin/categories', 'categoryUpdateError');
+		}
+		else{
+		    Validation.SuccessRedirect(response, '/admin/categories', 'categoryUpdated');
+		}
+		    
+	    }
+	);	
+    }
+};
+
+// Admin - Delete Category
+
+exports.CategoryDelete = function(request, response){
+
+    Authenticate(request, response);
+
+    Model.CategoryModel.remove({ _id: request.params.id }, function(error, result) {
+	if(error) {
+	    Validation.ErrorRedirect(response, '/admin/categories', 'categoryDeleteError');
+	}
+	else{
+	    Validation.SuccessRedirect(response, '/admin/categories', 'categoryDeleted');
 	}
     });
 };
@@ -444,7 +596,7 @@ exports.SignUpsViewAll = function(request, response){
     Model.SignUpModel.find(function(error, result){
 	
 	if(error) {
-	    Validation.ErrorRedirect(response, '/admin', 'signupsNotFound')
+	    Validation.ErrorRedirect(response, '/admin', 'signupsNotFound');
 	}	
 	else {
 	    response.pageInfo.title = 'View All Sign Ups';
