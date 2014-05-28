@@ -4,6 +4,14 @@
     <label>Slug</label> <input name="slug" type="text" value="{{ post.slug }}" class="tw-admin-post-slug" />
     <a href="#" class="tw-admin-convert-slug">Convert Title to Slug</a>
 
+    <label>Category</label>
+    <select name="category">
+	<option value="">(none)</option>
+	{{#categories}}
+	    <option value="{{slug}}" {{#ifCond slug '==' ../post.category}}selected{{/ifCond}}>{{name}}</option>
+	{{/categories}}
+    </select>
+
     <div class="clear"></div>
 
     <label>Content</label> 

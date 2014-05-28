@@ -1,7 +1,7 @@
 <form method="post" action="/admin/category/edit">
     <label>Name</label> <input name="name" type="text" value="{{ category.name }}" />
     <label>Slug</label> <input name="slug" type="text" value="{{ category.slug }}" />
-
+    <input name="id" type="hidden" value="{{ category.id }}" />
     <input name="_csrf" type="hidden" value="{{ csrftoken }}" />
     <input type="submit" value="Submit" />
 </form>

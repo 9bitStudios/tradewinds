@@ -279,10 +279,21 @@ exports.PostsViewAll = function(request, response){
 exports.PostAdd = function(request, response){
 
     Authenticate(request, response);
-    response.pageInfo.title = 'Add New Post';
-    response.pageInfo.layout = defaultLayout;
-    response.pageInfo.userInfo.name = request.session.username;
-    response.render('admin/PostAdd', response.pageInfo);
+    
+    Model.CategoryModel.find({}, function(error, result){
+	
+	if(error) {
+	    Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFoundError');  
+	}
+	response.pageInfo.title = 'Add New Post';
+	response.pageInfo.layout = defaultLayout;
+	response.pageInfo.userInfo.name = request.session.username;
+	response.pageInfo.categories = result;
+	response.render('admin/PostAdd', response.pageInfo);
+	
+    });
+    
+
     
 };
 
@@ -296,6 +307,7 @@ exports.PostCreate = function(request, response){
     var title = request.body.title;
     var date = request.body.date;
     var slug = request.body.slug;
+    var category = request.body.category;    
     var content = request.body.content;
     
     var postTime;
@@ -318,6 +330,7 @@ exports.PostCreate = function(request, response){
 	    title: title,
 	    date: postTime,
 	    slug: slug,
+	    category:category,
 	    content: content,
 	    updated: Date.now()
 	});
@@ -346,20 +359,35 @@ exports.PostEdit = function(request, response){
 	    Validation.ErrorRedirect(response, '/admin/posts', 'postNotFound'); 
 	}
 	else {
-	    
-	    var formattedDate = Helpers.GetFormattedDate(result.date);
 
-	    response.pageInfo.title = 'Edit Post';
-	    response.pageInfo.layout = defaultLayout;
-	    response.pageInfo.userInfo.name = request.session.username;
-	    response.pageInfo.post = {
-		id: result._id,
-		title: result.title,
-		date: formattedDate,
-		slug: result.slug,
-		content: result.content
-	    };	
-	    response.render('admin/PostEdit', response.pageInfo);	    
+	    var postID = result._id;
+	    var postTitle = result.title;
+	    var formattedDate = Helpers.GetFormattedDate(result.date);
+	    var postSlug = result.slug;
+	    var postCategory = result.category;
+	    var postContent = result.content;
+	    
+	    Model.CategoryModel.find({}, function(error, result){
+
+		if(error) {
+		    Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFoundError');  
+		}
+		response.pageInfo.title = 'Edit Post: ' + postTitle;
+		response.pageInfo.layout = defaultLayout;
+		response.pageInfo.userInfo.name = request.session.username;
+		response.pageInfo.categories = result;
+		response.pageInfo.post = {
+		    id: postID,
+		    title: postTitle,
+		    date: formattedDate,
+		    category: postCategory,
+		    slug: postSlug,
+		    content: postContent
+		};	
+		response.render('admin/PostEdit', response.pageInfo);	
+
+	    });	    
+    
 	}
 	
     });
@@ -378,8 +406,8 @@ exports.PostUpdate = function(request, response){
     var title = request.body.title;
     var date = request.body.date;
     var slug = request.body.slug;
+    var category = request.body.category;
     var content = request.body.content;
-    
     var postTime;
     
     if(Validation.IsNullOrEmpty([title, date, slug, content])){
@@ -402,6 +430,7 @@ exports.PostUpdate = function(request, response){
 		title: title,
 		date: date,
 		slug: slug,
+		category:category,		
 		content: content,
 		updated: Date.now()
 	    },

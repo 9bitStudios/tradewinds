@@ -3,14 +3,43 @@ var express = require('express');
 var MongoStore = require('connect-mongo')(express);
 var http = require('http');
 var path = require('path');
-var handlebars  = require('express3-handlebars');
+var handlebars  = require('express3-handlebars'), hbs;
 var config = require('./config');
 var Middleware = require('./utilities/Middleware');
 var app = express();
 
 app.set('port', config[config.environment].application.port);
 app.set('views', path.join(__dirname, 'views'));
-app.engine('handlebars', handlebars({defaultLayout: 'main'}));
+
+hbs = handlebars.create({
+   helpers:{
+       ifCond: function(v1, operator, v2, options){
+	  switch (operator) {
+	    case '==':
+		return (v1 == v2) ? options.fn(this) : options.inverse(this);
+	    case '===':
+		return (v1 === v2) ? options.fn(this) : options.inverse(this);
+	    case '<':
+		return (v1 < v2) ? options.fn(this) : options.inverse(this);
+	    case '<=':
+		return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+	    case '>':
+		return (v1 > v2) ? options.fn(this) : options.inverse(this);
+	    case '>=':
+		return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+	    case '&&':
+		return (v1 && v2) ? options.fn(this) : options.inverse(this);
+	    case '||':
+		return (v1 || v2) ? options.fn(this) : options.inverse(this);
+	    default:
+		return options.inverse(this);
+	   }
+       }
+   },
+   defaultLayout: 'main'
+});
+
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.use(express.logger('dev'));
 app.use(express.json());

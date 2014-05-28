@@ -28,6 +28,7 @@ var Post = new mongoose.Schema({
     title: String,
     date: Date,
     slug: String,
+    category: String,
     content: String,
     updated: Date
 });
