@@ -7,6 +7,9 @@ exports.GetNotification = function(type, id) {
 	'postCreated': 'Post created',
 	'postUpdated': 'Post updated',
 	'postDeleted': 'Post deleted',
+	'categoryCreated': 'Category created',
+	'categoryUpdated': 'Category updated',
+	'categoryDeleted': 'Category deleted',	
 	'profileUpdated': 'Profile updated',
 	'installSuccess': 'Installation Success'
     };    
@@ -21,9 +24,12 @@ exports.GetNotification = function(type, id) {
 	'userDeleteError': 'There was an error deleting the user',
 	'postsNotFound': 'Posts were not found',
 	'postCreateError': 'There was an error creating the post',
-	'postNotFound': 'This post ID was not found',
 	'postUpdateError': 'There was an error updating the post',
 	'postDeleteError': 'There was an error deleting the post',
+	'categoryNotFound': 'Categories were not found',
+	'categoryCreateError': 'There was an error creating the category',
+	'categoryUpdateError': 'There was an error updating the category',
+	'categoryDeleteError': 'There was an error deleting the category',	
 	'signupsNotFound': 'Signups were not found',
 	'profileError': 'Could not find profile',
 	'profileAddError': 'There was an error when creating your profile',
