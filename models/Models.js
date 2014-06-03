@@ -42,7 +42,8 @@ var SignUp = new mongoose.Schema({
 
 var Category = new mongoose.Schema({
     name: String,
-    slug: String
+    slug: String,
+    isDefault: Boolean
 });
 
 //Models

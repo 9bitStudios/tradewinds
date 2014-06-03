@@ -518,7 +518,8 @@ exports.CategoryCreate = function(request, response){
 	
 	var c = new Model.CategoryModel({ 
 	    name: name,
-	    slug: slug
+	    slug: slug,
+	    isDefault: false
 	});
 
 	c.save(function(error){
@@ -540,7 +541,7 @@ exports.CategoryEdit = function(request, response){
     Authenticate(request, response);
     var id = request.params.id;
     
-    Model.CategoryModel.findOne({ _id: id }, function(error, result){
+    Model.CategoryModel.findOne({ _id: id, isDefault: false }, function(error, result){
 	if(error) {
 	    Validation.ErrorRedirect(response, '/admin/categories', 'categoryNotFound'); 
 	}
@@ -606,7 +607,7 @@ exports.CategoryDelete = function(request, response){
 
     Authenticate(request, response);
 
-    Model.CategoryModel.remove({ _id: request.params.id }, function(error, result) {
+    Model.CategoryModel.remove({ _id: request.params.id, isDefault: false }, function(error, result) {
 	if(error) {
 	    Validation.ErrorRedirect(response, '/admin/categories', 'categoryDeleteError');
 	}

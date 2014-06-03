@@ -2,8 +2,11 @@
 {{#categories}}
     <li>
 	<strong>{{name}}</strong> - {{ slug }} 
-	<a href="/admin/category/edit/{{ _id }}">Edit</a>
-	<a href="/admin/category/delete/{{ _id }}" onclick="return confirm('Are you sure?')">Delete</a>
+	
+	{{#unless isDefault}}
+	    <a href="/admin/category/edit/{{ _id }}">Edit</a>
+	    <a href="/admin/category/delete/{{ _id }}" onclick="return confirm('Are you sure?')">Delete</a>
+	{{/unless}}
     </li>
 {{/categories}}
 </ul>

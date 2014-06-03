@@ -62,13 +62,27 @@ exports.Install = function(request, response){
 	    isDefault: true
 	});
 
+
+	var c = new Model.CategoryModel({
+	    name: "--",
+	    slug: "",
+	    isDefault: true
+	});
+
 	u.save(function(error){
 
 	    if(error) {
 		Validation.ErrorRedirect(response, '/install', 'installError'); 
 	    }
 	    else {
-		Validation.ErrorRedirect(response, '/install', 'installSuccess'); 
+		c.save(function(error){
+		    
+		    if(error) {
+			Validation.ErrorRedirect(response, '/install', 'installError'); 
+		    }		    
+		    
+		    Validation.SuccessRedirect(response, '/install', 'installSuccess'); 
+		});
 	    }
 	});   
     }
