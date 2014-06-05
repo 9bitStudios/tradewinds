@@ -6,7 +6,6 @@
 
     <label>Category</label>
     <select name="category">
-	<option value="">(none)</option>
 	{{#categories}}
 	    <option value="{{slug}}" {{#ifCond slug '==' ../post.category}}selected{{/ifCond}}>{{name}}</option>
 	{{/categories}}

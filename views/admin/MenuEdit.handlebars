@@ -1,0 +1,7 @@
+<form method="post" action="/admin/menu/edit">
+    <label>Name</label> <input name="name" type="text" />
+    <input name="data" type="hidden" value="{'something':'another thing'}" />
+
+    <input name="_csrf" type="hidden" value="{{ csrftoken }}" />
+    <input type="submit" value="Submit" />
+</form>

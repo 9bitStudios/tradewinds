@@ -24,6 +24,11 @@ var User = new mongoose.Schema({
     isDefault: Boolean
 });
 
+var Menu = new mongoose.Schema({
+    name: String,
+    data: mongoose.Schema.Types.Mixed
+});
+
 var Post = new mongoose.Schema({
     title: String,
     date: Date,
@@ -49,12 +54,14 @@ var Category = new mongoose.Schema({
 //Models
 var UserModel = mongoose.model('User', User );
 var PostModel = mongoose.model('Post', Post );
+var MenuModel = mongoose.model('Menu', Menu );
 var CategoryModel = mongoose.model('Category', Category );
 var SignUpModel = mongoose.model('SignUp', SignUp );
 
 module.exports = {
     UserModel: UserModel,
     PostModel: PostModel,
+    MenuModel: MenuModel,
     CategoryModel: CategoryModel,    
     SignUpModel: SignUpModel 
 };

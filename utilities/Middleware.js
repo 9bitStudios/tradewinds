@@ -5,6 +5,7 @@ exports.AppendPageInfo = function(request, response, next) {
     
     response.pageInfo = {
 	title: '',
+	menus: { },
 	userInfo:{
 	    name: null
 	},
@@ -33,4 +34,4 @@ exports.AppendNotifications = function(request, response, next) {
 exports.CSRFToken = function(request, response, next) {
     response.locals.csrftoken = request.csrfToken();
     next();
-}
+};

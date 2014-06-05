@@ -464,6 +464,64 @@ exports.PostDelete = function(request, response){
     });
 };
 
+// Admin - View All Menus
+
+exports.MenusViewAll = function(request, response){ 
+    
+    Authenticate(request, response);    
+    
+    Model.MenuModel.find(function(error, result){
+	
+	if (error) {
+	    Validation.ErrorRedirect(response, '/admin', 'menusNotFound');
+	}	
+	
+	response.pageInfo.title = 'Menus';
+	response.pageInfo.layout = defaultLayout;
+	response.pageInfo.userInfo.name = request.session.username;    	
+	response.pageInfo.menus = result;  
+	response.render('admin/MenusViewAll', response.pageInfo);
+	
+    });
+    
+};
+
+// Admin - Add Menu
+
+exports.MenuAdd = function(request, response){ 
+
+    Authenticate(request, response);
+    response.pageInfo.title = 'Add New Menu';
+    response.pageInfo.layout = defaultLayout;
+    response.pageInfo.userInfo.name = request.session.username;
+    response.render('admin/MenuAdd', response.pageInfo);
+};
+
+
+// Admin - Create Menu
+
+exports.MenuCreate = function(request, response){ };
+
+// Admin - Edit Menu
+
+exports.MenuEdit = function(request, response){ 
+
+    Authenticate(request, response);
+    response.pageInfo.title = 'Edit Menu';
+    response.pageInfo.layout = defaultLayout;
+    response.pageInfo.userInfo.name = request.session.username;
+    response.render('admin/MenuEdit', response.pageInfo);
+
+};
+
+// Admin - Update Menu
+
+exports.MenuUpdate = function(request, response){ };
+
+// Admin - Delete Menu
+
+exports.MenuDelete = function(request, response){ };
+
 // Admin - View All Categories
 
 exports.CategoriesViewAll = function(request, response){
@@ -485,6 +543,8 @@ exports.CategoriesViewAll = function(request, response){
     });
 
 };
+
+
 
 // Admin - Add Category
 

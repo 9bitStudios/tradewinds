@@ -1,0 +1,12 @@
+<ul>
+{{#menus}}
+    <li>
+	<strong>{{name}}</strong> - {{{ data }}} 
+	<a href="/admin/menu/edit/{{ _id }}">Edit</a>
+	<a href="/admin/menu/delete/{{ _id }}" onclick="return confirm('Are you sure?')">Delete</a>
+
+    </li>
+{{/menus}}
+</ul>
+
+<a href="/admin/menu/add">Add Menu</a>
