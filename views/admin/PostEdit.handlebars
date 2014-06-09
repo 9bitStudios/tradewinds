@@ -7,7 +7,7 @@
     <label>Category</label>
     <select name="category">
 	{{#categories}}
-	    <option value="{{slug}}" {{#ifCond slug '==' ../post.category}}selected{{/ifCond}}>{{name}}</option>
+	    <option value="{{_id}}" {{#ifCond _id '==' ../post.category._id}}selected{{/ifCond}}>{{name}}</option>
 	{{/categories}}
     </select>
 

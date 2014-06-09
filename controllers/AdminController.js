@@ -354,7 +354,8 @@ exports.PostEdit = function(request, response){
     Authenticate(request, response);
     var id = request.params.id;
     
-    Model.PostModel.findOne({ _id: id }, function(error, result){
+    Model.PostModel.findOne({ _id: id }).populate('category').exec(function(error, result){
+	
 	if(error) {
 	    Validation.ErrorRedirect(response, '/admin/posts', 'postNotFound'); 
 	}

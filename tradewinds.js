@@ -14,6 +14,10 @@ app.set('views', path.join(__dirname, 'views'));
 hbs = handlebars.create({
    helpers:{
        ifCond: function(v1, operator, v2, options){
+	   
+	  v1 = v1.toString(); 
+	  v2 = v2.toString();  
+	  
 	  switch (operator) {
 	    case '==':
 		return (v1 == v2) ? options.fn(this) : options.inverse(this);
