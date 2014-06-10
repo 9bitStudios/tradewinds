@@ -34,6 +34,7 @@ var Post = new mongoose.Schema({
     date: Date,
     slug: String,
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
+    path: String,
     content: String,
     updated: Date
 });

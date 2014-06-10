@@ -311,6 +311,7 @@ exports.PostCreate = function(request, response){
     var content = request.body.content;
     
     var postTime;
+    var path;
     
     if(Validation.IsNullOrEmpty([title, date, slug, content])) {
 	errors = true;
@@ -324,26 +325,44 @@ exports.PostCreate = function(request, response){
 	Validation.ErrorRedirect(response, '/admin/posts', 'postCreateError');   
     else {
 	
-	postTime = new Date(date);
-	
-	var p = new Model.PostModel({ 
-	    title: title,
-	    date: postTime,
-	    slug: slug,
-	    category:category,
-	    content: content,
-	    updated: Date.now()
-	});
-
-	p.save(function(error){
+	Model.CategoryModel.findOne({ _id: category }, function(error, result){
 
 	    if(error) {
-		Validation.ErrorRedirect(response, '/admin/posts', 'postCreateError');
+		Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFoundError');  
 	    }
 	    else {
-		Validation.SuccessRedirect(response, '/admin/posts', 'postCreated');
+		
+		if(Validation.IsNullOrEmpty(result.slug)) {
+		    path = slug;
+		}
+		else {
+		    path = result.slug + '/' + slug;
+		}
+		    
+		postTime = new Date(date);
+
+		var p = new Model.PostModel({ 
+		    title: title,
+		    date: postTime,
+		    slug: slug,
+		    category: category,
+		    path: path,
+		    content: content,
+		    updated: Date.now()
+		});
+
+		p.save(function(error){
+
+		    if(error) {
+			Validation.ErrorRedirect(response, '/admin/posts', 'postCreateError');
+		    }
+		    else {
+			Validation.SuccessRedirect(response, '/admin/posts', 'postCreated');
+		    }
+		});		
 	    }
-	});	
+
+	});		
     }
 };
 
@@ -410,6 +429,7 @@ exports.PostUpdate = function(request, response){
     var category = request.body.category;
     var content = request.body.content;
     var postTime;
+    var path;
     
     if(Validation.IsNullOrEmpty([title, date, slug, content])){
 	errors = true;
@@ -423,29 +443,45 @@ exports.PostUpdate = function(request, response){
 	Validation.ErrorRedirect(response, '/admin/posts', 'postUpdateError');   
     else {
 	
-	postTime = new Date(date);
-	
-	Model.PostModel.update(
-	    { _id: request.body.id }, 
-	    {
-		title: title,
-		date: date,
-		slug: slug,
-		category:category,		
-		content: content,
-		updated: Date.now()
-	    },
-	    { multi: true }, 
-	    function(error, result){
-		if(error) {
-		    Validation.ErrorRedirect(response, '/admin/posts', 'postUpdateError');
-		}
-		else{
-		    Validation.SuccessRedirect(response, '/admin/posts', 'postUpdated');
-		}
-		    
+	Model.CategoryModel.findOne({ _id: category }, function(error, result){
+
+	    if(error) {
+		Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFoundError');  
 	    }
-	);	
+	    else {
+		if(Validation.IsNullOrEmpty(result.slug)) {
+		    path = slug;
+		}
+		else {
+		    path = result.slug + '/' + slug;
+		}	    
+	    
+		postTime = new Date(date);
+
+		Model.PostModel.update(
+		    { _id: request.body.id }, 
+		    {
+			title: title,
+			date: date,
+			slug: slug,
+			category:category,
+			path: path,
+			content: content,
+			updated: Date.now()
+		    },
+		    { multi: true }, 
+		    function(error, result){
+			if(error) {
+			    Validation.ErrorRedirect(response, '/admin/posts', 'postUpdateError');
+			}
+			else{
+			    Validation.SuccessRedirect(response, '/admin/posts', 'postUpdated');
+			}
+
+		    }
+		);	    
+	    }
+	});	
     }
 };
 

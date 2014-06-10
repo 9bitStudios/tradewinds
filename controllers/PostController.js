@@ -7,9 +7,9 @@ var bcrypt = require('bcrypt-nodejs');
 
 exports.Process = function(request, response, next){
 
-    var slug = request.url.substring(1);
+    var path = request.url.substring(1);
     
-    Model.PostModel.findOne({ slug: slug }, function(error, result){
+    Model.PostModel.findOne({ path: path }, function(error, result){
 	
 	if(error) {
 	    next();
