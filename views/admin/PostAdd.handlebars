@@ -6,13 +6,17 @@
     
     <label>Category</label>
 
-    <select name="category">
+    <select name="category" class="tw-admin-post-category">
 	{{#categories}}
-	    <option value="{{_id}}">{{name}}</option>
+	    <option value="{{_id}}" data-slug="{{ slug }}">{{name}}</option>
 	{{/categories}}
     </select>
     
-    <div class="clear"></div>
+    <div class="clearout"></div>
+
+    <label>Path</label> <span class="tw-admin-post-path"></span>
+
+    <div class="clearout"></div>
 
     <label>Content</label> 
 
