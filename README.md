@@ -5,17 +5,19 @@ Tradewinds is a web application built on Node.js, Express, and MongoDB that uses
 
 ### Installation
 
-To install, simply run the following...
+After downloading the package, to install the dependency libraries that the application uses simply run the following...
 
 ```
 npm install
 ```
 
-Once all dependencies have finished installing, you're also going to want to make sure you have MongoDB installed as well.
+Once all dependencies have finished installing you're also going to want to make sure you have [MongoDB](http://www.mongodb.org/) installed as well.
 
 ### Running the Application
 
-To run the application you need to first start up the database and point it at the project's db folder. So in your mongodb/bin directory you'd want to run...
+Before you first run the application you will want to edit your config.js file in the root directory if you want to customize various elements of your application such as database name, hostnames, ports, email, etc. Take a look through the config.js file to configure your setup and environment.
+
+Once you have your configuration set, to run the application you need start up the database and point it at the project's db folder (or wherever it is you are storing your database files). So in your mongodb/bin directory you'd want to run...
 
 ```
 mongod --dbpath /c/path/to/tradewinds/db
@@ -29,9 +31,7 @@ node tradewinds
 
 ### Setup
 
-Before you first run the application you're going to want to do some things to get started. You may want to edit your config.js file if you want to customize various elements of your application such as database name, hostnames, ports, etc. Take a look through the config.js file to configure your setup and environment.
-
-When you first run the application you'll want to go to the /install route...
+If it is the first time you are running the application you will probably want to go to the /install route...
 
 ```
 http://yourwebsite.com/install
