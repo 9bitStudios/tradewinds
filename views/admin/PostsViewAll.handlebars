@@ -2,6 +2,7 @@
 {{#posts}}
     <li>
 	<strong>{{title}}</strong> 
+	<a href="/{{ path }}" target="_blank">View Post</a>
 	<a href="/admin/post/edit/{{ _id }}">Edit</a>
 	<a href="/admin/post/delete/{{ _id }}" onclick="return confirm('Are you sure?')">Delete</a>
     </li>
