@@ -6,8 +6,8 @@ var session = require('express-session');
 var multer = require('multer');
 var logger = require('morgan');
 var csrf = require('csurf');
-var methodOverride = require('errorhandler');
-var errorHandler = require('csurf');
+var methodOverride = require('method-override');
+var errorHandler = require('errorhandler');
 var MongoStore = require('connect-mongo')(session);
 var http = require('http');
 var path = require('path');
@@ -51,27 +51,53 @@ hbs = handlebars.create({
    defaultLayout: 'main'
 });
 
+/* express3-handlebars - https://github.com/ericf/express3-handlebars
+A Handlebars view engine for Express. Works in Express 4, despite the name. */
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
+
+/* Morgan - https://github.com/expressjs/morgan
+ HTTP request logger middleware for node.js */
 app.use(logger());
+
+/* cookie-parser - https://github.com/expressjs/cookie-parser
+ Parse Cookie header and populate req.cookies with an object keyed by the cookie names. */
 app.use(cookieParser(config[config.environment].application.cookieKey));
+
+/* express-session - https://github.com/expressjs/session
+ Simple session middleware for Express */
 app.use(session({
   secret: 'ASDF123',
   store: new MongoStore({
     url: 'mongodb://'+ config[config.environment].database.host+'/'+ config[config.environment].database.name
   })
 }));
+
+/* multer - https://github.com/expressjs/multer
+Multer is a node.js middleware for handling multipart/form-data. It is written on top of busboy for maximum efficiency. */
 app.use(multer({ dest: './uploads/'}));
+
+/* body-parser - https://github.com/expressjs/body-parser 
+Node.js body parsing middleware. */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+/* method-override - https://github.com/expressjs/method-override
+ Lets you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it. */		    
 app.use(methodOverride());
+
+/* csurf - https://github.com/expressjs/csurf
+Node.js CSRF protection middleware. Requires either a session middleware or cookie-parser to be initialized first. */	
 app.use(csrf());
+
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(Middleware.CSRFToken);
 app.use(Middleware.AppendPageInfo);
 app.use(Middleware.AppendNotifications);
 
-//Show all errors in development
+/* errorhandler - https://github.com/expressjs/errorhandler
+ Show errors in development. */
 app.use(errorHandler({ dumpExceptions: true, showStack: true }));
 
 // send app to router
