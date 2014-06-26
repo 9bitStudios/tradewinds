@@ -1,6 +1,14 @@
 
 var express = require('express');
-var MongoStore = require('connect-mongo')(express);
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var multer = require('multer');
+var logger = require('morgan');
+var csrf = require('csurf');
+var methodOverride = require('errorhandler');
+var errorHandler = require('csurf');
+var MongoStore = require('connect-mongo')(session);
 var http = require('http');
 var path = require('path');
 var handlebars  = require('express3-handlebars'), hbs;
@@ -45,26 +53,26 @@ hbs = handlebars.create({
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
-app.use(express.logger('dev'));
-app.use(express.json());
-app.use(express.bodyParser({ keepExtensions: true, uploadDir: './uploads' }));
-app.use(express.cookieParser(config[config.environment].application.cookieKey));
-app.use(express.session({
+app.use(logger());
+app.use(cookieParser(config[config.environment].application.cookieKey));
+app.use(session({
+  secret: 'ASDF123',
   store: new MongoStore({
     url: 'mongodb://'+ config[config.environment].database.host+'/'+ config[config.environment].database.name
   })
 }));
-app.use(express.urlencoded());
-app.use(express.methodOverride());
-app.use(express.csrf());
+app.use(multer({ dest: './uploads/'}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride());
+app.use(csrf());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(Middleware.CSRFToken);
 app.use(Middleware.AppendPageInfo);
 app.use(Middleware.AppendNotifications);
-app.use(app.router);
 
 //Show all errors in development
-app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+app.use(errorHandler({ dumpExceptions: true, showStack: true }));
 
 // send app to router
 require('./router')(app);
