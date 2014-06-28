@@ -11,6 +11,10 @@ exports.RandomString = function(strLength) {
     return text;		
 };
 
+exports.GetFileNameWithoutExtension = function(filename) {
+    return filename.substring(0,filename.lastIndexOf("."));
+};
+
 exports.GetFileExtension = function(filename) {
     var i = filename.lastIndexOf('.');
     return (i < 0) ? '' : filename.substr(i);

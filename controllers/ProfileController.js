@@ -118,12 +118,14 @@ exports.ProfileUpdate = function(request, response){
 	}
 	else {
 	    var profileImage = request.files.profileImage;
-	    
 	    var tempPath = profileImage.path;
+	   
+	    
 	    var newImage = profileID + Helpers.GetFileExtension(profileImage.name);
 	    profileImage.name = newImage;
 	    var targetPath = './public/images/profile/' + profileImage.name;
 
+	    
 	    fs.rename(tempPath, targetPath, function(error) {
 
 		if (error) { 
@@ -138,21 +140,35 @@ exports.ProfileUpdate = function(request, response){
 		    }
 		    else {
 
-			Model.UserModel.update(
-			    { _id: request.body.id }, 
-			    {
-				avatar: newImage
-			    },
-			    { multi: true }, 
-			    function(error, result){
-				if(error) {
-				    Validation.ErrorRedirect(response, '/profile/dashboard', 'profileUpdateError'); 
-				}
-				else {
-				    Validation.SuccessRedirect(response, '/profile/dashboard', 'profileUpdated');
-				}
+			Model.UserModel.findOne({ _id: request.body.id }, function(error, result){
+
+			    if(error) {
+				Validation.ErrorRedirect(response, '/profile/dashboard', 'profileUpdateError'); 
+			    } 
+			    else {
+				
+				if(result.avatar !== 'placeholder.png')
+				    fs.unlinkSync('./public/images/profile/'+result.avatar);
+				
+				
+				Model.UserModel.update(
+				    { _id: request.body.id }, 
+				    {
+					avatar: newImage
+				    },
+				    { multi: true }, 
+				    function(error, result){
+					if(error) {
+					    Validation.ErrorRedirect(response, '/profile/dashboard', 'profileUpdateError'); 
+					}
+					else {
+					    Validation.SuccessRedirect(response, '/profile/dashboard', 'profileUpdated');
+					}
+				    }
+				);
 			    }
-			);
+
+			});
 		    }
 		});
 	    });

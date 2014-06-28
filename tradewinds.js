@@ -19,6 +19,8 @@ var app = express();
 app.set('port', config[config.environment].application.port);
 app.set('views', path.join(__dirname, 'views'));
 
+/* express3-handlebars - https://github.com/ericf/express3-handlebars
+A Handlebars view engine for Express. Works in Express 4, despite the name. */
 hbs = handlebars.create({
    helpers:{
        ifCond: function(v1, operator, v2, options){
@@ -51,14 +53,12 @@ hbs = handlebars.create({
    defaultLayout: 'main'
 });
 
-/* express3-handlebars - https://github.com/ericf/express3-handlebars
-A Handlebars view engine for Express. Works in Express 4, despite the name. */
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 /* Morgan - https://github.com/expressjs/morgan
  HTTP request logger middleware for node.js */
-app.use(logger());
+app.use(logger({ format: 'dev', immediate: true }));
 
 /* cookie-parser - https://github.com/expressjs/cookie-parser
  Parse Cookie header and populate req.cookies with an object keyed by the cookie names. */
