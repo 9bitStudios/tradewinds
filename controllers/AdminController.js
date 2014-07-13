@@ -279,21 +279,32 @@ exports.PostsViewAll = function(request, response){
 exports.PostAdd = function(request, response){
 
     Authenticate(request, response);
+    var categoryResultSet;
+    var authorResultSet;
     
-    Model.CategoryModel.find({}, function(error, result){
+    Model.CategoryModel.find({}).exec(function(error, result){
 	
 	if(error) {
 	    Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFoundError');  
 	}
+	categoryResultSet = result; // putting this directly on 
+	
+	
+    }).then(Model.UserModel.find({}).exec(function(error, result){
+	
+	if(error) {
+	    Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFoundError');  
+	}	
+	authorResultSet = result;
+	
 	response.pageInfo.title = 'Add New Post';
 	response.pageInfo.layout = defaultLayout;
+	response.pageInfo.categories = categoryResultSet;
+	response.pageInfo.authors = authorResultSet;
 	response.pageInfo.userInfo.name = request.session.username;
-	response.pageInfo.categories = result;
 	response.render('admin/PostAdd', response.pageInfo);
-	
-    });
-    
-
+    }));
+	    
     
 };
 
@@ -307,9 +318,9 @@ exports.PostCreate = function(request, response){
     var title = request.body.title;
     var date = request.body.date;
     var slug = request.body.slug;
-    var category = request.body.category;    
+    var category = request.body.category; 
+    var author = request.body.author; 
     var content = request.body.content;
-    
     var postTime;
     var path;
     
@@ -325,20 +336,28 @@ exports.PostCreate = function(request, response){
 	Validation.ErrorRedirect(response, '/admin/posts', 'postCreateError');   
     else {
 	
-	Model.CategoryModel.findOne({ _id: category }, function(error, result){
+	Model.CategoryModel.findOne({ _id: category }).exec(function(error, result){
 
 	    if(error) {
 		Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFoundError');  
 	    }
 	    else {
-		
 		if(Validation.IsNullOrEmpty(result.slug)) {
 		    path = slug;
 		}
 		else {
 		    path = result.slug + '/' + slug;
-		}
-		    
+		}				
+	    }
+
+	}).then(Model.UserModel.findOne({ _id: author }).exec(function(error, result) {
+	    
+	    if(error) {
+		Validation.ErrorRedirect(response, '/admin/posts', 'usersNotFoundError'); 
+	    } else {
+		
+		console.log(result)
+		
 		postTime = new Date(date);
 
 		var p = new Model.PostModel({ 
@@ -346,6 +365,7 @@ exports.PostCreate = function(request, response){
 		    date: postTime,
 		    slug: slug,
 		    category: category,
+		    author: author,
 		    path: path,
 		    content: content,
 		    updated: Date.now()
@@ -360,9 +380,9 @@ exports.PostCreate = function(request, response){
 			Validation.SuccessRedirect(response, '/admin/posts', 'postCreated');
 		    }
 		});		
-	    }
-
-	});		
+		
+	    }		
+	}));	
     }
 };
 
@@ -373,7 +393,7 @@ exports.PostEdit = function(request, response){
     Authenticate(request, response);
     var id = request.params.id;
     
-    Model.PostModel.findOne({ _id: id }).populate('category').exec(function(error, result){
+    Model.PostModel.findOne({ _id: id }).populate('author').populate('category').exec(function(error, result) {
 	
 	if(error) {
 	    Validation.ErrorRedirect(response, '/admin/posts', 'postNotFound'); 
@@ -385,33 +405,45 @@ exports.PostEdit = function(request, response){
 	    var formattedDate = Helpers.GetFormattedDate(result.date);
 	    var postSlug = result.slug;
 	    var postCategory = result.category;
+	    var postAuthor = result.author;
 	    var postContent = result.content;
 	    
-	    Model.CategoryModel.find({}, function(error, result){
+	    Model.CategoryModel.find({}).exec(function(error, result){
 
 		if(error) {
 		    Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFoundError');  
 		}
-		response.pageInfo.title = 'Edit Post: ' + postTitle;
-		response.pageInfo.layout = defaultLayout;
-		response.pageInfo.userInfo.name = request.session.username;
-		response.pageInfo.categories = result;
-		response.pageInfo.post = {
-		    id: postID,
-		    title: postTitle,
-		    date: formattedDate,
-		    category: postCategory,
-		    slug: postSlug,
-		    content: postContent
-		};	
-		response.render('admin/PostEdit', response.pageInfo);	
-
-	    });	    
+		
+		else {
+		    response.pageInfo.categories = result;
+		}
+		
+	    }).then(Model.UserModel.find({}).exec(function(error, result){
+		
+		if(error) {
+		    Validation.ErrorRedirect(response, '/admin/posts', 'usersNotFoundError');  
+		}		
+		else {
+		    response.pageInfo.title = 'Edit Post: ' + postTitle;
+		    response.pageInfo.layout = defaultLayout;
+		    response.pageInfo.userInfo.name = request.session.username;
+		    response.pageInfo.authors = result;
+		    response.pageInfo.post = {
+			id: postID,
+			title: postTitle,
+			date: formattedDate,
+			category: postCategory,
+			author: postAuthor,
+			slug: postSlug,
+			content: postContent
+		    };	
+		    response.render('admin/PostEdit', response.pageInfo);	
+		}
+		
+	    }));
     
 	}
-	
     });
-    
 };
 
 
@@ -427,6 +459,7 @@ exports.PostUpdate = function(request, response){
     var date = request.body.date;
     var slug = request.body.slug;
     var category = request.body.category;
+    var author = request.body.author;
     var content = request.body.content;
     var postTime;
     var path;
@@ -443,7 +476,7 @@ exports.PostUpdate = function(request, response){
 	Validation.ErrorRedirect(response, '/admin/posts', 'postUpdateError');   
     else {
 	
-	Model.CategoryModel.findOne({ _id: category }, function(error, result){
+	Model.CategoryModel.findOne({ _id: category }).exec(function(error, result){
 
 	    if(error) {
 		Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFoundError');  
@@ -455,33 +488,36 @@ exports.PostUpdate = function(request, response){
 		else {
 		    path = result.slug + '/' + slug;
 		}	    
-	    
-		postTime = new Date(date);
-
-		Model.PostModel.update(
-		    { _id: request.body.id }, 
-		    {
-			title: title,
-			date: date,
-			slug: slug,
-			category:category,
-			path: path,
-			content: content,
-			updated: Date.now()
-		    },
-		    { multi: true }, 
-		    function(error, result){
-			if(error) {
-			    Validation.ErrorRedirect(response, '/admin/posts', 'postUpdateError');
-			}
-			else{
-			    Validation.SuccessRedirect(response, '/admin/posts', 'postUpdated');
-			}
-
-		    }
-		);	    
+	 	    
 	    }
-	});	
+	}).then(Model.UserModel.findOne({ _id: author }).exec(function(error, result){
+	
+	    postTime = new Date(date);
+
+	    Model.PostModel.update(
+		{ _id: request.body.id }, 
+		{
+		    title: title,
+		    date: date,
+		    slug: slug,
+		    category:category,
+		    author:author,
+		    path: path,
+		    content: content,
+		    updated: Date.now()
+		},
+		{ multi: true }, 
+		function(error, result){
+		    if(error) {
+			Validation.ErrorRedirect(response, '/admin/posts', 'postUpdateError');
+		    }
+		    else{
+			Validation.SuccessRedirect(response, '/admin/posts', 'postUpdated');
+		    }
+
+		}
+	    );		
+	}));	
     }
 };
 

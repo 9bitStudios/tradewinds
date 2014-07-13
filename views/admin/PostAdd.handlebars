@@ -11,7 +11,15 @@
 	    <option value="{{_id}}" data-slug="{{ slug }}">{{name}}</option>
 	{{/categories}}
     </select>
+
+    <label>Author</label>
     
+    <select name="author" class="tw-admin-post-author">
+	{{#authors}}
+	    <option value="{{_id}}">{{name}}</option>
+	{{/authors}}
+    </select>
+
     <div class="clearout"></div>
 
     <label>Path</label> <span class="tw-admin-post-path"></span>
