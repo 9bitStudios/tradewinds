@@ -169,7 +169,7 @@ exports.UserEdit = function(request, response){
     Model.UserModel.findOne({ _id: id }, function(error, result){
 
 	if(error) {
-	    Validation.ErrorRedirect(response, '/admin/users', 'userNotFoundError');
+	    Validation.ErrorRedirect(response, '/admin/users', 'userNotFound');
 	}
 	response.pageInfo.title = 'Edit User';
 	response.pageInfo.layout = defaultLayout;
@@ -241,6 +241,8 @@ exports.UserDelete = function(request, response){
 
     Authenticate(request, response);
 
+    
+
     Model.UserModel.remove({ _id: request.params.id, isDefault: false }, function(error, result) {
 	if (error) {
 	    Validation.ErrorRedirect(response, '/admin/users', 'userDeleteError');
@@ -279,28 +281,25 @@ exports.PostsViewAll = function(request, response){
 exports.PostAdd = function(request, response){
 
     Authenticate(request, response);
-    var categoryResultSet;
-    var authorResultSet;
     
     Model.CategoryModel.find({}).exec(function(error, result){
 	
 	if(error) {
-	    Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFoundError');  
+	    Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFound');  
 	}
-	categoryResultSet = result; // putting this directly on 
+	response.pageInfo.categories = result; 
 	
 	
     }).then(Model.UserModel.find({}).exec(function(error, result){
 	
 	if(error) {
-	    Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFoundError');  
+	    Validation.ErrorRedirect(response, '/admin/posts', 'usersNotFound');  
 	}	
 	authorResultSet = result;
 	
 	response.pageInfo.title = 'Add New Post';
 	response.pageInfo.layout = defaultLayout;
-	response.pageInfo.categories = categoryResultSet;
-	response.pageInfo.authors = authorResultSet;
+	response.pageInfo.authors = result;
 	response.pageInfo.userInfo.name = request.session.username;
 	response.render('admin/PostAdd', response.pageInfo);
     }));
@@ -339,7 +338,7 @@ exports.PostCreate = function(request, response){
 	Model.CategoryModel.findOne({ _id: category }).exec(function(error, result){
 
 	    if(error) {
-		Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFoundError');  
+		Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFound');  
 	    }
 	    else {
 		if(Validation.IsNullOrEmpty(result.slug)) {
@@ -353,7 +352,7 @@ exports.PostCreate = function(request, response){
 	}).then(Model.UserModel.findOne({ _id: author }).exec(function(error, result) {
 	    
 	    if(error) {
-		Validation.ErrorRedirect(response, '/admin/posts', 'usersNotFoundError'); 
+		Validation.ErrorRedirect(response, '/admin/posts', 'userNotFound'); 
 	    } else {
 		
 		console.log(result)
@@ -411,7 +410,7 @@ exports.PostEdit = function(request, response){
 	    Model.CategoryModel.find({}).exec(function(error, result){
 
 		if(error) {
-		    Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFoundError');  
+		    Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFound');  
 		}
 		
 		else {
@@ -421,7 +420,7 @@ exports.PostEdit = function(request, response){
 	    }).then(Model.UserModel.find({}).exec(function(error, result){
 		
 		if(error) {
-		    Validation.ErrorRedirect(response, '/admin/posts', 'usersNotFoundError');  
+		    Validation.ErrorRedirect(response, '/admin/posts', 'usersNotFound');  
 		}		
 		else {
 		    response.pageInfo.title = 'Edit Post: ' + postTitle;
@@ -479,7 +478,7 @@ exports.PostUpdate = function(request, response){
 	Model.CategoryModel.findOne({ _id: category }).exec(function(error, result){
 
 	    if(error) {
-		Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFoundError');  
+		Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFound');  
 	    }
 	    else {
 		if(Validation.IsNullOrEmpty(result.slug)) {

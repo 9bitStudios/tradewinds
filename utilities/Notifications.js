@@ -17,7 +17,7 @@ exports.GetNotification = function(type, id) {
     var error = {
 	'loginFailed': 'Username or password are incorrect',
 	'usersNotFound': 'Users were not found',
-	'userNotFoundError': 'This user ID was not found',
+	'userNotFound': 'This user ID was not found',
 	'userAddError': 'There was an error adding the user',
 	'userExists': 'Username or email already exists. Please choose a unique username and email',
 	'userUpdateError': 'There was an error updating the user',
@@ -26,7 +26,8 @@ exports.GetNotification = function(type, id) {
 	'postCreateError': 'There was an error creating the post',
 	'postUpdateError': 'There was an error updating the post',
 	'postDeleteError': 'There was an error deleting the post',
-	'categoryNotFound': 'Categories were not found',
+	'categoryNotFound': 'Category was not found',
+	'categoriesNotFound': 'Categories were not found',
 	'categoryCreateError': 'There was an error creating the category',
 	'categoryUpdateError': 'There was an error updating the category',
 	'categoryDeleteError': 'There was an error deleting the category',	
