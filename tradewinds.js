@@ -91,6 +91,7 @@ Node.js CSRF protection middleware. Requires either a session middleware or cook
 app.use(csrf());
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'static')));
 
 app.use(Middleware.CSRFToken);
 app.use(Middleware.AppendPageInfo);
