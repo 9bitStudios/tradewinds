@@ -12,6 +12,9 @@ h6 {
   display: block;
   width: 100%;
 }
+a {
+  text-decoration: none;
+}
 label {
   display: block;
 }
@@ -29,6 +32,31 @@ label {
   overflow: hidden;
   width: 0;
   height: 20px;
+}
+/**************************************************
+MENU SORTER
+***************************************************/
+.tw-admin-menu-item-add {
+  cursor: pointer;
+}
+.tw-admin-menu-sorter {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.tw-admin-menu-sorter a {
+  cursor: pointer;
+}
+.tw-admin-menu-sorter li {
+  display: block;
+  margin: 5px 0px;
+  overflow: auto;
+  border: 1px solid #333;
+  padding: 5px;
+  background: #ccc;
+}
+.tw-admin-menu-sorter li a.tw-admin-menu-item-remove {
+  float: right;
 }
 /**************************************************
 DATEPICKER

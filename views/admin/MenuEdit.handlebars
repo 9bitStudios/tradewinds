@@ -1,7 +1,60 @@
-<form method="post" action="/admin/menu/edit">
-    <label>Name</label> <input name="name" type="text" />
-    <input name="data" type="hidden" value="{'something':'another thing'}" />
+<form method="post" action="/admin/menu/add">
+    <label>Name</label> <input name="name" class="tw-admin-menu-name" type="text" />
+
+    <div class="clearout"></div>
+
+    <a class="tw-admin-menu-item-add">+</a>
+
+    <div class="clearout"></div>
+
+    <ul class="tw-admin-menu-sorter"></ul>
+
+    <div class="clearout"></div>
 
     <input name="_csrf" type="hidden" value="{{ csrftoken }}" />
-    <input type="submit" value="Submit" />
+
+    <a class="tw-admin-menu-save">Save Menu</a>
+
 </form>
+
+<script type="text/javascript">
+
+    jQuery(document).ready(function(){
+
+	jQuery('.tw-admin-menu-sorter').sortable();
+
+	function addMenuItemEvents(){
+	    jQuery('.tw-admin-menu-item-remove').on('click',function(e){
+		e.preventDefault();
+		jQuery(this).parent().remove();
+	    });
+	}
+
+	jQuery('.tw-admin-menu-item-add').on('click',function(e){
+	    e.preventDefault();
+	    jQuery('.tw-admin-menu-sorter').append('<li class="tw-admin-menu-item"><a class="tw-admin-menu-item-remove">(-)</a><label>Label:</label><input class="tw-admin-menu-item-label" type="text" /> <label>URL:</label> <input class="tw-admin-menu-item-url" type="text" /></li>');
+	    addMenuItemEvents();
+	});
+
+	jQuery('.tw-admin-menu-save').on('click', function(e){
+	    
+	    var menuObject = {};
+	    menuObject.name = jQuery('.tw-admin-menu-name').val();
+	    var menuArray = [];
+
+	    jQuery('.tw-admin-menu-sorter li').each(function(){
+
+		var menuItem = {};
+		menuItem.label = jQuery(this).find('.tw-admin-menu-item-label').val();
+		menuItem.url = jQuery(this).find('.tw-admin-menu-item-url').val();
+		menuArray.push(menuItem);
+	    });
+
+	    menuObject.menu = menuArray;
+	    alert('Saving...' + JSON.stringify(menuObject));
+
+	});
+
+    });
+
+</script>
