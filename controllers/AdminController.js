@@ -241,8 +241,6 @@ exports.UserDelete = function(request, response){
 
     Authenticate(request, response);
 
-    
-
     Model.UserModel.remove({ _id: request.params.id, isDefault: false }, function(error, result) {
 	if (error) {
 	    Validation.ErrorRedirect(response, '/admin/users', 'userDeleteError');
@@ -572,27 +570,106 @@ exports.MenuAdd = function(request, response){
 
 // Admin - Create Menu
 
-exports.MenuCreate = function(request, response){ };
+exports.MenuCreate = function(request, response){ 
+    Authenticate(request, response);
+    
+    var m = new Model.MenuModel({ 
+	name: request.body.name,
+	data: JSON.stringify(request.body.menu)
+    });    
+    
+    m.save(function(error){
+
+	if(error) {
+	    response.send(500, false);
+	}
+	else {
+	    response.send(200, true);
+	}
+    });
+};
 
 // Admin - Edit Menu
 
 exports.MenuEdit = function(request, response){ 
 
     Authenticate(request, response);
-    response.pageInfo.title = 'Edit Menu';
-    response.pageInfo.layout = defaultLayout;
-    response.pageInfo.userInfo.name = request.session.username;
-    response.render('admin/MenuEdit', response.pageInfo);
+    var id = request.params.id;
+    
+    Model.MenuModel.findOne({ _id: id }, function(error, result){
+	if(error) {
+	    Validation.ErrorRedirect(response, '/admin/categories', 'categoryNotFound'); 
+	}
+	else {
+	    
+	    response.pageInfo.title = 'Edit Menu';
+	    response.pageInfo.layout = defaultLayout;
+	    response.pageInfo.userInfo.name = request.session.username;
+	    response.pageInfo.menuData = {
+		id: result._id,
+		name: result.name,
+		data: result.data
+	    };		
+	    response.render('admin/MenuEdit', response.pageInfo);	    
+	}
+	
+    });
 
 };
 
 // Admin - Update Menu
 
-exports.MenuUpdate = function(request, response){ };
+exports.MenuUpdate = function(request, response){ 
+    
+    var id = request.body.id;
+    var errors = false;
+    
+    if(Validation.IsNullOrEmpty([id])){
+	errors = true;
+    }
+    
+    if(errors)
+	Validation.ErrorRedirect(response, '/admin/menus', 'menuUpdateError');   
+    else {
+	
+	Model.MenuModel.update(
+	    { _id: id }, 
+	    {
+		name: request.body.name,
+		data: JSON.stringify(request.body.menu)
+	    },
+	    { multi: true }, 
+	    function(error, result){
+		if(error) {
+		    response.send(500, false);
+		}
+		else{
+		    response.send(200, true);
+		}
+		    
+	    }
+	);	
+    }
+
+};
 
 // Admin - Delete Menu
 
-exports.MenuDelete = function(request, response){ };
+exports.MenuDelete = function(request, response){ 
+
+    Authenticate(request, response);
+
+    Model.MenuModel.remove({ _id: request.params.id }, function(error, result) {
+	if (error) {
+	    Validation.ErrorRedirect(response, '/admin/menus', 'menuDeleteError');
+	}
+	else {
+	    Validation.SuccessRedirect(response, '/admin/menus', 'menuDeleted');
+	}
+	    
+    });
+    
+};
 
 // Admin - View All Categories
 

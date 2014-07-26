@@ -26,7 +26,7 @@ var User = new mongoose.Schema({
 
 var Menu = new mongoose.Schema({
     name: String,
-    data: mongoose.Schema.Types.Mixed
+    data: String
 });
 
 var Post = new mongoose.Schema({

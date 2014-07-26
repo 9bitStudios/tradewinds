@@ -51,7 +51,25 @@
 	    });
 
 	    menuObject.menu = menuArray;
-	    alert('Saving...' + JSON.stringify(menuObject));
+	    
+	    jQuery.ajax({
+		url: '/admin/menu/add',
+		beforeSend: function (request) {
+		    request.setRequestHeader("x-csrf-token", '{{ csrftoken }}');
+		},
+		dataType: 'json',
+		contentType: 'application/json; charset=UTF-8',
+		data: JSON.stringify(menuObject),
+		type: 'POST',
+		xhrFields: {withCredentials: true}, // required for authenticating session in AJAX request
+		success: function(){
+		    alert('Menu Saved');
+		    window.location = '/admin/menus';
+		},
+		error: function(){
+		    alert('There was an error saving the menu');
+		}
+	    });
 
 	});
 
