@@ -62,9 +62,9 @@
 		data: JSON.stringify(menuObject),
 		type: 'POST',
 		xhrFields: {withCredentials: true}, // required for authenticating session in AJAX request
-		success: function(){
+		success: function(data, textStatus, jqXHR){
 		    alert('Menu Saved');
-		    window.location = '/admin/menus';
+		    window.location = '/admin/menu/edit/' + data.id;
 		},
 		error: function(){
 		    alert('There was an error saving the menu');

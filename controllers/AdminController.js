@@ -578,13 +578,13 @@ exports.MenuCreate = function(request, response){
 	data: JSON.stringify(request.body.menu)
     });    
     
-    m.save(function(error){
+    m.save(function(error, result){
 
 	if(error) {
 	    response.send(500, false);
 	}
 	else {
-	    response.send(200, true);
+	    response.send(200, {id:result._id});
 	}
     });
 };
