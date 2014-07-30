@@ -9,7 +9,7 @@ exports.Process = function(request, response, next){
 
     var path = request.url.substring(1);
     
-    Model.PostModel.findOne({ path: path }, function(error, result){
+    Model.PostModel.findOne({ path: path }).exec(function(error, result){
 	
 	if(error) {
 	    next();
@@ -18,13 +18,26 @@ exports.Process = function(request, response, next){
 	    if(result) {
 		response.pageInfo.title = result.title;
 		response.pageInfo.content = result.content;
-		response.render('home/Post', response.pageInfo);
 	    }
 	    else {
 		next();
 	    }
 	}
-    });
+    }).then(Model.MenuModel.find({}).exec(function(error, result){
+	
+	if(error) {
+	    next();
+	}
+	else {
+	    if(result) {
+		
+		response.pageInfo.menus = result;
+	    }
+	    
+	    response.render('home/Post', response.pageInfo);
+	}
+	
+    }));
     
 };
 
