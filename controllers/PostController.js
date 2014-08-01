@@ -30,10 +30,8 @@ exports.Process = function(request, response, next){
 	}
 	else {
 	    if(result) {
-		
-		response.pageInfo.menus = result;
+		response.pageInfo.menus = Helpers.GetMenus(result);
 	    }
-	    
 	    response.render('home/Post', response.pageInfo);
 	}
 	

@@ -33,3 +33,13 @@ exports.GetFormattedDate = function(date) {
     return date.getFullYear() + '/' + month + '/' + day;
     
 };
+
+exports.GetMenus = function(menuArray){
+    var obj = {};
+    
+    for(var i=0; i < menuArray.length; i++) {
+        obj[menuArray[i].name] = menuArray[i].data;
+    }
+    return obj;
+    
+};
