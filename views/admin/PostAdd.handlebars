@@ -45,31 +45,34 @@
        ],    
      });
 
+    (function($){
 
-    jQuery(document).ready(function(){
-	jQuery(".tw-admin-post-datepicker").datepicker({dateFormat : "yy/mm/dd"});
+        $(document).ready(function(){
+            $(".tw-admin-post-datepicker").datepicker({dateFormat : "yy/mm/dd"});
 
-	function updatePath(){
-	    var category = jQuery('.tw-admin-post-category option:selected').attr('data-slug').toLowerCase();
-	    if(category != "") {
-		category = "/" + category;
-	    }
-	    jQuery('.tw-admin-post-path').text(window.location.protocol + '//' + window.location.host + category + '/' + jQuery('.tw-admin-post-slug').val());    
-	}      
+            function updatePath(){
+                var category = $('.tw-admin-post-category option:selected').attr('data-slug').toLowerCase();
+                if(category != "") {
+                    category = "/" + category;
+                }
+                $('.tw-admin-post-path').text(window.location.protocol + '//' + window.location.host + category + '/' + $('.tw-admin-post-slug').val());    
+            }      
 
-	jQuery('.tw-admin-convert-slug').click(function(e) {
-	    e.preventDefault();
-	    var text = TradewindsAdmin.ConvertToSlug(jQuery('.tw-admin-post-title').val());
-	    jQuery('.tw-admin-post-slug').val(text);
-	    updatePath();
-	});
+            $('.tw-admin-convert-slug').click(function(e) {
+                e.preventDefault();
+                var text = TradewindsAdmin.ConvertToSlug($('.tw-admin-post-title').val());
+                $('.tw-admin-post-slug').val(text);
+                updatePath();
+            });
 
-	updatePath();
+            updatePath();
 
-	jQuery('.tw-admin-post-category, .tw-admin-post-slug').change(function(){
-	    updatePath();
-	});
+            $('.tw-admin-post-category, .tw-admin-post-slug').change(function(){
+                updatePath();
+            });
 
-    });
+        });    
+
+    })(jQuery);
 
 </script>

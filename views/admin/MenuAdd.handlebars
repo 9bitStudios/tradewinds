@@ -19,60 +19,64 @@
 
 <script type="text/javascript">
 
-    jQuery(document).ready(function(){
+    (function($){
 
-	jQuery('.tw-admin-menu-sorter').sortable();
+        $(document).ready(function(){
 
-	function addMenuItemEvents(){
-	    jQuery('.tw-admin-menu-item-remove').on('click',function(e){
-		e.preventDefault();
-		jQuery(this).parent().remove();
-	    });
-	}
+            $('.tw-admin-menu-sorter').sortable();
 
-	jQuery('.tw-admin-menu-item-add').on('click',function(e){
-	    e.preventDefault();
-	    jQuery('.tw-admin-menu-sorter').append('<li class="tw-admin-menu-item"><a class="tw-admin-menu-item-remove">(-)</a><label>Label:</label><input class="tw-admin-menu-item-label" type="text" /> <label>URL:</label> <input class="tw-admin-menu-item-url" type="text" /></li>');
-	    addMenuItemEvents();
-	});
+            function addMenuItemEvents(){
+                $('.tw-admin-menu-item-remove').on('click',function(e){
+                    e.preventDefault();
+                    $(this).parent().remove();
+                });
+            }
 
-	jQuery('.tw-admin-menu-save').on('click', function(e){
-	    
-	    var menuObject = {};
-	    menuObject.name = jQuery('.tw-admin-menu-name').val();
-	    var menuArray = [];
+            $('.tw-admin-menu-item-add').on('click',function(e){
+                e.preventDefault();
+                $('.tw-admin-menu-sorter').append('<li class="tw-admin-menu-item"><a class="tw-admin-menu-item-remove">(-)</a><label>Label:</label><input class="tw-admin-menu-item-label" type="text" /> <label>URL:</label> <input class="tw-admin-menu-item-url" type="text" /></li>');
+                addMenuItemEvents();
+            });
 
-	    jQuery('.tw-admin-menu-sorter li').each(function(){
+            $('.tw-admin-menu-save').on('click', function(e){
 
-		var menuItem = {};
-		menuItem.label = jQuery(this).find('.tw-admin-menu-item-label').val();
-		menuItem.url = jQuery(this).find('.tw-admin-menu-item-url').val();
-		menuArray.push(menuItem);
-	    });
+                var menuObject = {};
+                menuObject.name = $('.tw-admin-menu-name').val();
+                var menuArray = [];
 
-	    menuObject.menu = menuArray;
-	    
-	    jQuery.ajax({
-		url: '/admin/menu/add',
-		beforeSend: function (request) {
-		    request.setRequestHeader("x-csrf-token", '{{ csrftoken }}');
-		},
-		dataType: 'json',
-		contentType: 'application/json; charset=UTF-8',
-		data: JSON.stringify(menuObject),
-		type: 'POST',
-		xhrFields: {withCredentials: true}, // required for authenticating session in AJAX request
-		success: function(data, textStatus, jqXHR){
-		    alert('Menu Saved');
-		    window.location = '/admin/menu/edit/' + data.id;
-		},
-		error: function(){
-		    alert('There was an error saving the menu');
-		}
-	    });
+                $('.tw-admin-menu-sorter li').each(function(){
 
-	});
+                    var menuItem = {};
+                    menuItem.label = $(this).find('.tw-admin-menu-item-label').val();
+                    menuItem.url = $(this).find('.tw-admin-menu-item-url').val();
+                    menuArray.push(menuItem);
+                });
 
-    });
+                menuObject.menu = menuArray;
+
+                $.ajax({
+                    url: '/admin/menu/add',
+                    beforeSend: function (request) {
+                        request.setRequestHeader("x-csrf-token", '{{ csrftoken }}');
+                    },
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8',
+                    data: JSON.stringify(menuObject),
+                    type: 'POST',
+                    xhrFields: {withCredentials: true}, // required for authenticating session in AJAX request
+                    success: function(data, textStatus, jqXHR){
+                        alert('Menu Saved');
+                        window.location = '/admin/menu/edit/' + data.id;
+                    },
+                    error: function(){
+                        alert('There was an error saving the menu');
+                    }
+                });
+
+            });
+
+        });
+
+    })(jQuery);
 
 </script>

@@ -353,8 +353,6 @@ exports.PostCreate = function(request, response){
 		Validation.ErrorRedirect(response, '/admin/posts', 'userNotFound'); 
 	    } else {
 		
-		console.log(result)
-		
 		postTime = new Date(date);
 
 		var p = new Model.PostModel({ 
