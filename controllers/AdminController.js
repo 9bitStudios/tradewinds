@@ -1,20 +1,15 @@
 var Helpers = require('../utilities/Helpers');
+var Authentication = require('../utilities/Authentication');
 var Validation = require('../utilities/Validation');
 var Model = require('../models/Models');
 var bcrypt = require('bcrypt-nodejs');
 var defaultLayout = 'admin';
 
-function Authenticate(request, response) {
-    if(!request.session.userid || !request.session.username || !request.session.admin) {
-	response.redirect('/admin/login');
-    }
-}
-
 // Admin - Home
 
 exports.Index = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     response.pageInfo.title = 'Administration Panel Home';
     response.pageInfo.layout = defaultLayout;
     response.pageInfo.userInfo.name = request.session.username;
@@ -68,7 +63,7 @@ exports.AuthenticateAdmin = function(request, response){
 
 exports.UsersViewAll = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     Model.UserModel.find(function(error, result){
 	
 	if (error) {
@@ -89,7 +84,7 @@ exports.UsersViewAll = function(request, response){
 
 exports.UserAdd = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     response.pageInfo.title = 'Add User';
     response.pageInfo.layout = defaultLayout;
     response.pageInfo.userInfo.name = request.session.username;	
@@ -101,7 +96,7 @@ exports.UserAdd = function(request, response){
 
 exports.UserCreate = function(request, response){
     
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     
     var errors = false;
     
@@ -163,7 +158,7 @@ exports.UserCreate = function(request, response){
 
 exports.UserEdit = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     var id = request.params.id;
     
     Model.UserModel.findOne({ _id: id }, function(error, result){
@@ -192,7 +187,7 @@ exports.UserEdit = function(request, response){
 
 exports.UserUpdate = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     
     var errors = false;
     var isAdmin = false;
@@ -239,7 +234,7 @@ exports.UserUpdate = function(request, response){
 
 exports.UserDelete = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
 
     Model.UserModel.remove({ _id: request.params.id, isDefault: false }, function(error, result) {
 	if (error) {
@@ -256,7 +251,7 @@ exports.UserDelete = function(request, response){
 
 exports.PostsViewAll = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
 
     Model.PostModel.find(function(error, result){
 	
@@ -278,7 +273,7 @@ exports.PostsViewAll = function(request, response){
 
 exports.PostAdd = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     
     Model.CategoryModel.find({}).exec(function(error, result){
 	
@@ -309,7 +304,7 @@ exports.PostAdd = function(request, response){
 
 exports.PostCreate = function(request, response){
     
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     
     var errors = false;
     var title = request.body.title;
@@ -385,7 +380,7 @@ exports.PostCreate = function(request, response){
 
 exports.PostEdit = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     var id = request.params.id;
     
     Model.PostModel.findOne({ _id: id }).populate('author').populate('category').exec(function(error, result) {
@@ -446,7 +441,7 @@ exports.PostEdit = function(request, response){
 
 exports.PostUpdate = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     
     var errors = false;
     
@@ -520,7 +515,7 @@ exports.PostUpdate = function(request, response){
 
 exports.PostDelete = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
 
     Model.PostModel.remove({ _id: request.params.id }, function(error, result) {
 	if(error) {
@@ -536,7 +531,7 @@ exports.PostDelete = function(request, response){
 
 exports.MenusViewAll = function(request, response){ 
     
-    Authenticate(request, response);    
+    Authentication.AuthenticateAdmin(request, response);  
     
     Model.MenuModel.find(function(error, result){
 	
@@ -558,7 +553,7 @@ exports.MenusViewAll = function(request, response){
 
 exports.MenuAdd = function(request, response){ 
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     response.pageInfo.title = 'Add New Menu';
     response.pageInfo.layout = defaultLayout;
     response.pageInfo.userInfo.name = request.session.username;
@@ -569,7 +564,7 @@ exports.MenuAdd = function(request, response){
 // Admin - Create Menu
 
 exports.MenuCreate = function(request, response){ 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     
     var m = new Model.MenuModel({ 
 	name: request.body.name,
@@ -591,7 +586,7 @@ exports.MenuCreate = function(request, response){
 
 exports.MenuEdit = function(request, response){ 
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     var id = request.params.id;
     
     Model.MenuModel.findOne({ _id: id }, function(error, result){
@@ -655,7 +650,7 @@ exports.MenuUpdate = function(request, response){
 
 exports.MenuDelete = function(request, response){ 
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
 
     Model.MenuModel.remove({ _id: request.params.id }, function(error, result) {
 	if (error) {
@@ -673,7 +668,7 @@ exports.MenuDelete = function(request, response){
 
 exports.CategoriesViewAll = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
 
     Model.CategoryModel.find(function(error, result){
 	
@@ -697,7 +692,7 @@ exports.CategoriesViewAll = function(request, response){
 
 exports.CategoryAdd = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     response.pageInfo.title = 'Add New Category';
     response.pageInfo.layout = defaultLayout;
     response.pageInfo.userInfo.name = request.session.username;
@@ -709,7 +704,7 @@ exports.CategoryAdd = function(request, response){
 
 exports.CategoryCreate = function(request, response){
     
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     
     var errors = false;
     var name = request.body.name;
@@ -745,7 +740,7 @@ exports.CategoryCreate = function(request, response){
 
 exports.CategoryEdit = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     var id = request.params.id;
     
     Model.CategoryModel.findOne({ _id: id, isDefault: false }, function(error, result){
@@ -773,7 +768,7 @@ exports.CategoryEdit = function(request, response){
 
 exports.CategoryUpdate = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
     
     var errors = false;
     
@@ -812,7 +807,7 @@ exports.CategoryUpdate = function(request, response){
 
 exports.CategoryDelete = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
 
     Model.CategoryModel.remove({ _id: request.params.id, isDefault: false }, function(error, result) {
 	if(error) {
@@ -828,7 +823,7 @@ exports.CategoryDelete = function(request, response){
 
 exports.SignUpsViewAll = function(request, response){
 
-    Authenticate(request, response);
+    Authentication.AuthenticateAdmin(request, response);
 
     Model.SignUpModel.find(function(error, result){
 	
