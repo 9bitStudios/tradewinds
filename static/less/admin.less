@@ -1,110 +1,79 @@
-body {
-  font-family: Arial, sans-serif;
-  font-size:13px;
-  background: #eee;
-}
-
-h1,h2,h3,h4,h5,h6 {
-display:block;
-width:100%;
-}
-
-a {
-    text-decoration: none;
-}
-
-label {
-    display:block;
-}
-
-.clear {
-    clear: both;
-    display: block;
-    overflow: hidden;
-    visibility: hidden;
-    width: 0;
-    height: 0;
-}
-.clearout {
-    clear: both;
-    display: block;
-    overflow: hidden;
-    width: 0;
-    height: 20px;
-}
+@import "variables.less";
 
 /**************************************************
-MENU SORTER
+ADMIN PANEL
 ***************************************************/
-.tw-admin-menu-item-add{
-    cursor: pointer;
-}
-
-.tw-admin-menu-sorter { 
-    list-style-type: none; 
-    margin: 0; 
-    padding: 0; 
+body.tw-admin {
     
-    a {
-	cursor:pointer;
-    }
+    background:#eee;
     
-    li {
-	display:block;
-	margin: 5px 0px;
-	overflow: auto;
-	border:1px solid #333;
-	padding:5px;
-	background:#ccc;
-	
-	a.tw-admin-menu-item-remove {
-	    float:right;
-	}
+    /*** Menu Sorter ***/
+    .tw-admin-menu-item-add{
+        cursor: pointer;
     }
-}
 
+    .tw-admin-menu-sorter { 
+        list-style-type: none; 
+        margin: 0; 
+        padding: 0; 
 
-/**************************************************
-DATEPICKER
-***************************************************/
+        a {
+            cursor:pointer;
+        }
 
-.ui-datepicker {
-    display:none;
-    background: #fff; /* Old browsers */
-    background: #fff -moz-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* FF3.6+ */
-    background: #fff -webkit-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* Chrome10+,Safari5.1+ */
-    background: #fff -o-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* Opera11.10+ */
-    background: #fff -ms-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* IE10+ */
-    background: #fff linear-gradient(top, #fcfcfc 0%, #fff 100%); /* W3C */
-    font-size:11px;
-    padding:10px;
-    border:1px solid #ccc;
+        li {
+            display:block;
+            margin: 5px 0px;
+            overflow: auto;
+            border:1px solid #333;
+            padding:5px;
+            background:#ccc;
 
-    table {
-	width:278px;
-	
-	td{
-	    text-align:center;
-	}
+            a.tw-admin-menu-item-remove {
+                float:right;
+            }
+        }
     }
     
-    a {
-	cursor:pointer;
-	text-decoration:none;
-    }
-    
-    .ui-datepicker-prev {
-    }
+    /*** Date Picker ***/
 
-    .ui-datepicker-next {
-	float:right;
+    .ui-datepicker {
+        display:none;
+        background: #fff; /* Old browsers */
+        background: #fff -moz-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* FF3.6+ */
+        background: #fff -webkit-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* Chrome10+,Safari5.1+ */
+        background: #fff -o-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* Opera11.10+ */
+        background: #fff -ms-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* IE10+ */
+        background: #fff linear-gradient(top, #fcfcfc 0%, #fff 100%); /* W3C */
+        font-size:11px;
+        padding:10px;
+        border:1px solid #ccc;
+
+        table {
+            width:278px;
+
+            td{
+                text-align:center;
+            }
+        }
+
+        a {
+            cursor:pointer;
+            text-decoration:none;
+        }
+
+        .ui-datepicker-prev {
+        }
+
+        .ui-datepicker-next {
+            float:right;
+        }    
+
+        .ui-datepicker-title {
+            text-align: center;
+            font-weight:bold;
+        }
+
     }    
-
-    .ui-datepicker-title {
-	text-align: center;
-	font-weight:bold;
-    }
-
 }
-
 
