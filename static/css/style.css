@@ -97,3 +97,30 @@ body.tw-admin .ui-datepicker .ui-datepicker-title {
   text-align: center;
   font-weight: bold;
 }
+/**************************************************
+NOTIFICATIONS
+***************************************************/
+.notifications .success {
+  padding: 5px;
+  border: 1px solid #090;
+  color: #090;
+  background-color: #9fc;
+}
+.notifications .warning {
+  padding: 5px;
+  border: 1px solid #fc0;
+  color: #fc0;
+  background-color: #ffc;
+}
+.notifications .error {
+  padding: 5px;
+  border: 1px solid #900;
+  color: #900;
+  background-color: #fc9;
+}
+.notifications .information {
+  padding: 5px;
+  border: 1px solid #036;
+  color: #036;
+  background-color: #9cf;
+}
