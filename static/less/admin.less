@@ -7,6 +7,42 @@ body.tw-admin {
     
     background:#eee;
     
+    label {
+        font-weight: bold;
+    }
+    
+    input[type="text"], input[type="password"], textarea, select {
+        display:block;
+	padding: 6px 4px;
+	outline: none;
+	margin-bottom: 10px;
+	max-width: 100%;
+	border: 1px solid #ccc;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	background: -webkit-gradient(linear, 0 0, 0 100%, from(#fafafa), to(#ffffff));
+	background: -webkit-linear-gradient(top, #fafafa, #ffffff);
+	background: -moz-linear-gradient(top, #fafafa, #ffffff);
+	background: -o-linear-gradient(top, #fafafa, #ffffff);
+	background: -ms-linear-gradient(top, #fafafa, #ffffff);	
+
+	&:focus {
+		border: 1px solid #aaa;
+		color: #444;
+	}        
+    }
+    
+    .tw-admin-convert-slug{
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    
+    .mce-tinymce {
+        display:block;
+        margin-bottom: 10px;
+    }    
+    
     /*** Menu Sorter ***/
     .tw-admin-menu-item-add{
         cursor: pointer;

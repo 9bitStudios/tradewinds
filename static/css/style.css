@@ -137,6 +137,43 @@ body.tw-admin {
   /*** Menu Sorter ***/
   /*** Date Picker ***/
 }
+body.tw-admin label {
+  font-weight: bold;
+}
+body.tw-admin input[type="text"],
+body.tw-admin input[type="password"],
+body.tw-admin textarea,
+body.tw-admin select {
+  display: block;
+  padding: 6px 4px;
+  outline: none;
+  margin-bottom: 10px;
+  max-width: 100%;
+  border: 1px solid #ccc;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(#fafafa), to(#ffffff));
+  background: -webkit-linear-gradient(top, #fafafa, #ffffff);
+  background: -moz-linear-gradient(top, #fafafa, #ffffff);
+  background: -o-linear-gradient(top, #fafafa, #ffffff);
+  background: -ms-linear-gradient(top, #fafafa, #ffffff);
+}
+body.tw-admin input[type="text"]:focus,
+body.tw-admin input[type="password"]:focus,
+body.tw-admin textarea:focus,
+body.tw-admin select:focus {
+  border: 1px solid #aaa;
+  color: #444;
+}
+body.tw-admin .tw-admin-convert-slug {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+body.tw-admin .mce-tinymce {
+  display: block;
+  margin-bottom: 10px;
+}
 body.tw-admin .tw-admin-menu-item-add {
   cursor: pointer;
 }
