@@ -1,11 +1,17 @@
-exports.AuthenticateAdmin = function(request, response) {
-    if(!request.session.userid || !request.session.username || !request.session.admin) {
+exports.AuthenticateAdmin = function(request, response, next) {
+    if(request.session.userid && request.session.username && request.session.admin) {
+        return next();
+    }
+    else {
         response.redirect('/admin/login');
     }
 };
 
-exports.AuthenticateUser = function(request, response) {
-    if(!request.session.userid || !request.session.username) {
-        response.redirect('//login');
+exports.AuthenticateUser = function(request, response, nexy) {
+    if(request.session.userid && request.session.username) {
+        return next();
+    }
+    else {
+        response.redirect('/login');
     }
 };

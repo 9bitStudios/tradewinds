@@ -11,7 +11,7 @@ var errorHandler = require('errorhandler');
 var MongoStore = require('connect-mongo')(session);
 var http = require('http');
 var path = require('path');
-var handlebars  = require('express3-handlebars'), hbs;
+var handlebars  = require('express-handlebars'), hbs;
 var config = require('./config');
 var Middleware = require('./utilities/Middleware');
 var app = express();
@@ -19,8 +19,8 @@ var app = express();
 app.set('port', config[config.environment].application.port);
 app.set('views', path.join(__dirname, 'views'));
 
-/* express3-handlebars - https://github.com/ericf/express3-handlebars
-A Handlebars view engine for Express. Works in Express 4, despite the name. */
+/* express3-handlebars - https://github.com/ericf/express-handlebars
+A Handlebars view engine for Express. */
 hbs = handlebars.create({
    helpers:{
        ifCond: function(v1, operator, v2, options){

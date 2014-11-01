@@ -3,6 +3,7 @@ var AdminController = require('./controllers/AdminController');
 var PostController = require('./controllers/PostController');
 var InstallController = require('./controllers/InstallController');
 var ProfileController = require('./controllers/ProfileController');
+var Authentication = require('./utilities/Authentication');
 
 // Routes
 module.exports = function(app){
@@ -14,39 +15,39 @@ module.exports = function(app){
        
     // Admin Routes
     
-    app.get('/admin', AdminController.Index);
+    app.get('/admin', Authentication.AuthenticateAdmin, AdminController.Index);
     app.get('/admin/login', AdminController.Login);
-    app.post('/admin/login', AdminController.AuthenticateAdmin);    
+    app.post('/admin/login', AdminController.VerifyLogin);    
     app.get('/admin/logout', AdminController.Logout);    
-    app.get('/admin/users', AdminController.UsersViewAll);     
-    app.get('/admin/user/add', AdminController.UserAdd);  
-    app.post('/admin/user/add', AdminController.UserCreate); 
-    app.get('/admin/user/edit/:id', AdminController.UserEdit); 
-    app.post('/admin/user/edit', AdminController.UserUpdate);
-    app.get('/admin/user/delete/:id', AdminController.UserDelete); 
+    app.get('/admin/users', Authentication.AuthenticateAdmin, AdminController.UsersViewAll);     
+    app.get('/admin/user/add', Authentication.AuthenticateAdmin, AdminController.UserAdd);  
+    app.post('/admin/user/add', Authentication.AuthenticateAdmin, AdminController.UserCreate); 
+    app.get('/admin/user/edit/:id', Authentication.AuthenticateAdmin, AdminController.UserEdit); 
+    app.post('/admin/user/edit', Authentication.AuthenticateAdmin, AdminController.UserUpdate);
+    app.get('/admin/user/delete/:id', Authentication.AuthenticateAdmin, AdminController.UserDelete); 
     
-    app.get('/admin/posts', AdminController.PostsViewAll);     
-    app.get('/admin/post/add', AdminController.PostAdd);  
-    app.post('/admin/post/add', AdminController.PostCreate);     
-    app.get('/admin/post/edit/:id', AdminController.PostEdit); 
-    app.post('/admin/post/edit', AdminController.PostUpdate);
-    app.get('/admin/post/delete/:id', AdminController.PostDelete);
+    app.get('/admin/posts', Authentication.AuthenticateAdmin, AdminController.PostsViewAll);     
+    app.get('/admin/post/add', Authentication.AuthenticateAdmin, AdminController.PostAdd);  
+    app.post('/admin/post/add', Authentication.AuthenticateAdmin, AdminController.PostCreate);     
+    app.get('/admin/post/edit/:id', Authentication.AuthenticateAdmin, AdminController.PostEdit); 
+    app.post('/admin/post/edit', Authentication.AuthenticateAdmin, AdminController.PostUpdate);
+    app.get('/admin/post/delete/:id', Authentication.AuthenticateAdmin, AdminController.PostDelete);
     
-    app.get('/admin/categories', AdminController.CategoriesViewAll);     
-    app.get('/admin/category/add', AdminController.CategoryAdd);  
-    app.post('/admin/category/add', AdminController.CategoryCreate);     
-    app.get('/admin/category/edit/:id', AdminController.CategoryEdit); 
-    app.post('/admin/category/edit', AdminController.CategoryUpdate);
-    app.get('/admin/category/delete/:id', AdminController.CategoryDelete);    
+    app.get('/admin/categories', Authentication.AuthenticateAdmin, AdminController.CategoriesViewAll);     
+    app.get('/admin/category/add', Authentication.AuthenticateAdmin, AdminController.CategoryAdd);  
+    app.post('/admin/category/add', Authentication.AuthenticateAdmin, AdminController.CategoryCreate);     
+    app.get('/admin/category/edit/:id', Authentication.AuthenticateAdmin, AdminController.CategoryEdit); 
+    app.post('/admin/category/edit', Authentication.AuthenticateAdmin, AdminController.CategoryUpdate);
+    app.get('/admin/category/delete/:id', Authentication.AuthenticateAdmin, AdminController.CategoryDelete);    
     
-    app.get('/admin/menus', AdminController.MenusViewAll);     
-    app.get('/admin/menu/add', AdminController.MenuAdd);  
-    app.post('/admin/menu/add', AdminController.MenuCreate);     
-    app.get('/admin/menu/edit/:id', AdminController.MenuEdit); 
-    app.post('/admin/menu/edit', AdminController.MenuUpdate);
-    app.get('/admin/menu/delete/:id', AdminController.MenuDelete);     
+    app.get('/admin/menus', Authentication.AuthenticateAdmin, AdminController.MenusViewAll);     
+    app.get('/admin/menu/add', Authentication.AuthenticateAdmin, AdminController.MenuAdd);  
+    app.post('/admin/menu/add', Authentication.AuthenticateAdmin, AdminController.MenuCreate);     
+    app.get('/admin/menu/edit/:id', Authentication.AuthenticateAdmin, AdminController.MenuEdit); 
+    app.post('/admin/menu/edit', Authentication.AuthenticateAdmin, AdminController.MenuUpdate);
+    app.get('/admin/menu/delete/:id', Authentication.AuthenticateAdmin, AdminController.MenuDelete);     
     
-    app.get('/admin/signups', AdminController.SignUpsViewAll); 
+    app.get('/admin/signups', Authentication.AuthenticateAdmin, AdminController.SignUpsViewAll); 
     
     // Installation Routes
     
@@ -55,13 +56,13 @@ module.exports = function(app){
     app.get('/install/success', InstallController.InstallSuccess);
 
     // Profile Routes
-    app.get('/profile', ProfileController.Index);
+    app.get('/profile', Authentication.AuthenticateUser, ProfileController.Index);
     app.get('/profile/login', ProfileController.Login);
-    app.post('/profile/login', ProfileController.AuthenticateProfile);
+    app.post('/profile/login', ProfileController.VerifyLogin);
     app.get('/profile/logout', ProfileController.Logout);
-    app.get('/profile/dashboard', ProfileController.Dashboard);
-    app.get('/profile/dashboard/edit', ProfileController.ProfileEdit);
-    app.post('/profile/dashboard/edit', ProfileController.ProfileUpdate);
+    app.get('/profile/dashboard', Authentication.AuthenticateUser, ProfileController.Dashboard);
+    app.get('/profile/dashboard/edit', Authentication.AuthenticateUser, ProfileController.ProfileEdit);
+    app.post('/profile/dashboard/edit', Authentication.AuthenticateUser, ProfileController.ProfileUpdate);
     
     app.get('/signup', ProfileController.SignUp);    
     app.post('/signup', ProfileController.SignUpAdd);
@@ -85,4 +86,4 @@ module.exports = function(app){
 	});
     });     
     
-}
+};

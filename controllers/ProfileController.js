@@ -33,7 +33,7 @@ exports.Logout = function(request, response){
     response.redirect('/profile/login');
 };
 
-exports.AuthenticateProfile = function(request, response){
+exports.VerifyLogin = function(request, response){
 
     Model.UserModel.findOne({ 'name': request.body.username, isDefault: false }, 'name password', function(error, user){
 	if (error){
