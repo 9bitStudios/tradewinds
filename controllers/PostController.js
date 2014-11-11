@@ -19,7 +19,7 @@ exports.Process = function(request, response, next){
 		response.pageInfo.title = result.title;
 		response.pageInfo.content = result.content;
                                
-                    Model.MenuModel.find({}).exec(function(error, result){
+                Model.MenuModel.find({}).exec(function(error, result){
 
                     if(result) {
                         response.pageInfo.menus = Helpers.GetMenus(result);

@@ -23,7 +23,7 @@ Once you have your configuration set, to run the application you need start up t
 mongod --dbpath /c/path/to/tradewinds/db
 ```
 
-Once the database starts up then you then just need to run the following...
+Once the database starts up then you then just need to run the following in another console window from the root directory of the project (where tradewinds.js resides)...
 
 ```
 node tradewinds
@@ -34,7 +34,7 @@ node tradewinds
 If it is the first time you are running the application you will probably want to go to the /install route...
 
 ```
-http://yourwebsite.com/install
+http://localhost:1337/install
 ``` 
 
 Here you can create your default admin account to install the application and set up the database. Once successful, you'll receive a notification and a prompt to login with the credentials you just provided.

@@ -181,6 +181,10 @@ body.tw-admin .tw-admin-menu-sorter {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  cursor: move;
+}
+body.tw-admin .tw-admin-menu-sorter label {
+  cursor: move;
 }
 body.tw-admin .tw-admin-menu-sorter a {
   cursor: pointer;

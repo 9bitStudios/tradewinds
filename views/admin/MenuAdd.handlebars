@@ -3,7 +3,7 @@
 
     <div class="clearout"></div>
 
-    <a class="tw-admin-menu-item-add">+</a>
+    <a class="tw-admin-menu-item-add tw-button-medium tw-button-black-flat">+ Add</a>
 
     <div class="clearout"></div>
 
@@ -13,7 +13,7 @@
 
     <input name="_csrf" type="hidden" value="{{ csrftoken }}" />
 
-    <a class="tw-admin-menu-save" class="tw-button-medium tw-button-black-flat">Save Menu</a>
+    <a class="tw-admin-menu-save tw-button-medium tw-button-black-flat">Save Menu</a>
 
 </form>
 
@@ -34,7 +34,7 @@
 
             $('.tw-admin-menu-item-add').on('click',function(e){
                 e.preventDefault();
-                $('.tw-admin-menu-sorter').append('<li class="tw-admin-menu-item"><a class="tw-admin-menu-item-remove">(-)</a><label>Label:</label><input class="tw-admin-menu-item-label" type="text" /> <label>URL:</label> <input class="tw-admin-menu-item-url" type="text" /></li>');
+                $('.tw-admin-menu-sorter').append('<li class="tw-admin-menu-item"><a class="tw-admin-menu-item-remove tw-button-medium tw-button-black-flat">(-) Remove</a><label>Label:</label><input class="tw-admin-menu-item-label" type="text" /> <label>URL:</label> <input class="tw-admin-menu-item-url" type="text" value="http://" /></li>');
                 addMenuItemEvents();
             });
 
