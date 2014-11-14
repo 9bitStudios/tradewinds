@@ -6,12 +6,6 @@ var Model = require('../models/Models');
 var bcrypt = require('bcrypt-nodejs');
 var fs = require('fs');
 
-function Authenticate(request, response) {
-    if(!request.session.userid || !request.session.username) {
-	response.redirect('/profile/login');
-    }
-}
-
 // Profile
 
 exports.Index = function(request, response){
@@ -61,7 +55,6 @@ exports.VerifyLogin = function(request, response){
 
 exports.Dashboard = function(request, response){
 
-    Authenticate(request, response);
     response.pageInfo.title = 'Dashboard';
     response.pageInfo.userInfo.name = request.session.username;
     response.render('profile/Dashboard', response.pageInfo);
@@ -69,8 +62,6 @@ exports.Dashboard = function(request, response){
 };
 
 exports.ProfileEdit = function(request, response){
-
-    Authenticate(request, response);
     
     var profileID = request.session.userid;
     var name = request.session.username;
@@ -95,20 +86,17 @@ exports.ProfileEdit = function(request, response){
 	    }
 	}
     });
-
 };
 
 exports.ProfileUpdate = function(request, response){
-
-    Authenticate(request, response);
     
     var errors = false;
     var profileID = request.session.id;
     var avatar = request.body.avatar;
     
-    if(Validation.IsNullOrEmpty(avatar))
+    if(Validation.IsNullOrEmpty(avatar)) {
 	errors = true;
-    
+    }
     if(errors)
 	Validation.ErrorRedirect(response, '/profile/dashboard', 'profileUpdateError');  
     else {
@@ -147,9 +135,9 @@ exports.ProfileUpdate = function(request, response){
 			    } 
 			    else {
 				
-				if(result.avatar !== 'placeholder.png')
+				if(result.avatar !== 'placeholder.png') {
 				    fs.unlinkSync('./public/images/profile/'+result.avatar);
-				
+                                }
 				
 				Model.UserModel.update(
 				    { _id: request.body.id }, 
@@ -167,13 +155,11 @@ exports.ProfileUpdate = function(request, response){
 				    }
 				);
 			    }
-
 			});
 		    }
 		});
 	    });
-	}
-	    
+	}    
     }
 };
 
@@ -301,11 +287,8 @@ exports.SignUpConfirm = function(request, response){
 	    else {
 		response.redirect('/signup/invalid');
 	    }
-		
 	}
-	
     });
-
 };
 
 exports.SignUpThanks = function(request, response){
