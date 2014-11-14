@@ -1,5 +1,5 @@
 <ul>
     {{#menus.main}}
-        <li><a href="{{url}}">{{label}}</a></li>
+        <li><a href="{{url}}" {{#if newWindow}}target="_blank" {{/if}}>{{label}}</a></li>
     {{/menus.main}}
 </ul>

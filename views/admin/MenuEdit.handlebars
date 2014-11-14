@@ -27,7 +27,12 @@
 
             // populate menu sorter
             for(var i=0; i < menuData.length; i++) {
-                $('.tw-admin-menu-sorter').append('<li class="tw-admin-menu-item"><a class="tw-admin-menu-item-remove tw-button-medium tw-button-black-flat">(-) Remove</a><label>Label:</label><input class="tw-admin-menu-item-label" type="text" value="'+menuData[i].label+'" /> <label>URL:</label> <input class="tw-admin-menu-item-url" type="text" value="'+menuData[i].url+'" /></li>');
+                
+                var checked = "";
+                if(menuData[i].newWindow) {
+                    checked = "checked";
+                }
+                $('.tw-admin-menu-sorter').append('<li class="tw-admin-menu-item"><a class="tw-admin-menu-item-remove tw-button-medium tw-button-black-flat">(-) Remove</a><label>Label:</label><input class="tw-admin-menu-item-label" type="text" value="'+menuData[i].label+'" /> <label>URL:</label> <input class="tw-admin-menu-item-url" type="text" value="'+menuData[i].url+'" /><label>New Window:</label> <input class="tw-admin-menu-item-new-window" type="checkbox" '+checked+' /></li>');
             }
 
             $('.tw-admin-menu-sorter').sortable();
@@ -42,7 +47,7 @@
 
             $('.tw-admin-menu-item-add').on('click',function(e){
                 e.preventDefault();
-                $('.tw-admin-menu-sorter').append('<li class="tw-admin-menu-item"><a class="tw-admin-menu-item-remove tw-button-medium tw-button-black-flat">(-) Remove</a><label>Label:</label><input class="tw-admin-menu-item-label" type="text" /> <label>URL:</label> <input class="tw-admin-menu-item-url" type="text" value="http://" /></li>');
+                $('.tw-admin-menu-sorter').append('<li class="tw-admin-menu-item"><a class="tw-admin-menu-item-remove tw-button-medium tw-button-black-flat">(-) Remove</a><label>Label:</label><input class="tw-admin-menu-item-label" type="text" /><label>URL:</label><input class="tw-admin-menu-item-url" type="text" /><label>New Window:</label> <input class="tw-admin-menu-item-new-window" type="checkbox" /></li>');
                 addMenuItemEvents();
             });
 
@@ -57,6 +62,7 @@
                     var menuItem = {};
                     menuItem.label = $(this).find('.tw-admin-menu-item-label').val();
                     menuItem.url = $(this).find('.tw-admin-menu-item-url').val();
+                    menuItem.newWindow = $(this).find('.tw-admin-menu-item-new-window').is(':checked');
                     menuArray.push(menuItem);
                 });
 
