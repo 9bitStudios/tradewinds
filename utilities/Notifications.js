@@ -10,6 +10,7 @@ exports.GetNotification = function(type, id) {
 	'categoryCreated': 'Category created',
 	'categoryUpdated': 'Category updated',
 	'categoryDeleted': 'Category deleted',	
+        'menuDeleted': 'Menu deleted',	
 	'profileUpdated': 'Profile updated',
 	'installSuccess': 'Installation Success'
     };    
