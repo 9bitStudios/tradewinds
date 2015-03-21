@@ -17,24 +17,23 @@ exports.Process = function(request, response, next){
 	else {
 	    if(result) {
 		response.pageInfo.title = result.title;
-		response.pageInfo.content = result.content;
-                               
-                Model.MenuModel.find({}).exec(function(error, result){
-
-                    if(result) {
-                        response.pageInfo.menus = Helpers.GetMenus(result);
-                        response.render('home/Post', response.pageInfo);
-                    }
-                    else {
-                        response.render('home/Post', response.pageInfo);
-                    }
-                });                
+		response.pageInfo.content = result.content;               
 	    }
 	    else {
 		next();
 	    }
 	}
-    });
+    }).then(Model.MenuModel.find({}).exec(function(error, result){
+
+        if(result) {
+            response.pageInfo.menus = Helpers.GetMenus(result);
+            response.render('home/Post', response.pageInfo);
+        }
+        else {
+            response.render('home/Post', response.pageInfo);
+        }
+        
+    }));
     
 };
 
