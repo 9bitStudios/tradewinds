@@ -104,7 +104,6 @@ Tradewinds.Admin = {
         + '<label>New Window:</label> <input class="tw-admin-menu-item-new-window" type="checkbox" />'
         + '</li>';        
         jQuery('.tw-admin-menu-sorter').append(template);
-        this.AddMenuItemEvents();
     },
     AppendExistingMenuItem: function(label, url, checked){
         
@@ -115,14 +114,7 @@ Tradewinds.Admin = {
         + '<label>New Window:</label> <input class="tw-admin-menu-item-new-window" type="checkbox" '+ checked +' />'
         + '</li>';        
         jQuery('.tw-admin-menu-sorter').append(template);
-        this.AddMenuItemEvents();
     },    
-    AddMenuItemEvents: function(){
-        jQuery('.tw-admin-menu-item-remove').on('click',function(e){
-            e.preventDefault();
-            jQuery(this).parent().remove();
-        });
-    },
     SaveMenu: function(menuId, csrfToken, postURL, redirect){
         
         var menuObject = {};

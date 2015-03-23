@@ -44,6 +44,11 @@
             $('.tw-admin-menu-save').on('click', function(e){
                 Tradewinds.Admin.SaveMenu('{{ menuData.id }}', '{{ csrftoken }}', '/admin/menu/edit', false);
             });
+            
+            $('.tw-admin-menu-sorter').on('click', '.tw-admin-menu-item-remove', function(e){
+                e.preventDefault();
+                $(this).parent().remove();
+            });            
 
         });   
 

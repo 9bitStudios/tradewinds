@@ -34,6 +34,11 @@
                 Tradewinds.Admin.SaveMenu(null, '{{ csrftoken }}', '/admin/menu/add', true);
             });
 
+            $('.tw-admin-menu-sorter').on('click', '.tw-admin-menu-item-remove', function(e){
+                e.preventDefault();
+                $(this).parent().remove();
+            });
+
         });
 
     })(jQuery);
