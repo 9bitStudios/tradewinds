@@ -17,6 +17,7 @@ config.development = {
     },
     application: {
 	port: 1337,
+        sessionKey: 'Sh9rXDrGh9nABj',
 	cookieKey: '8YQM5GUAtLAT34'
     }
     
@@ -39,6 +40,7 @@ config.production = {
     },    
     application: {
 	port: 80,
+        sessionKey: 'tce6K52sCZOLSV',
 	cookieKey: '5SCjWfsTW8ySul'
     }    
     

@@ -67,7 +67,7 @@ app.use(cookieParser(config[config.environment].application.cookieKey));
 /* express-session - https://github.com/expressjs/session
  Simple session middleware for Express */
 app.use(session({
-  secret: 'ASDF123',
+  secret: config[config.environment].application.sessionKey,
   store: new MongoStore({
     url: 'mongodb://'+ config[config.environment].database.host+'/'+ config[config.environment].database.name
   })
