@@ -1,7 +1,7 @@
 Tradewinds
 ==========
 
-Tradewinds is a web application built on Node.js, Express, and MongoDB that uses the popular Model-View-Controller (MVC) design pattern.
+Tradewinds is a content management system (CMS) web application built on Node.js, Express, and MongoDB that uses the popular Model-View-Controller (MVC) design pattern.
 
 ### Installation
 
