@@ -40,13 +40,6 @@ var Post = new mongoose.Schema({
     updated: Date
 });
 
-var SignUp = new mongoose.Schema({
-    name: String,
-    password: String,
-    email: String,
-    date: Date
-});
-
 var Category = new mongoose.Schema({
     name: String,
     slug: String,
@@ -58,14 +51,12 @@ var UserModel = mongoose.model('User', User );
 var PostModel = mongoose.model('Post', Post );
 var MenuModel = mongoose.model('Menu', Menu );
 var CategoryModel = mongoose.model('Category', Category );
-var SignUpModel = mongoose.model('SignUp', SignUp );
 
 module.exports = {
     UserModel: UserModel,
     PostModel: PostModel,
     MenuModel: MenuModel,
-    CategoryModel: CategoryModel,    
-    SignUpModel: SignUpModel 
+    CategoryModel: CategoryModel 
 };
 
 

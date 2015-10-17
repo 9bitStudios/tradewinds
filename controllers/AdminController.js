@@ -780,23 +780,3 @@ exports.CategoryDelete = function(request, response){
 	}
     });
 };
-
-// Admin - View All SigUps
-
-exports.SignUpsViewAll = function(request, response){
-
-    Model.SignUpModel.find(function(error, result){
-	
-	if(error) {
-	    Validation.ErrorRedirect(response, '/admin', 'signupsNotFound');
-	}	
-	else {
-	    response.pageInfo.title = 'View All Sign Ups';
-	    response.pageInfo.layout = defaultLayout;
-	    response.pageInfo.userInfo.name = request.session.username;
-	    response.pageInfo.signups =  result;
-	    response.render('admin/SignUpsViewAll', response.pageInfo);
-	}
-    });
-
-};

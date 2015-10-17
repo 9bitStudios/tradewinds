@@ -2,7 +2,6 @@ var HomeController = require('./controllers/HomeController');
 var AdminController = require('./controllers/AdminController');
 var PostController = require('./controllers/PostController');
 var InstallController = require('./controllers/InstallController');
-var ProfileController = require('./controllers/ProfileController');
 var Authentication = require('./utilities/Authentication');
 
 // Routes
@@ -47,29 +46,11 @@ module.exports = function(app){
     app.post('/admin/menu/edit', Authentication.AuthenticateAdmin, AdminController.MenuUpdate);
     app.get('/admin/menu/delete/:id', Authentication.AuthenticateAdmin, AdminController.MenuDelete);     
     
-    app.get('/admin/signups', Authentication.AuthenticateAdmin, AdminController.SignUpsViewAll); 
-    
     // Installation Routes
     
     app.get('/install', InstallController.Index);
     app.post('/install', InstallController.Install);      
     app.get('/install/success', InstallController.InstallSuccess);
-
-    // Profile Routes
-    app.get('/profile', Authentication.AuthenticateUser, ProfileController.Index);
-    app.get('/profile/login', ProfileController.Login);
-    app.post('/profile/login', ProfileController.VerifyLogin);
-    app.get('/profile/logout', ProfileController.Logout);
-    app.get('/profile/dashboard', Authentication.AuthenticateUser, ProfileController.Dashboard);
-    app.get('/profile/dashboard/edit', Authentication.AuthenticateUser, ProfileController.ProfileEdit);
-    app.post('/profile/dashboard/edit', Authentication.AuthenticateUser, ProfileController.ProfileUpdate);
-    
-    app.get('/signup', ProfileController.SignUp);    
-    app.post('/signup', ProfileController.SignUpAdd);
-    app.get('/signup/checkemail', ProfileController.CheckEmail);
-    app.get('/signup/confirm/:id', ProfileController.SignUpConfirm); 
-    app.get('/signup/thanks', ProfileController.SignUpThanks);
-    app.get('/signup/invalid', ProfileController.SignUpInvalid); 
     
     app.get('/*', PostController.Process);
        
