@@ -22,34 +22,34 @@ app.set('views', path.join(__dirname, 'views'));
 /* express3-handlebars - https://github.com/ericf/express-handlebars
 A Handlebars view engine for Express. */
 hbs = handlebars.create({
-   helpers:{
-       ifCond: function(v1, operator, v2, options){
-	   
-	  v1 = v1.toString(); 
-	  v2 = v2.toString();  
-	  
-	  switch (operator) {
-	    case '==':
-		return (v1 == v2) ? options.fn(this) : options.inverse(this);
-	    case '===':
-		return (v1 === v2) ? options.fn(this) : options.inverse(this);
-	    case '<':
-		return (v1 < v2) ? options.fn(this) : options.inverse(this);
-	    case '<=':
-		return (v1 <= v2) ? options.fn(this) : options.inverse(this);
-	    case '>':
-		return (v1 > v2) ? options.fn(this) : options.inverse(this);
-	    case '>=':
-		return (v1 >= v2) ? options.fn(this) : options.inverse(this);
-	    case '&&':
-		return (v1 && v2) ? options.fn(this) : options.inverse(this);
-	    case '||':
-		return (v1 || v2) ? options.fn(this) : options.inverse(this);
-	    default:
-		return options.inverse(this);
-	   }
-       }
-   },
+    helpers: {
+        ifCond: function(v1, operator, v2, options) {
+
+            v1 = v1.toString(); 
+            v2 = v2.toString();  
+
+            switch (operator) {
+                case '==':
+                return (v1 == v2) ? options.fn(this) : options.inverse(this);
+                case '===':
+                return (v1 === v2) ? options.fn(this) : options.inverse(this);
+                case '<':
+                return (v1 < v2) ? options.fn(this) : options.inverse(this);
+                case '<=':
+                return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+                case '>':
+                return (v1 > v2) ? options.fn(this) : options.inverse(this);
+                case '>=':
+                return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+                case '&&':
+                return (v1 && v2) ? options.fn(this) : options.inverse(this);
+                case '||':
+                return (v1 || v2) ? options.fn(this) : options.inverse(this);
+                default:
+                return options.inverse(this);
+            }
+        }
+    },
    defaultLayout: 'main'
 });
 
@@ -67,15 +67,17 @@ app.use(cookieParser(config[config.environment].application.cookieKey));
 /* express-session - https://github.com/expressjs/session
  Simple session middleware for Express */
 app.use(session({
-  secret: config[config.environment].application.sessionKey,
-  store: new MongoStore({
-    url: 'mongodb://'+ config[config.environment].database.host+'/'+ config[config.environment].database.name
-  })
+    secret: config[config.environment].application.sessionKey,
+    store: new MongoStore({
+        url: 'mongodb://'+ config[config.environment].database.host+'/'+ config[config.environment].database.name
+    })
 }));
 
 /* multer - https://github.com/expressjs/multer
 Multer is a node.js middleware for handling multipart/form-data. It is written on top of busboy for maximum efficiency. */
-app.use(multer({ dest: './uploads/'}));
+app.use(multer({
+    dest: path.join(__dirname, 'uploads')
+}).any());
 
 /* body-parser - https://github.com/expressjs/body-parser 
 Node.js body parsing middleware. */
