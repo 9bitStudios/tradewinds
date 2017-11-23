@@ -5,10 +5,10 @@ Tradewinds is a content management system (CMS) web application built on Node.js
 
 ### Installation
 
-After downloading the package, to install the dependency libraries that the application uses simply run the following...
+After downloading the package, to install the dependency libraries that the application uses simply run the following in the root directory of the project (where tradewinds.js resides)...
 
 ```
-npm install
+$ npm install
 ```
 
 Once all dependencies have finished installing you're also going to want to make sure you have [MongoDB](http://www.mongodb.org/) installed as well.
@@ -20,13 +20,19 @@ Before you first run the application you will want to edit your config.js file i
 Once you have your configuration set, to run the application you need start up the database and point it at the project's db folder (or wherever it is you are storing your database files). So in your mongodb/bin directory you'd want to run...
 
 ```
-mongod --dbpath /c/path/to/tradewinds/db
+$ mongod --dbpath /c/path/to/tradewinds/db
+```
+
+Or if you're using the Windows command prompt...
+
+```
+> mongod --dbpath "C:\path\to\tradewinds\db"
 ```
 
 Once the database starts up then you then just need to run the following in another console window from the root directory of the project (where tradewinds.js resides)...
 
 ```
-node tradewinds
+$ node tradewinds
 ```
 
 ### Setup
