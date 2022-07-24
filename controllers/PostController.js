@@ -16,11 +16,11 @@ exports.Process = function(request, response, next){
 	}
 	else {
 	    if(result) {
-		response.pageInfo.title = result.title;
-		response.pageInfo.content = result.content;               
+			response.pageInfo.title = result.title;
+			response.pageInfo.content = result.content;               
 	    }
 	    else {
-		next();
+			next();
 	    }
 	}
     }).then(Model.MenuModel.find({}).exec(function(error, result){

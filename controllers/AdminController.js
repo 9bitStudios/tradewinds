@@ -18,8 +18,9 @@ exports.Index = function(request, response){
 
 exports.Login = function(request, response){
 
-    if(request.session.user && request.session.admin)
-	response.redirect('/admin');
+    if(request.session.user && request.session.admin) {
+		response.redirect('/admin');
+	}
     
     response.pageInfo.title = 'Login';
     response.render('admin/Login', response.pageInfo);
@@ -41,13 +42,13 @@ exports.VerifyLogin = function(request, response){
 	if(user) {
 	    // compare passwords
 	    if(bcrypt.compareSync(request.body.password, user.password)) {
-		request.session.userid = user._id;
-		request.session.username = user.name;
-		request.session.admin = 1;
-		response.redirect('/admin');
+			request.session.userid = user._id;
+			request.session.username = user.name;
+			request.session.admin = 1;
+			response.redirect('/admin');
 	    }
 	    else {
-		Validation.ErrorRedirect(response, '/admin/login', 'loginFailed');
+			Validation.ErrorRedirect(response, '/admin/login', 'loginFailed');
 	    }
 	}
 	else {
@@ -64,15 +65,15 @@ exports.UsersViewAll = function(request, response){
 
     Model.UserModel.find(function(error, result){
 	
-	if (error) {
-	    Validation.ErrorRedirect(response, '/admin', 'usersNotFound');
-	}	
-	
-	response.pageInfo.title = 'View All Users';
-	response.pageInfo.layout = defaultLayout;
-	response.pageInfo.userInfo.name = request.session.username;	
-	response.pageInfo.users = result;
-	response.render('admin/UsersViewAll', response.pageInfo);
+		if (error) {
+			Validation.ErrorRedirect(response, '/admin', 'usersNotFound');
+		}	
+		
+		response.pageInfo.title = 'View All Users';
+		response.pageInfo.layout = defaultLayout;
+		response.pageInfo.userInfo.name = request.session.username;	
+		response.pageInfo.users = result;
+		response.render('admin/UsersViewAll', response.pageInfo);
 	
     });
 
@@ -101,17 +102,17 @@ exports.UserCreate = function(request, response){
     var password2 = request.body.password2;
     
     if(Validation.IsNullOrEmpty([name, email, password, password2])) {
-	errors = true;
+		errors = true;
     }
     if(!Validation.Equals(password, password2)) {
-	errors = true;    
+		errors = true;    
     }
     if(!Validation.ValidateEmail(email)) {
-	errors = true;
+		errors = true;
     }
     
     if(errors)
-	Validation.ErrorRedirect(response, '/admin/users', 'userAddError');  
+		Validation.ErrorRedirect(response, '/admin/users', 'userAddError');  
     else {
 	
 	Model.UserModel.findOne({ email: email }, function(error, result){
@@ -137,9 +138,9 @@ exports.UserCreate = function(request, response){
 		u.save(function(error){
 
 		    if(error)
-			Validation.ErrorRedirect(response, '/admin/users', 'userAddError');
+				Validation.ErrorRedirect(response, '/admin/users', 'userAddError');
 		    else
-			Validation.SuccessRedirect(response, '/admin/users', 'userAdded');  
+				Validation.SuccessRedirect(response, '/admin/users', 'userAdded');  
 		});		
 		
 	    }
@@ -157,21 +158,21 @@ exports.UserEdit = function(request, response){
     
     Model.UserModel.findOne({ _id: id }, function(error, result){
 
-	if(error) {
-	    Validation.ErrorRedirect(response, '/admin/users', 'userNotFound');
-	}
-	response.pageInfo.title = 'Edit User';
-	response.pageInfo.layout = defaultLayout;
-	response.pageInfo.userInfo.name = request.session.username;		
-	response.pageInfo.user = {
-	    id: result._id,
-	    name: result.name,
-	    email: result.email,
-	    avatar: result.avatar,
-	    isAdmin: result.isAdmin,		
-	    isDefault: result.isDefault
-	};
-	response.render('admin/UserEdit', response.pageInfo);
+		if(error) {
+			Validation.ErrorRedirect(response, '/admin/users', 'userNotFound');
+		}
+		response.pageInfo.title = 'Edit User';
+		response.pageInfo.layout = defaultLayout;
+		response.pageInfo.userInfo.name = request.session.username;		
+		response.pageInfo.user = {
+			id: result._id,
+			name: result.name,
+			email: result.email,
+			avatar: result.avatar,
+			isAdmin: result.isAdmin,		
+			isDefault: result.isDefault
+		};
+		response.render('admin/UserEdit', response.pageInfo);
 	
     });
     
@@ -189,36 +190,40 @@ exports.UserUpdate = function(request, response){
     var avatar = request.body.avatar;
     var admin = request.body.admin;
     
-    if(Validation.IsNullOrEmpty([name, email, avatar]))
-	errors = true;
-    if(!Validation.ValidateEmail(email))
-	errors = true;
+    if(Validation.IsNullOrEmpty([name, email, avatar])) {
+		errors = true;
+	}
+    if(!Validation.ValidateEmail(email)) {
+		errors = true;
+	}
     
-    if(admin === 'admin')
-	isAdmin = true;
+    if(admin === 'admin') {
+		isAdmin = true;
+	}
     
-    if(errors)
-	Validation.ErrorRedirect(response, '/admin/users', 'userUpdateError');      
+    if(errors) {
+		Validation.ErrorRedirect(response, '/admin/users', 'userUpdateError');
+	}
     else {
 	
-	Model.UserModel.update(
-	    { _id: request.body.id }, 
-	    {
-		name: name,
-		email: email,
-		avatar: avatar,
-		isAdmin: isAdmin
-	    },
-	    { multi: true }, 
-	    function(error, result){
-		if(error) {
-		    Validation.ErrorRedirect(response, '/admin/users', 'userUpdateError');
-		}
-		else {
-		    Validation.SuccessRedirect(response, '/admin/users', 'userUpdated');
-		}
-	    }
-	);	
+		Model.UserModel.update(
+			{ _id: request.body.id }, 
+			{
+				name: name,
+				email: email,
+				avatar: avatar,
+				isAdmin: isAdmin
+			},
+			{ multi: true }, 
+			function(error, result){
+				if(error) {
+					Validation.ErrorRedirect(response, '/admin/users', 'userUpdateError');
+				}
+				else {
+					Validation.SuccessRedirect(response, '/admin/users', 'userUpdated');
+				}
+			}
+		);	
     }
 };
 
@@ -243,15 +248,15 @@ exports.PostsViewAll = function(request, response){
 
     Model.PostModel.find(function(error, result){
 	
-	if (error) {
-	    Validation.ErrorRedirect(response, '/admin', 'postsNotFound');
-	}	
-	
-	response.pageInfo.title = 'Posts';
-	response.pageInfo.layout = defaultLayout;
-	response.pageInfo.userInfo.name = request.session.username;    	
-	response.pageInfo.posts = result;  
-	response.render('admin/PostsViewAll', response.pageInfo);
+		if (error) {
+			Validation.ErrorRedirect(response, '/admin', 'postsNotFound');
+		}	
+		
+		response.pageInfo.title = 'Posts';
+		response.pageInfo.layout = defaultLayout;
+		response.pageInfo.userInfo.name = request.session.username;    	
+		response.pageInfo.posts = result;  
+		response.render('admin/PostsViewAll', response.pageInfo);
 	
     });
 
@@ -262,28 +267,26 @@ exports.PostsViewAll = function(request, response){
 exports.PostAdd = function(request, response){
     
     Model.CategoryModel.find({}).exec(function(error, result){
-	
-	if(error) {
-	    Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFound');  
-	}
-	response.pageInfo.categories = result; 
-	
+
+		if(error) {
+			Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFound');  
+		}
+		response.pageInfo.categories = result; 
 	
     }).then(Model.UserModel.find({}).exec(function(error, result){
 	
-	if(error) {
-	    Validation.ErrorRedirect(response, '/admin/posts', 'usersNotFound');  
-	}	
-	authorResultSet = result;
-	
-	response.pageInfo.title = 'Add New Post';
-	response.pageInfo.layout = defaultLayout;
-	response.pageInfo.authors = result;
-	response.pageInfo.userInfo.name = request.session.username;
-	response.render('admin/PostAdd', response.pageInfo);
+		if(error) {
+			Validation.ErrorRedirect(response, '/admin/posts', 'usersNotFound');  
+		}	
+		
+		authorResultSet = result;		
+		response.pageInfo.title = 'Add New Post';
+		response.pageInfo.layout = defaultLayout;
+		response.pageInfo.authors = result;
+		response.pageInfo.userInfo.name = request.session.username;
+		response.render('admin/PostAdd', response.pageInfo);
+
     }));
-	    
-    
 };
 
 // Admin - Create Post
@@ -301,59 +304,59 @@ exports.PostCreate = function(request, response){
     var path;
     
     if(Validation.IsNullOrEmpty([title, date, slug, content])) {
-	errors = true;
+		errors = true;
     }
     
     if(!Validation.ValidateDate(date)) {
-	errors = true;
+		errors = true;
     }    
     
     if(errors)
-	Validation.ErrorRedirect(response, '/admin/posts', 'postCreateError');   
+		Validation.ErrorRedirect(response, '/admin/posts', 'postCreateError');   
     else {
 	
 	Model.CategoryModel.findOne({ _id: category }).exec(function(error, result){
 
 	    if(error) {
-		Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFound');  
+			Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFound');  
 	    }
 	    else {
-		if(Validation.IsNullOrEmpty(result.slug)) {
-		    path = slug;
-		}
-		else {
-		    path = result.slug + '/' + slug;
-		}				
+			if(Validation.IsNullOrEmpty(result.slug)) {
+				path = slug;
+			}
+			else {
+				path = result.slug + '/' + slug;
+			}				
 	    }
 
 	}).then(Model.UserModel.findOne({ _id: author }).exec(function(error, result) {
 	    
 	    if(error) {
-		Validation.ErrorRedirect(response, '/admin/posts', 'userNotFound'); 
+			Validation.ErrorRedirect(response, '/admin/posts', 'userNotFound'); 
 	    } else {
 		
-		postTime = new Date(date);
+			postTime = new Date(date);
 
-		var p = new Model.PostModel({ 
-		    title: title,
-		    date: postTime,
-		    slug: slug,
-		    category: category,
-		    author: author,
-		    path: path,
-		    content: content,
-		    updated: Date.now()
-		});
+			var p = new Model.PostModel({ 
+				title: title,
+				date: postTime,
+				slug: slug,
+				category: category,
+				author: author,
+				path: path,
+				content: content,
+				updated: Date.now()
+			});
 
-		p.save(function(error){
+			p.save(function(error){
 
-		    if(error) {
-			Validation.ErrorRedirect(response, '/admin/posts', 'postCreateError');
-		    }
-		    else {
-			Validation.SuccessRedirect(response, '/admin/posts', 'postCreated');
-		    }
-		});		
+				if(error) {
+					Validation.ErrorRedirect(response, '/admin/posts', 'postCreateError');
+				}
+				else {
+					Validation.SuccessRedirect(response, '/admin/posts', 'postCreated');
+				}
+			});		
 		
 	    }		
 	}));	
@@ -402,13 +405,13 @@ exports.PostEdit = function(request, response){
 		    response.pageInfo.userInfo.name = request.session.username;
 		    response.pageInfo.authors = result;
 		    response.pageInfo.post = {
-			id: postID,
-			title: postTitle,
-			date: formattedDate,
-			category: postCategory,
-			author: postAuthor,
-			slug: postSlug,
-			content: postContent
+				id: postID,
+				title: postTitle,
+				date: formattedDate,
+				category: postCategory,
+				author: postAuthor,
+				slug: postSlug,
+				content: postContent
 		    };	
 		    response.render('admin/PostEdit', response.pageInfo);	
 		}
@@ -436,30 +439,29 @@ exports.PostUpdate = function(request, response){
     var path;
     
     if(Validation.IsNullOrEmpty([title, date, slug, content])){
-	errors = true;
+		errors = true;
     }
 
     if(!Validation.ValidateDate(date)) {
-	errors = true;
+		errors = true;
     }
     
     if(errors)
-	Validation.ErrorRedirect(response, '/admin/posts', 'postUpdateError');   
+		Validation.ErrorRedirect(response, '/admin/posts', 'postUpdateError');   
     else {
 	
 	Model.CategoryModel.findOne({ _id: category }).exec(function(error, result){
 
 	    if(error) {
-		Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFound');  
+			Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFound');  
 	    }
 	    else {
-		if(Validation.IsNullOrEmpty(result.slug)) {
-		    path = slug;
-		}
-		else {
-		    path = result.slug + '/' + slug;
-		}	    
-	 	    
+			if(Validation.IsNullOrEmpty(result.slug)) {
+				path = slug;
+			}
+			else {
+				path = result.slug + '/' + slug;
+			}
 	    }
 	}).then(Model.UserModel.findOne({ _id: author }).exec(function(error, result){
 	
@@ -480,10 +482,10 @@ exports.PostUpdate = function(request, response){
 		{ multi: true }, 
 		function(error, result){
 		    if(error) {
-			Validation.ErrorRedirect(response, '/admin/posts', 'postUpdateError');
+				Validation.ErrorRedirect(response, '/admin/posts', 'postUpdateError');
 		    }
 		    else{
-			Validation.SuccessRedirect(response, '/admin/posts', 'postUpdated');
+				Validation.SuccessRedirect(response, '/admin/posts', 'postUpdated');
 		    }
 
 		}
@@ -512,15 +514,15 @@ exports.MenusViewAll = function(request, response){
     
     Model.MenuModel.find(function(error, result){
 	
-	if (error) {
-	    Validation.ErrorRedirect(response, '/admin', 'menusNotFound');
-	}	
-	
-	response.pageInfo.title = 'Menus';
-	response.pageInfo.layout = defaultLayout;
-	response.pageInfo.userInfo.name = request.session.username;    	
-	response.pageInfo.menus = result;  
-	response.render('admin/MenusViewAll', response.pageInfo);
+		if (error) {
+			Validation.ErrorRedirect(response, '/admin', 'menusNotFound');
+		}	
+		
+		response.pageInfo.title = 'Menus';
+		response.pageInfo.layout = defaultLayout;
+		response.pageInfo.userInfo.name = request.session.username;    	
+		response.pageInfo.menus = result;  
+		response.render('admin/MenusViewAll', response.pageInfo);
 	
     });
     
@@ -542,18 +544,17 @@ exports.MenuAdd = function(request, response){
 exports.MenuCreate = function(request, response){ 
     
     var m = new Model.MenuModel({ 
-	name: request.body.name,
-	data: JSON.stringify(request.body.menu)
+		name: request.body.name,
+		data: JSON.stringify(request.body.menu)
     });    
     
-    m.save(function(error, result){
-
-	if(error) {
-	    response.send(500, false);
-	}
-	else {
-	    response.send(200, {id:result._id});
-	}
+	m.save(function(error, result){
+		if(error) {
+			response.send(500, false);
+		}
+		else {
+			response.send(200, {id:result._id});
+		}
     });
 };
 
@@ -573,9 +574,9 @@ exports.MenuEdit = function(request, response){
 	    response.pageInfo.layout = defaultLayout;
 	    response.pageInfo.userInfo.name = request.session.username;
 	    response.pageInfo.menuData = {
-		id: result._id,
-		name: result.name,
-		data: result.data
+			id: result._id,
+			name: result.name,
+			data: result.data
 	    };		
 	    response.render('admin/MenuEdit', response.pageInfo);	    
 	}
@@ -592,30 +593,30 @@ exports.MenuUpdate = function(request, response){
     var errors = false;
     
     if(Validation.IsNullOrEmpty([id])){
-	errors = true;
+		errors = true;
     }
     
     if(errors)
-	Validation.ErrorRedirect(response, '/admin/menus', 'menuUpdateError');   
+		Validation.ErrorRedirect(response, '/admin/menus', 'menuUpdateError');   
     else {
 	
-	Model.MenuModel.update(
-	    { _id: id }, 
-	    {
-		name: request.body.name,
-		data: JSON.stringify(request.body.menu)
-	    },
-	    { multi: true }, 
-	    function(error, result){
-		if(error) {
-		    response.send(500, false);
-		}
-		else{
-		    response.send(200, true);
-		}
-		    
-	    }
-	);	
+		Model.MenuModel.update(
+			{ _id: id }, 
+			{
+			name: request.body.name,
+			data: JSON.stringify(request.body.menu)
+			},
+			{ multi: true }, 
+			function(error, result){
+			if(error) {
+				response.send(500, false);
+			}
+			else{
+				response.send(200, true);
+			}
+				
+			}
+		);	
     }
 
 };
@@ -625,13 +626,12 @@ exports.MenuUpdate = function(request, response){
 exports.MenuDelete = function(request, response){ 
 
     Model.MenuModel.remove({ _id: request.params.id }, function(error, result) {
-	if (error) {
-	    Validation.ErrorRedirect(response, '/admin/menus', 'menuDeleteError');
-	}
-	else {
-	    Validation.SuccessRedirect(response, '/admin/menus', 'menuDeleted');
-	}
-	    
+		if (error) {
+			Validation.ErrorRedirect(response, '/admin/menus', 'menuDeleteError');
+		}
+		else {
+			Validation.SuccessRedirect(response, '/admin/menus', 'menuDeleted');
+		} 
     });
     
 };
@@ -642,16 +642,15 @@ exports.CategoriesViewAll = function(request, response){
     
     Model.CategoryModel.find(function(error, result){
 	
-	if (error) {
-	    Validation.ErrorRedirect(response, '/admin', 'categoriesNotFound');
-	}	
-	
-	response.pageInfo.title = 'Categories';
-	response.pageInfo.layout = defaultLayout;
-	response.pageInfo.userInfo.name = request.session.username;    	
-	response.pageInfo.categories = result;  
-	response.render('admin/CategoriesViewAll', response.pageInfo);
-	
+		if (error) {
+			Validation.ErrorRedirect(response, '/admin', 'categoriesNotFound');
+		}	
+		
+		response.pageInfo.title = 'Categories';
+		response.pageInfo.layout = defaultLayout;
+		response.pageInfo.userInfo.name = request.session.username;    	
+		response.pageInfo.categories = result;  
+		response.render('admin/CategoriesViewAll', response.pageInfo);
     });
 
 };
@@ -678,11 +677,11 @@ exports.CategoryCreate = function(request, response){
     var slug = request.body.slug;
     
     if(Validation.IsNullOrEmpty([name, slug])) {
-	errors = true;
+		errors = true;
     }  
     
     if(errors)
-	Validation.ErrorRedirect(response, '/admin/categories', 'categoryCreateError');   
+		Validation.ErrorRedirect(response, '/admin/categories', 'categoryCreateError');   
     else {
 	
 	var c = new Model.CategoryModel({ 
@@ -694,10 +693,10 @@ exports.CategoryCreate = function(request, response){
 	c.save(function(error){
 
 	    if(error) {
-		Validation.ErrorRedirect(response, '/admin/categories', 'categoryCreateError');
+			Validation.ErrorRedirect(response, '/admin/categories', 'categoryCreateError');
 	    }
 	    else {
-		Validation.SuccessRedirect(response, '/admin/categories', 'categoryCreated');
+			Validation.SuccessRedirect(response, '/admin/categories', 'categoryCreated');
 	    }
 	});	
     }
@@ -710,21 +709,21 @@ exports.CategoryEdit = function(request, response){
     var id = request.params.id;
     
     Model.CategoryModel.findOne({ _id: id, isDefault: false }, function(error, result){
-	if(error) {
-	    Validation.ErrorRedirect(response, '/admin/categories', 'categoryNotFound'); 
-	}
-	else {
-	    
-	    response.pageInfo.title = 'Edit Category';
-	    response.pageInfo.layout = defaultLayout;
-	    response.pageInfo.userInfo.name = request.session.username;
-	    response.pageInfo.category = {
-		id: result._id,
-		name: result.name,
-		slug: result.slug
-	    };	
-	    response.render('admin/CategoryEdit', response.pageInfo);	    
-	}
+		if(error) {
+			Validation.ErrorRedirect(response, '/admin/categories', 'categoryNotFound'); 
+		}
+		else {
+			
+			response.pageInfo.title = 'Edit Category';
+			response.pageInfo.layout = defaultLayout;
+			response.pageInfo.userInfo.name = request.session.username;
+			response.pageInfo.category = {
+				id: result._id,
+				name: result.name,
+				slug: result.slug
+			};	
+			response.render('admin/CategoryEdit', response.pageInfo);	    
+		}
 	
     });
     
@@ -740,28 +739,28 @@ exports.CategoryUpdate = function(request, response){
     var slug = request.body.slug;
     
     if(Validation.IsNullOrEmpty([name, slug])){
-	errors = true;
+		errors = true;
     }
     
-    if(errors)
-	Validation.ErrorRedirect(response, '/admin/categories', 'categoryUpdateError');   
+    if(errors) {
+		Validation.ErrorRedirect(response, '/admin/categories', 'categoryUpdateError');
+	}   
     else {
 	
 	Model.CategoryModel.update(
 	    { _id: request.body.id }, 
 	    {
-		name: name,
-		slug: slug
+			name: name,
+			slug: slug
 	    },
 	    { multi: true }, 
 	    function(error, result){
-		if(error) {
-		    Validation.ErrorRedirect(response, '/admin/categories', 'categoryUpdateError');
-		}
-		else{
-		    Validation.SuccessRedirect(response, '/admin/categories', 'categoryUpdated');
-		}
-		    
+			if(error) {
+				Validation.ErrorRedirect(response, '/admin/categories', 'categoryUpdateError');
+			}
+			else{
+				Validation.SuccessRedirect(response, '/admin/categories', 'categoryUpdated');
+			}
 	    }
 	);	
     }
@@ -772,11 +771,11 @@ exports.CategoryUpdate = function(request, response){
 exports.CategoryDelete = function(request, response){
 
     Model.CategoryModel.remove({ _id: request.params.id, isDefault: false }, function(error, result) {
-	if(error) {
-	    Validation.ErrorRedirect(response, '/admin/categories', 'categoryDeleteError');
-	}
-	else{
-	    Validation.SuccessRedirect(response, '/admin/categories', 'categoryDeleted');
-	}
+		if(error) {
+			Validation.ErrorRedirect(response, '/admin/categories', 'categoryDeleteError');
+		}
+		else{
+			Validation.SuccessRedirect(response, '/admin/categories', 'categoryDeleted');
+		}
     });
 };

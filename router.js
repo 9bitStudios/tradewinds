@@ -59,12 +59,12 @@ module.exports = function(app){
     // 404
     
     app.use(function(request, response){
-	response.status(404);
-        response.render('errors/404', { 
-	    title: '404', 
-	    message: 'The requested resource was not found...', 
-	    layout: 'error'
-	});
+        response.status(404);
+            response.render('errors/404', { 
+            title: '404', 
+            message: 'The requested resource was not found...', 
+            layout: 'error'
+        });
     });     
     
 };
