@@ -4,7 +4,7 @@ config.development = {
     
     database: {
 		name: 'tradewinds',
-		host: 'localhost',
+		host: '0.0.0.0',
 		port: '27017',
 		credentials: '' // username:password@
     },
