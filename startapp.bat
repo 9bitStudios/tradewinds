@@ -1,4 +1,4 @@
 echo off
 Setlocal EnableDelayedExpansion
-cd "C:\wamp\www\tradewinds"
+cd "C:\wamp64\www\tradewinds"
 node tradewinds

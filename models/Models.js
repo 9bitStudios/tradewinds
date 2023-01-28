@@ -12,7 +12,10 @@ db.once('open', function() {
 });
 
 // Database
-mongoose.connect(connectionString);
+mongoose.connect(connectionString, {
+    useNewUrlParser: true, 
+    useUnifiedTopology: true
+});
 
 //Schemas
 var User = new mongoose.Schema({

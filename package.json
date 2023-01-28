@@ -17,11 +17,11 @@
         "method-override": "2.3.10",
         "errorhandler": "1.5.0",
         "express-handlebars": "3.0.0",			
-        "mongoose": "4.13.4",
-        "connect-mongo": "2.0.0",
+        "mongoose": "6.9.0",
+        "connect-mongo": "4.6.0",
         "bcrypt-nodejs": "0.0.3",
         "emailjs": "1.0.12",
-        "mongo-express": "0.44.0"
+        "mongo-express": "1.0.0"
     },
     "scripts": {
         "start": "node tradewinds.js"

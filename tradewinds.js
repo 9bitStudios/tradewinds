@@ -8,7 +8,7 @@ var logger = require('morgan');
 var csrf = require('csurf');
 var methodOverride = require('method-override');
 var errorHandler = require('errorhandler');
-var MongoStore = require('connect-mongo')(session);
+var MongoStore = require('connect-mongo');
 var http = require('http');
 var path = require('path');
 var handlebars  = require('express-handlebars'), hbs;
@@ -69,7 +69,7 @@ app.use(cookieParser(config[config.environment].application.cookieKey));
 app.use(session({
     secret: config[config.environment].application.sessionKey,
     store: new MongoStore({
-        url: 'mongodb://'+ config[config.environment].database.host+'/'+ config[config.environment].database.name
+        mongoUrl: 'mongodb://'+ config[config.environment].database.host+'/'+ config[config.environment].database.name
     })
 }));
 
