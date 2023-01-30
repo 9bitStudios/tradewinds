@@ -11,9 +11,11 @@ var errorHandler = require('errorhandler');
 var MongoStore = require('connect-mongo');
 var http = require('http');
 var path = require('path');
-var handlebars  = require('express-handlebars'), hbs;
+var handlebars = require('handlebars');
+var expressHandlebars  = require('express-handlebars');
 var config = require('./config');
 var Middleware = require('./utilities/Middleware');
+const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access');
 var app = express();
 
 app.set('port', config[config.environment].application.port);
@@ -21,7 +23,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 /* express3-handlebars - https://github.com/ericf/express-handlebars
 A Handlebars view engine for Express. */
-hbs = handlebars.create({
+app.engine('handlebars', expressHandlebars({
     helpers: {
         ifCond: function(v1, operator, v2, options) {
 
@@ -50,10 +52,9 @@ hbs = handlebars.create({
             }
         }
     },
-   defaultLayout: 'main'
-});
-
-app.engine('handlebars', hbs.engine);
+    defaultLayout: 'main',
+    handlebars: allowInsecurePrototypeAccess(handlebars)
+}));
 app.set('view engine', 'handlebars');
 
 /* Morgan - https://github.com/expressjs/morgan
