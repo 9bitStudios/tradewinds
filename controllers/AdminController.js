@@ -266,27 +266,17 @@ exports.PostsViewAll = function(request, response){
 
 exports.PostAdd = function(request, response){
     
-    Model.CategoryModel.find({}).exec(function(error, result){
-
-		if(error) {
-			Validation.ErrorRedirect(response, '/admin/posts', 'categoriesNotFound');  
-		}
-		response.pageInfo.categories = result; 
-	
-    }).then(Model.UserModel.find({}).exec(function(error, result){
-	
-		if(error) {
-			Validation.ErrorRedirect(response, '/admin/posts', 'usersNotFound');  
-		}	
-		
-		authorResultSet = result;		
+	Model.CategoryModel.find({}).exec().then(function(result){
+		console.log(result[0]["_doc"].name);
+		response.pageInfo.categories = result;
+		return Model.UserModel.find({}).exec();
+	}).then(function(result){
 		response.pageInfo.title = 'Add New Post';
 		response.pageInfo.layout = defaultLayout;
 		response.pageInfo.authors = result;
 		response.pageInfo.userInfo.name = request.session.username;
 		response.render('admin/PostAdd', response.pageInfo);
-
-    }));
+	});
 };
 
 // Admin - Create Post
